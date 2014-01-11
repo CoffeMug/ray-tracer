@@ -1,0 +1,5 @@
+package classes;
+import java.util.ArrayList;
+
+public class Lights extends ArrayList<Light>{
+}

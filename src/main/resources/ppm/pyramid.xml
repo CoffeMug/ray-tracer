@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  Params : -x 240 -y 240 -w 1 -z 1 -->
+<!--  Infile : pyramid.pov -->
+<!--  Outfile: pyramid.ppm -->
+    <camera>
+      <location>
+        <vector x="-23.000" y="10.000" z="-5.000"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="10.000" y="5.000" z="10.000"/>
+      </look_at>
+    </camera>
+
+    <background>
+      <color red="0.000" green="0.000" blue="0.000"/>
+    </background>
+
+<!-- Pyramiden -->
+<!--  Måne -->
+<!--  Blå blippar -->
+<!--  Toppblippen -->
+<!--  Golvet -->
+<!-- plane { -->
+<!-- 	<0, -1, 0.1>, 2 -->
+<!-- 	pigment { color red 0.8 green 0.8 blue 0.6 }	 -->
+<!-- } -->
+  <world>
+    <light>
+      <position>
+        <vector x="-23.000" y="10.000" z="-5.000"/>
+      </position>
+    </light>
+
+    <triangle>
+      <c0>
+        <vector x="10.000" y="10.000" z="10.000"/>
+      </c0>
+      <c1>
+        <vector x="10.000" y="0.000" z="0.000"/>
+      </c1>
+      <c2>
+        <vector x="20.000" y="0.000" z="10.000"/>
+      </c2>
+      <surface>
+        <pigment>
+          <color red="1.000" green="1.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </triangle>
+
+    <triangle>
+      <c0>
+        <vector x="10.000" y="10.000" z="10.000"/>
+      </c0>
+      <c1>
+        <vector x="10.000" y="0.000" z="20.000"/>
+      </c1>
+      <c2>
+        <vector x="20.000" y="0.000" z="10.000"/>
+      </c2>
+      <surface>
+        <pigment>
+          <color red="1.000" green="1.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </triangle>
+
+    <triangle>
+      <c0>
+        <vector x="10.000" y="10.000" z="10.000"/>
+      </c0>
+      <c1>
+        <vector x="10.000" y="0.000" z="0.000"/>
+      </c1>
+      <c2>
+        <vector x="0.000" y="0.000" z="10.000"/>
+      </c2>
+      <surface>
+        <pigment>
+          <color red="1.000" green="1.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </triangle>
+
+    <triangle>
+      <c0>
+        <vector x="10.000" y="10.000" z="10.000"/>
+      </c0>
+      <c1>
+        <vector x="10.000" y="0.000" z="20.000"/>
+      </c1>
+      <c2>
+        <vector x="0.000" y="0.000" z="10.000"/>
+      </c2>
+      <surface>
+        <pigment>
+          <color red="1.000" green="1.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </triangle>
+
+    <sphere radius="15.000">
+      <location>
+        <vector x="100.000" y="30.000" z="120.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </equator>
+      <surface>
+        <pigment>
+          <color red="1.000" green="1.000" blue="0.700"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="2.000">
+      <location>
+        <vector x="10.000" y="0.000" z="0.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </equator>
+      <surface>
+        <pigment>
+          <color red="0.400" green="0.400" blue="1.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="2.000">
+      <location>
+        <vector x="0.000" y="0.000" z="10.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </equator>
+      <surface>
+        <pigment>
+          <color red="0.400" green="0.400" blue="1.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="2.000">
+      <location>
+        <vector x="10.000" y="0.000" z="20.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </equator>
+      <surface>
+        <pigment>
+          <color red="0.400" green="0.400" blue="1.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="2.000">
+      <location>
+        <vector x="20.000" y="0.000" z="10.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </equator>
+      <surface>
+        <pigment>
+          <color red="0.400" green="0.400" blue="1.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="1.000">
+      <location>
+        <vector x="10.000" y="11.000" z="10.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </equator>
+      <surface>
+        <pigment>
+          <color red="0.400" green="0.400" blue="1.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <plane>
+      <normal>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </normal>
+      <point>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </point>
+      <surface>
+        <pigment>
+          <color red="1.000" green="1.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </plane>
+
+  </world>
+</scene>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  Params -x 240 -y 240 -w 1 -z 1 -->
+<!--  Infile : v2ex1.pov -->
+<!--  Outfile: v2ex1.ppm -->
+    <camera>
+      <location>
+        <vector x="-30.000" y="50.000" z="100.000"/>
+      </location>
+      <sky>
+        <vector x="1.000" y="0.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="-10.000" y="10.000" z="114.000"/>
+      </look_at>
+    </camera>
+
+    <background>
+      <color red="0.270" green="0.270" blue="0.270"/>
+    </background>
+
+  <world>
+    <sphere radius="12.000">
+      <location>
+        <vector x="0.000" y="-5.000" z="116.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000"/>
+        <pigment>
+          <image>
+            <ppm file="/stud/csd/kurs/pm2/ht97/pov/johan.ppm"/>
+          </image>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="8.000">
+      <location>
+        <vector x="-10.000" y="7.000" z="118.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000" reflect="0.800"/>
+        <pigment>
+          <color red="0.590" green="0.010" blue="0.080"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="8.000">
+      <location>
+        <vector x="10.000" y="7.000" z="118.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000" reflect="0.800"/>
+        <pigment>
+          <color red="0.590" green="0.010" blue="0.080"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="4.000">
+      <location>
+        <vector x="0.000" y="14.000" z="107.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000" reflect="0.800"/>
+        <pigment>
+          <color red="0.390" green="0.230" blue="0.230"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="4.000">
+      <location>
+        <vector x="0.000" y="14.000" z="124.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000"/>
+        <pigment>
+          <color red="0.780" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="1.500">
+      <location>
+        <vector x="4.000" y="-2.000" z="105.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000"/>
+        <pigment>
+          <color red="0.150" green="0.150" blue="0.150"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="1.500">
+      <location>
+        <vector x="-4.000" y="-2.000" z="105.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000"/>
+        <pigment>
+          <color red="0.150" green="0.150" blue="0.150"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="2.500">
+      <location>
+        <vector x="0.000" y="-5.000" z="104.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000"/>
+        <pigment>
+          <color red="0.350" green="0.150" blue="0.150"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="0.500">
+      <location>
+        <vector x="-6.000" y="-9.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="0.500">
+      <location>
+        <vector x="6.000" y="-9.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="0.500">
+      <location>
+        <vector x="0.000" y="-11.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <light>
+      <position>
+        <vector x="10.000" y="0.000" z="50.000"/>
+      </position>
+    </light>
+
+    <light>
+      <position>
+        <vector x="-20.000" y="70.000" z="50.000"/>
+      </position>
+    </light>
+
+    <plane distance="150.000">
+      <normal>
+        <vector x="-1.000" y="0.000" z="2.000"/>
+      </normal>
+      <surface>
+        <pigment>
+          <color red="0.820" green="0.620" blue="0.080"/>
+        </pigment>
+      </surface>
+    </plane>
+
+    <triangle>
+      <c0>
+        <vector x="0.000" y="0.000" z="110.000"/>
+      </c0>
+      <c1>
+        <vector x="5.000" y="-60.000" z="100.000"/>
+      </c1>
+      <c2>
+        <vector x="0.000" y="60.000" z="100.000"/>
+      </c2>
+      <surface>
+        <finish diffuse="1.000" reflect="0.000"/>
+        <pigment>
+          <image>
+            <ppm file="/stud/csd/kurs/pm2/ht97/pov/johan.ppm"/>
+          </image>
+        </pigment>
+      </surface>
+    </triangle>
+
+  </world>
+</scene>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  test9.pov -->
+<!--  -->
+<!--  Test of background/recursion handling. -->
+<!--  The assignment uses a rather simple tracing model that can cause -->
+<!--  some wierd effects. This file tests a situation that is not -->
+<!--  entirely realistic; The background is often treated equally for -->
+<!--  the first ray and the reflected rays. This causes the background -->
+<!--  to make color contribution that reflects in the objects. This  -->
+<!--  scene has no light so one might think it would be black. One  -->
+<!--  possible result is that the scene will be blue; the sphere is  -->
+<!--  fully reflective so all rays will eventually "intersect" the -->
+<!--  background causing the bitmap to be all blue despite no light. -->
+<!--  If the first ray is treated as a special case, a possible result -->
+<!--  may be that the sphere will be black and the backhround blue. -->
+<!--  NOTE: the assignment doesn't require You to handle this the  -->
+<!--  "correct way". -->
+<!--  -->
+<!--  Tracer options: -z 1 -w 1 -h 1 -x 240  -->
+    <camera>
+      <location>
+        <vector x="0.000" y="0.000" z="-2.500"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </look_at>
+    </camera>
+
+    <background>
+      <color red="0.000" green="0.000" blue="1.000"/>
+    </background>
+
+  <world>
+    <sphere radius="1.000">
+      <location>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </equator>
+      <surface>
+        <finish diffuse="1.000" reflect="1.000"/>
+        <pigment>
+          <color red="1.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+  </world>
+</scene>

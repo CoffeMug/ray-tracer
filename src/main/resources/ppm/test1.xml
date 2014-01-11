@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  test1.pov -->
+<!--  -->
+<!--  Test of hitpoint calculations of the basic objects: sphere, -->
+<!--  triangle and plane. The resulting bitmap should show a sphere -->
+<!--  and a triangle, clipped by a plane. -->
+<!--  -->
+<!--  Tracer options: -q -z 1 -w 1 -h 1 -x 240 -->
+    <camera>
+      <location>
+        <vector x="0.000" y="3.000" z="-10.000"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </look_at>
+    </camera>
+
+  <world>
+    <light>
+      <position>
+        <vector x="0.000" y="3.000" z="-10.000"/>
+      </position>
+    </light>
+
+    <sphere radius="2.000">
+      <location>
+        <vector x="-2.000" y="0.000" z="0.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </equator>
+      <surface>
+        <finish diffuse="1.000" reflect="0.000"/>
+        <pigment>
+          <color red="0.500" green="0.500" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <triangle>
+      <c0>
+        <vector x="0.000" y="2.000" z="0.000"/>
+      </c0>
+      <c1>
+        <vector x="4.000" y="2.000" z="0.000"/>
+      </c1>
+      <c2>
+        <vector x="2.000" y="-2.000" z="0.000"/>
+      </c2>
+      <surface>
+        <finish diffuse="1.000" reflect="0.000"/>
+        <pigment>
+          <color red="0.000" green="0.500" blue="0.500"/>
+        </pigment>
+      </surface>
+    </triangle>
+
+    <plane>
+      <normal>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </normal>
+      <point>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </point>
+      <surface>
+        <finish diffuse="1.000" reflect="0.000"/>
+        <pigment>
+          <color red="0.500" green="0.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </plane>
+
+  </world>
+</scene>

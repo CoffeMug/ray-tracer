@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  test5.pov -->
+<!--  -->
+<!--  Simple test of reflection. The reflection of the spheres should -->
+<!--  be visible. The effects of the reflectiondepth should show as -->
+<!--  several reflections in the spheres. -->
+<!--  -->
+<!--  Tracer options: -z 1 -w 1 -h 1 -x 240  -->
+    <camera>
+      <location>
+        <vector x="0.000" y="0.000" z="-10.000"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </look_at>
+    </camera>
+
+    <background>
+      <color red="0.000" green="0.000" blue="0.000"/>
+    </background>
+
+  <world>
+    <light>
+      <position>
+        <vector x="0.000" y="0.000" z="-10.000"/>
+      </position>
+    </light>
+
+    <sphere radius="3.000">
+      <location>
+        <vector x="-3.000" y="0.000" z="0.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000" reflect="0.800"/>
+        <pigment>
+          <color red="1.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="3.000">
+      <location>
+        <vector x="3.000" y="0.000" z="0.000"/>
+      </location>
+      <surface>
+        <finish diffuse="1.000" reflect="0.800"/>
+        <pigment>
+          <color red="0.000" green="1.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+  </world>
+</scene>

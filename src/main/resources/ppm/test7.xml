@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  test7.pov -->
+<!--  -->
+<!--  Test of projection of bitmap onto sphere -->
+<!--  If a thin vertical line (from north- to southpole) is visible on -->
+<!--  the sphere, the tracer cannot handle rounding error to arccos in  -->
+<!--  the bitmap projection. -->
+<!--  -->
+<!--  Tracer options: -q -z 1 -w 1 -h 1 -x 240  -->
+    <camera>
+      <location>
+        <vector x="0.000" y="0.000" z="-2.500"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </look_at>
+    </camera>
+
+  <world>
+    <light>
+      <position>
+        <vector x="0.000" y="0.000" z="-2.500"/>
+      </position>
+    </light>
+
+    <sphere radius="1.000">
+      <location>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </equator>
+      <surface>
+        <finish diffuse="1.000" reflect="0.000"/>
+        <pigment>
+          <image>
+            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/french-flag.ppm"/>
+          </image>
+        </pigment>
+      </surface>
+    </sphere>
+
+  </world>
+</scene>

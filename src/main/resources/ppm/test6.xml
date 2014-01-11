@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  test6.pov -->
+<!--  -->
+<!--  Test of reflection(depth). Two parallell planes with a sphere in -->
+<!--  between. The reflections should result in two additional spheres -->
+<!--  visible. The white background should be visible as a thin vertical -->
+<!--  line in the center. The high reflectionfactor should cause the -->
+<!--  sphere (and its two reflections) to be quite white colored.  -->
+<!--  -->
+<!--  Tracer options: -z 1 -w 1 -h 1 -x 240  -->
+    <camera>
+      <location>
+        <vector x="0.000" y="-3.000" z="-10.000"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </look_at>
+    </camera>
+
+    <background>
+      <color red="1.000" green="1.000" blue="1.000"/>
+    </background>
+
+  <world>
+    <light>
+      <position>
+        <vector x="-1.000" y="0.000" z="-10.000"/>
+      </position>
+    </light>
+
+    <light>
+      <position>
+        <vector x="1.000" y="0.000" z="-10.000"/>
+      </position>
+    </light>
+
+    <sphere radius="1.000">
+      <location>
+        <vector x="0.000" y="0.000" z="0.000"/>
+      </location>
+      <pole>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </pole>
+      <equator>
+        <vector x="0.000" y="0.000" z="1.000"/>
+      </equator>
+      <surface>
+        <finish diffuse="0.400" reflect="0.700"/>
+        <pigment>
+          <color red="1.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <plane>
+      <normal>
+        <vector x="1.000" y="0.000" z="0.000"/>
+      </normal>
+      <point>
+        <vector x="-2.000" y="0.000" z="0.000"/>
+      </point>
+      <surface>
+        <finish diffuse="1.000" reflect="1.000"/>
+        <pigment>
+          <color red="0.000" green="0.500" blue="0.000"/>
+        </pigment>
+      </surface>
+    </plane>
+
+    <plane>
+      <normal>
+        <vector x="-1.000" y="0.000" z="0.000"/>
+      </normal>
+      <point>
+        <vector x="2.000" y="0.000" z="0.000"/>
+      </point>
+      <surface>
+        <finish diffuse="1.000" reflect="1.000"/>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.500"/>
+        </pigment>
+      </surface>
+    </plane>
+
+  </world>
+</scene>

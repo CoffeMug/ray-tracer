@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
+<scene>
+<!--  Params : -x 240 -y 240 -w 1 -z 1 -->
+<!--  Infile : v1ex1.pov -->
+<!--  Outfile: v1ex1.ppm -->
+    <camera>
+      <location>
+        <vector x="-30.000" y="50.000" z="50.000"/>
+      </location>
+      <sky>
+        <vector x="0.000" y="1.000" z="0.000"/>
+      </sky>
+      <look_at>
+        <vector x="0.000" y="-5.000" z="116.000"/>
+      </look_at>
+    </camera>
+
+    <background>
+      <color red="0.270" green="0.270" blue="0.270"/>
+    </background>
+
+  <world>
+    <light>
+      <position>
+        <vector x="-30.000" y="50.000" z="50.000"/>
+      </position>
+    </light>
+
+    <sphere radius="12.000">
+      <location>
+        <vector x="0.000" y="-5.000" z="116.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.600" green="0.230" blue="0.230"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="8.000">
+      <location>
+        <vector x="-10.000" y="7.000" z="118.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.040" green="0.620" blue="0.040"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="8.000">
+      <location>
+        <vector x="10.000" y="7.000" z="118.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.040" green="0.620" blue="0.040"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="1.500">
+      <location>
+        <vector x="4.000" y="-2.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.160" green="0.160" blue="0.160"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="1.500">
+      <location>
+        <vector x="-4.000" y="-2.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.160" green="0.160" blue="0.160"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="2.500">
+      <location>
+        <vector x="0.000" y="-5.000" z="104.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.350" green="0.160" blue="0.160"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="0.500">
+      <location>
+        <vector x="-6.000" y="-9.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="0.500">
+      <location>
+        <vector x="6.000" y="-9.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+    <sphere radius="0.500">
+      <location>
+        <vector x="0.000" y="-11.000" z="105.000"/>
+      </location>
+      <surface>
+        <pigment>
+          <color red="0.000" green="0.000" blue="0.000"/>
+        </pigment>
+      </surface>
+    </sphere>
+
+  </world>
+</scene>
