@@ -23,6 +23,8 @@ public final class Tracer {
 	public static void main(final String args[]){
 
 
+        final TracerGUI gui = new TracerGUI();
+
 		final XmlParser parser = new XmlParser();
 
 		//parsing input arguments.
