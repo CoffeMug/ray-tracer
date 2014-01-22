@@ -8,113 +8,104 @@ package classes;
  */
 
 public class Camera {
+    public transient Vector3D location;// location of camera in the scene
+    public transient Vector3D lookAt; 
+    public transient Vector3D upside; // defines the up side of the scene
+    public transient int zoom; // the zoom of camera in the scene
+    public transient int width; // the width of the image of the world
+    public transient int height; // the height of the image of the world
+    public transient int xpix; // the number of pixels in x Axis of the image
+    public transient int ypix; // the number of pixels in the y Axis of the image
+    public transient boolean isValid;
 
-	public transient Vector3D location;// location of camera in the scene
-	public transient Vector3D lookAt; 
+    /**
+     * the default constructor camera used in XmlParser class 
+     * @param position
+     * @param lookat
+     */
+    public Camera(final Vector3D location, final Vector3D lookat,final Vector3D upward){
 
-	public transient Vector3D upside; // defines the up side of the scene
-	public transient int zoom; // the zoom of camera in the scene
-	public transient int width; // the width of the image of the world
-	public transient int height; // the height of the image of the world
-	public transient int xpix; // the number of pixels in x Axis of the image
-	public transient int ypix; // the number of pixels in the y Axis of the image
-	public transient boolean isValid;
+        this(location, lookat,upward ,300,400,400,400,400);
+    }
 
+    /**
+     * the more detailed constructor 
+     * @param position
+     * @param lookat
+     * @param upward
+     */
+    public Camera(final Vector3D location, final Vector3D lookat, final Vector3D upward
+                  ,final int zoom,final int width,final int height,final int xcord,
+                  final int ycord) {
 
-	/**
-	 * the default constructor camera used in XmlParser class 
-	 * @param position
-	 * @param lookat
-	 */
-	public Camera(final Vector3D location, final Vector3D lookat,final Vector3D upward){
+        if (validateCamera(zoom,width,height,xcord,ycord)){
+            this.upside = upward.normalize();
+            this.location = location;
+            this.lookAt = lookat;
+            this.upside = upward;
+            this.width = width;
+            this.height = height;
+            this.xpix = xcord;
+            this.ypix = ycord;
+            this.zoom = zoom;
+            this.isValid = true;
+        }
+        else{
 
-		this(location, lookat,upward ,300,400,400,400,400);
-	}
+            this.isValid = false ;
+        }
 
+    }
 
-	/**
-	 * the more detailed constructor 
-	 * @param position
-	 * @param lookat
-	 * @param upward
-	 */
-	public Camera(final Vector3D location, final Vector3D lookat, final Vector3D upward
-			,final int zoom,final int width,final int height,final int xcord,
-			final int ycord) {
+    /**
+     * this method returns the ray as it passes through the view-port 
+     * form the camera perspective 
+     * @param vectx
+     * @param vecty
+     * @return
+     */
 
-		if (validateCamera(zoom,width,height,xcord,ycord)){
-			this.upside = upward.normalize();
-			this.location = location;
-			this.lookAt = lookat;
-			this.upside = upward;
-			this.width = width;
-			this.height = height;
-			this.xpix = xcord;
-			this.ypix = ycord;
-			this.zoom = zoom;
-			this.isValid = true;
-		}
-		else{
+    public Ray getRay(final float vectx, final float vecty){
+        final Vector3D cVect = (lookAt.vectorReduction(location)).normalize();
+        final Vector3D crVect = (upside.crossProduct(cVect)).normalize();
+        final Vector3D cdVect = (crVect.crossProduct(cVect)).normalize();
 
-			this.isValid = false ;
-		}
+        final Vector3D ccVect = location.vectorAddition(cVect.vectorMultiply(zoom)).
+                                vectorReduction(crVect.vectorMultiply(width/2)).
+                                vectorReduction(cdVect.vectorMultiply(height/2));
 
-	}
+        final Vector3D Pxy = ccVect.vectorAddition(crVect.vectorMultiply((width/xpix)*
+                             (vectx+0.5))).vectorAddition(cdVect.vectorMultiply
+                             ((height/ypix)*(vecty+0.5)));
 
+        final Vector3D dir = Pxy.vectorReduction(location);
+        //Ray newRay = new Ray(location, dir.normalize());
+        return new Ray(location, dir.normalize());
+    }
 
-	/**
-	 * this method returns the ray as it passes through the view-port 
-	 * form the camera perspective 
-	 * @param vectx
-	 * @param vecty
-	 * @return
-	 */
+    /**
+     * this method is to check if the camera is constructed properly
+     * @param zoom
+     * @param width
+     * @param height
+     * @param xcord
+     * @param ycord
+     * @return
+     */
+    public static boolean validateCamera(final int zoom,final int width,
+                                         final int height, final int xcord,
+                                         final int ycord){
+        boolean flag;
+        if( zoom < 1 || zoom > 300 || height < 1 ||
+            height > 2000 || width < 1 || width > 2000 ||
+            xcord < 1 || xcord > 2000 || ycord < 1 || ycord > 2000 ){
+            flag = false;
+        }
+        else{
 
-	public Ray getRay(final float vectx, final float vecty){
-
-		final Vector3D cVect = (lookAt.vectorReduction(location)).normalize();
-		final Vector3D crVect = (upside.crossProduct(cVect)).normalize();
-		final Vector3D cdVect = (crVect.crossProduct(cVect)).normalize();
-
-		final Vector3D ccVect = location.vectorAddition(cVect.vectorMultiply(zoom)).
-		vectorReduction(crVect.vectorMultiply(width/2)).
-		vectorReduction(cdVect.vectorMultiply(height/2));
-
-		final Vector3D Pxy = ccVect.vectorAddition(crVect.vectorMultiply((width/xpix)*
-				(vectx+0.5))).vectorAddition(cdVect.vectorMultiply
-						((height/ypix)*(vecty+0.5)));
-
-		final Vector3D dir = Pxy.vectorReduction(location);
-		//Ray newRay = new Ray(location, dir.normalize());
-		return new Ray(location, dir.normalize());
-
-	}
-
-	/**
-	 * this method is to check if the camera is constructed properly
-	 * @param zoom
-	 * @param width
-	 * @param height
-	 * @param xcord
-	 * @param ycord
-	 * @return
-	 */
-
-	public static boolean validateCamera(final int zoom,final int width,
-			final int height, final int xcord,
-			final int ycord){
-		boolean flag;
-		if( zoom < 1 || zoom > 300 || height < 1 ||
-				height > 2000 || width < 1 || width > 2000 ||
-				xcord < 1 || xcord > 2000 || ycord < 1 || ycord > 2000 ){
-			flag = false;
-		}
-		else{
-
-			flag = true;
-		}
-		return flag;
-
-	}
+            flag = true;
+        }
+        return flag;
+    }
 }
 
