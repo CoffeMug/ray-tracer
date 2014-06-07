@@ -79,34 +79,39 @@ public class Bitmap implements IBitmap {
      * @param inp inputstream reading from file.
      * @throws IOException
      */
-    public void readHeader( final InputStream inp ) throws IOException
+    public void readBitmapPropertiesFromFileHeaser( final InputStream inp ) throws IOException
     {
         char char1, char2;
-
-        char1 = (char) readByte( inp );
-        char2 = (char) readByte( inp );
-
-        if ( char1 != 'P' ){
+        
+        char1 = (char) readByte(inp);
+        char2 = (char) readByte(inp);
+        checkFormatFromHeader(char1);
+        checkFileType(char2);
+        width = readInt(inp);
+        height = readInt(inp);
+        maxval = readInt(inp);
+    }
+    
+    private void checkFormatFromHeader(char firstChar) throws IOException{
+    	if ( firstChar != 'P' ){
             throw new IOException( "not a PPM file" );
         }
-        switch ( char2 )
-            {
-            case '3':
-                type = PPM_ASCII;
-                break;
-            case '6':
-                type = PPM_RAW;
-                break;
-            default:
-                throw new IOException( "not a standard PBM/PGM/PPM file" );
-            }
-        width = readInt( inp );
-        height = readInt( inp );
-        maxval = readInt( inp );
-
+    }
+    
+    private void checkFileType(char bitMapFileSecondChar) throws IOException{
+    	switch (bitMapFileSecondChar)
+        {
+        case '3':
+            type = PPM_ASCII;
+            break;
+        case '6':
+            type = PPM_RAW;
+            break;
+        default:
+            throw new IOException( "not a standard PBM/PGM/PPM file" );
+        }
     }
         
-
     /**
      * read pixel data into the filePixels array.
      * @param inp file input stream.
@@ -141,7 +146,6 @@ public class Bitmap implements IBitmap {
             }
             filePixels[col] = new Color();
             filePixels[col] = pixelColour;
-
         }
         this.pixels = filePixels;
     }
@@ -154,7 +158,7 @@ public class Bitmap implements IBitmap {
      * @return read byte.
      * @throws IOException
      */
-    private static int readByte( final InputStream inp ) throws IOException
+    private static int readByte(final InputStream inp) throws IOException
     {
         final int binp = inp.read();
         if ( binp == -1 ){
@@ -343,7 +347,7 @@ public class Bitmap implements IBitmap {
             throw new RuntimeException(e.getMessage());
         }
 
-        readHeader(inputStream);
+        readChar(inputStream);
         readPixels(inputStream);
                 
     }
