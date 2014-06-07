@@ -25,10 +25,10 @@ public class TracerGUI extends JFrame implements ActionListener {
     }
 
     private void init_choose_file_button() {
-	chooseFileButton= new JButton("Choose a ppm file...");
-	chooseFileButton.setVerticalTextPosition(AbstractButton.CENTER);
-	chooseFileButton.setHorizontalTextPosition(AbstractButton.LEADING);
-	chooseFileButton.setPreferredSize(new Dimension(100, 30));
+        chooseFileButton= new JButton("Choose a ppm file...");
+        chooseFileButton.setVerticalTextPosition(AbstractButton.CENTER);
+        chooseFileButton.setHorizontalTextPosition(AbstractButton.LEADING);
+        chooseFileButton.setPreferredSize(new Dimension(100, 30));
         this.compsPanel.add(chooseFileButton);
     }
 

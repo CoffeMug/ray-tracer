@@ -4,11 +4,10 @@ import classes.Ray;
 import classes.IntersectInfo;
 
 public interface IShape {
-
-	/**
-	 * setter method for setting position property of current shape.
-	 * @param pos postion vector.
-	 */
+    /**
+     * setter method for setting position property of current shape.
+     * @param pos postion vector.
+     */
     public void setPosition(Vector3D pos);
     
     /**
@@ -22,7 +21,6 @@ public interface IShape {
      * @param material material of type Imaterial which both can be a solid
      * or a texture material.
      */
-    
     public void setMaterial(IMaterial material);
     
     /**
