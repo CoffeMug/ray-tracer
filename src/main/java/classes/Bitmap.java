@@ -1,7 +1,6 @@
 package classes;
 
 import interfaces.IBitmap;
-
 import java.io.*;
 import java.util.Scanner;
 
@@ -23,26 +22,24 @@ public class Bitmap implements IBitmap {
     private transient Color[] pixels;
     private transient int bitshift = -1;
     private transient int bits;
-
-    /**
-     * this is the default constructor for bitmap class.
-     */
-    public Bitmap(){
-        width = 0;
-        height = 0;
-    }
-        
+   
     /**
      * this constructor gets width and height and sets bitmap object
      * width and height.
      * @param width width of bitmap object in pixels.
      * @param height height of bitmap object in pixels.
      */
-    public Bitmap(final int width, final int height){
+    private Bitmap(final int width, final int height){
         this.width = width;
         this.height = height;
-        final Color[] pixels = new Color[width*height];
-        this.pixels = pixels;
+        if (width>0 && height>0){
+        	final Color[] pixels = new Color[width*height];
+        	this.pixels = pixels;
+        }   
+    }
+    
+    public static Bitmap createNewBitmap(final int width, final int height){
+    	return new Bitmap(width, height);
     }
 
     /**
