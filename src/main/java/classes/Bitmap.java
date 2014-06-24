@@ -68,7 +68,7 @@ public class Bitmap implements IBitmap {
             pixel = pixels[(yCord - 1) * this.width + xCord - 1];
             return pixel;
         }
-        throw new Exception("this is not a valid pixel");
+        throw new Exception("this is not a valid pixel!");
     }
 
     /**

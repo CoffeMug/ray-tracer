@@ -247,8 +247,8 @@ public class RayTracer {
 
                     refl.color = info.color;
 
-                color = color.addColor(refl.color.multiColor(
-                                                             info.element.getMaterial().getReflection()));
+                color = color.addColor(refl.color.multiplyColorByAnotherValue(
+                                           info.element.getMaterial().getReflection()));
             }
 
         }

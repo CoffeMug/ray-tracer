@@ -38,7 +38,7 @@ public final class Tracer {
 
 		//400X400 is the size of result image we want to create.
 		//later we will get this size as an argument from the user.
-		final Bitmap viewport = new Bitmap(width,height);
+		final Bitmap viewport = Bitmap.createNewBitmap(width,height);
 		scene.camera.height = height;
 		scene.camera.width = width;
 		scene.camera.zoom = zoom;

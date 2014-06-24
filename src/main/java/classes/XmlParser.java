@@ -413,7 +413,7 @@ public class XmlParser {
     private TextureMaterial getTextureMaterial(final Element matElement) throws Exception {
         TextureMaterial mat=null;
         Texture texture;
-        final Bitmap bmp= new Bitmap();
+        final Bitmap bmp= Bitmap.createNewBitmap(0,0);
 
         if (matElement.getElementsByTagName("ppm").getLength()> 0){
             final Element elm= (Element) matElement.getElementsByTagName("ppm").item(0) ;

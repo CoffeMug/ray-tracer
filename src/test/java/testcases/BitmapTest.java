@@ -3,21 +3,17 @@ package testcases;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-
-
+import org.testng.TestNG;
 import classes.Color;
 import classes.Bitmap;
-import junit.framework.TestCase;
 
-public class BitmapTest extends TestCase {
+public class BitmapTest extends TestNG {
 
 	private transient Bitmap bmp;
 	private transient String ppmFile;
 
-	
-	protected void setUp() {
-		
-		bmp = new Bitmap();
+	protected void setUp() {		
+		bmp = Bitmap.createNewBitmap(0,0);
 		final Scanner keyboard = new Scanner(System.in);
 		System.out.println("enter path to a ppm file:\n");
 		ppmFile = keyboard.next();
@@ -34,7 +30,7 @@ public class BitmapTest extends TestCase {
 	 */
 	public void testWriteToFile(){
 		bmp.writeBitmapToFile(1, "Tempbitmap.PPM");
-		assertTrue(bmp.compareTwoFiles(ppmFile , "Tempbitmap.PPM"));
+		assert(bmp.compareTwoFiles(ppmFile , "Tempbitmap.PPM"));
 		final File temp = new File("Tempbitmap.PPM");
 		temp.delete();
 	}
@@ -51,8 +47,7 @@ public class BitmapTest extends TestCase {
 
 		final Color tempColor = new Color((byte)25,(byte)40,(byte)90);
 		bmp.setPixel(3, 2,tempColor );
-		assertTrue(tempColor.equals(bmp.getSinglePixel(3, 2)));
-		//assertEquals(tempColor,bmp.getSinglePixel(3, 2));
+		assert(tempColor.equals(bmp.getSinglePixel(3, 2)));
 	}
 		
 }
