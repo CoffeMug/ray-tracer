@@ -29,7 +29,7 @@ public class Bitmap implements IBitmap {
      * @param width width of bitmap object in pixels.
      * @param height height of bitmap object in pixels.
      */
-    private Bitmap(final int width, final int height){
+    public Bitmap(final int width, final int height){
         this.width = width;
         this.height = height;
         if (width>0 && height>0){
