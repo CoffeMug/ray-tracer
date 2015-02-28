@@ -1,41 +1,90 @@
 package classes;
 
+import java.util.Observable;
 import javax.swing.*;
 import java.awt.*;
-
+import java.io.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TracerGUI extends JFrame implements ActionListener {
+public class TracerGUI extends JPanel implements ActionListener {
+    static private final String newline = "\n";
+    JTextArea log;
+    JButton openButton, saveButton; 
+    JFileChooser fc;  
 
-    JPanel compsPanel;
-    JButton chooseFileButton; 
-
+    Integer[] zoomValues = { 1, 2, 3, 4 };
+ 
     public TracerGUI() {
-        init_comps_panel();
-        init_choose_file_button();
-        this.setSize(500, 300); 
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
-    }
+        super(new BorderLayout());
+        fc = new JFileChooser();
+        openButton = new JButton("Open a ppm File...", 
+                                 createImageIcon("images/Open.gif"));
+        openButton.addActionListener(this);
 
-    private void init_comps_panel() {
-        compsPanel = new JPanel();
-        this.add(compsPanel, BorderLayout.WEST);
-    }
+        JComboBox zoomList = new JComboBox(zoomValues);
+        zoomList.setSelectedIndex(1);
+        zoomList.addActionListener(this);
 
-    private void init_choose_file_button() {
-        chooseFileButton= new JButton("Choose a ppm file...");
-        chooseFileButton.setVerticalTextPosition(AbstractButton.CENTER);
-        chooseFileButton.setHorizontalTextPosition(AbstractButton.LEADING);
-        chooseFileButton.setPreferredSize(new Dimension(100, 30));
-        this.compsPanel.add(chooseFileButton);
+        JPanel tracerPanel = new JPanel();
+        tracerPanel.add(openButton);
+        tracerPanel.add(zoomList);
+
+        log = new JTextArea(5,20);
+        log.setMargin(new Insets(5,5,5,5));
+        log.setEditable(false);
+        JScrollPane logScrollPane = new JScrollPane(log);
+
+ 
+        add(tracerPanel, BorderLayout.PAGE_START);
+        add(logScrollPane, BorderLayout.CENTER);
+
     }
 
     public void actionPerformed(ActionEvent e) {
-        // if (e.getActionCommand() == "start"){
-        //  board.start();
-        // }
+        if (e.getSource() == openButton) {
+            int returnVal = fc.showOpenDialog(TracerGUI.this);
+ 
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                log.append("Opening: " + file.getName() + "." + newline);
+            } else {
+                log.append("Open command cancelled by user." + newline);
+            }
+            log.setCaretPosition(log.getDocument().getLength());
+ 
+        } else if (e.getSource() == zoomValues) {
+            JComboBox cb = (JComboBox)e.getSource();
+            String zoomValue = (String)cb.getSelectedItem();
+            log.append("Zoom value: " + zoomValue + newline);
+
+        }
+
     }
     
+    protected static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = TracerGUI.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+ 
+    /**
+     * Create the GUI and show it.  For thread safety,
+     * this method should be invoked from the
+     * event dispatch thread.
+     */
+    public static void createAndShowGUI() {
+
+        JFrame frame = new JFrame("Raytracer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.add(new TracerGUI());
+
+        frame.pack();
+        frame.setVisible(true);
+    }
 }
