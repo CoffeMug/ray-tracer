@@ -3,8 +3,102 @@ import java.util.Scanner;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
+import java.awt.event.*;
 
-public final class Tracer implements Observer {
+class TracerGUI extends JPanel implements ActionListener {
+    static private final String newline = "\n";
+    JTextArea log;
+    JButton openButton; 
+    JFileChooser fc;  
+    JComboBox zoomList;
+    JPanel tracerPanel;
+    JScrollPane logScrollPane;
+    Integer[] zoomValues = { 1, 2, 3, 4 };
+ 
+    public TracerGUI() {
+        super(new BorderLayout());
+        fc = new JFileChooser();
+        openButton = new JButton("Open a ppm File...", 
+                                 createImageIcon("images/Open.gif"));
+        openButton.addActionListener(this);
+
+        zoomList = new JComboBox(zoomValues);
+        zoomList.setSelectedIndex(1);
+        zoomList.addActionListener(this);
+
+        tracerPanel = new JPanel();
+        tracerPanel.add(openButton);
+        tracerPanel.add(zoomList);
+
+        log = new JTextArea(5,20);
+        log.setMargin(new Insets(5,5,5,5));
+        log.setEditable(false);
+        logScrollPane = new JScrollPane(log);
+ 
+        add(tracerPanel, BorderLayout.PAGE_START);
+        add(logScrollPane, BorderLayout.CENTER);
+
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == openButton) {
+            int returnVal = fc.showOpenDialog(TracerGUI.this);
+ 
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                log.append("Opening: " + file.getName() + "." + newline);
+            } else {
+                log.append("Open command cancelled by user." + newline);
+            }
+            log.setCaretPosition(log.getDocument().getLength());
+ 
+        } else if (e.getSource() == zoomValues) {
+            JComboBox cb = (JComboBox)e.getSource();
+            String zoomValue = (String)cb.getSelectedItem();
+            log.append("Zoom value: " + zoomValue + newline);
+
+        }
+
+    }
+    
+    protected static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = TracerGUI.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+ 
+    /**
+     * Create the GUI and show it.  For thread safety,
+     * this method should be invoked from the
+     * event dispatch thread.
+     */
+    public static void createAndShowGUI() {
+
+        JFrame frame = new JFrame("Raytracer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.add(new TracerGUI());
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+class GUIResponseHandler implements Observer {
+    @Override
+    public void update(Observable obj, Object arg) {
+        if (arg instanceof String) {
+            String resp = (String) arg;
+            System.out.println("\nReceived response: " + resp);
+        }
+    }
+}
+
+
+public final class Tracer {
     static boolean renderShadows = true;
     static boolean renderReflection = true;
     static boolean renderDiffuse = true;
@@ -18,21 +112,13 @@ public final class Tracer implements Observer {
     static int noOfThreads = 1;
     static String sceneFile = "";
 
-    private Tracer(){
-
-    }    
-
-    @Override
-    public void update(Observable obj, Object arg) {
-        if (arg instanceof String) {
-            String resp = (String) arg;
-            System.out.println("\nReceived response: " + resp);
-        }
-    }
-
     public static void main (final String args[]){
 
         final TracerGUI gui = new TracerGUI();
+        final GUIResponseHandler guiResponseHandler = new GUIResponseHandler();
+
+        gui.TracerGUIObservable.addObserver(guiResponseHandler);
+
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     //Turn off metal's use of bold fonts
@@ -85,62 +171,5 @@ public final class Tracer implements Observer {
             width = xx*hh/yy;
         if(hh == 0)
             height = ww*yy / xx;
-    }
 
-    /**
-     * this method parses program arguments string. 
-     * @param args
-     */
-    private static void parseInputArguments(String[] args){
-        if (args.length > 0){
-            for (int i = 0; i<args.length; i++){
-                if (args[i].equals("-q")){
-                    renderShadows = false;
-                    renderReflection = false;
-                    renderDiffuse = false;
-                }
-                if (args[i].equals("-r")){
-                    if (args[i+1] != null){
-                        depth = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].equals("-t")){
-                    enableTimer = true;
-                }
-                if (args[i].equals("-z")){
-                    if (args[i+1] != null){
-                        zoom = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].equals("-x")){
-                    if (args[i+1] != null){
-                        xpix = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].equals("-y")){
-                    if (args[i+1] != null){
-                        ypix = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].equals("-w")){
-                    if (args[i+1] != null){
-                        width = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].equals("-h")){
-                    if (args[i+1] != null){
-                        height = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].equals("-p")){
-                    if (args[i+1] != null){
-                        noOfThreads = Integer.parseInt(args[i+1]);
-                    }
-                }
-                if (args[i].contains(".xml") || args[i].contains(".XML") ){
-                    sceneFile = args[i];
-                }
-            }
-        }
-    }
 }
