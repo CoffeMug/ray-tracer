@@ -1,19 +1,34 @@
 package classes;
+
 import java.util.Scanner;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.*;
+import java.io.*;
+import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 class TracerGUI extends JPanel implements ActionListener {
     static private final String newline = "\n";
     JTextArea log;
+    JPanel configPanel;
+    JPanel drawPanel;
     JButton openButton; 
     JFileChooser fc;  
     JComboBox zoomList;
-    JPanel tracerPanel;
+    JLabel zoomLabel;
+    JComboBox reflectionList;
+    JLabel reflectionLabel;
+    JComboBox depthList;
+    JLabel depthLabel;
+    JComboBox timerList;
+    JLabel timerLabel;
+    
     JScrollPane logScrollPane;
-    Integer[] zoomValues = { 1, 2, 3, 4 };
+    String[] zoomValues = { "1", "2", "3", "4" };
+    String[] reflectionValues = { "Yes", "No"};
+    String[] depthValues = { "1", "2", "3", "4" };
+    String[] timerValues = { "Yes", "No"};
  
     public TracerGUI() {
         super(new BorderLayout());
@@ -22,20 +37,54 @@ class TracerGUI extends JPanel implements ActionListener {
                                  createImageIcon("images/Open.gif"));
         openButton.addActionListener(this);
 
+        zoomLabel = new JLabel("Select camera zoom value:");
+        zoomLabel.setMaximumSize(new Dimension(250, 20));
         zoomList = new JComboBox(zoomValues);
-        zoomList.setSelectedIndex(1);
+        zoomList.setMaximumSize(new Dimension(100, 20));
+        zoomList.setSelectedIndex(0);
         zoomList.addActionListener(this);
 
-        tracerPanel = new JPanel();
-        tracerPanel.add(openButton);
-        tracerPanel.add(zoomList);
+        reflectionLabel = new JLabel("Use reflection:");
+        reflectionLabel.setMaximumSize(new Dimension(200, 20));
+        reflectionList = new JComboBox(reflectionValues);
+        reflectionList.setMaximumSize(new Dimension(100, 20));
+        reflectionList.setSelectedIndex(0);
+        reflectionList.addActionListener(this);
+
+        depthLabel = new JLabel("Select depth:");
+        depthLabel.setMaximumSize(new Dimension(150, 20));
+        depthList = new JComboBox(depthValues);
+        depthList.setMaximumSize(new Dimension(50, 20));
+        depthList.setSelectedIndex(0);
+        depthList.addActionListener(this);
+
+        timerLabel = new JLabel("Use timer:");
+        timerLabel.setMaximumSize(new Dimension(100, 20));
+        timerList = new JComboBox(timerValues);
+        timerList.setMaximumSize(new Dimension(50, 20));
+        timerList.setSelectedIndex(0);
+        timerList.addActionListener(this);
+
+        configPanel = new JPanel();
+        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
+        configPanel.setPreferredSize(new Dimension(640, 480));
+        configPanel.add(openButton);
+        configPanel.add(zoomLabel);
+        configPanel.add(zoomList);
+        configPanel.add(Box.createRigidArea(new Dimension(0,50)));
+        configPanel.add(reflectionLabel);
+        configPanel.add(reflectionList);
+        configPanel.add(depthLabel);
+        configPanel.add(depthList);
+        configPanel.add(timerLabel);
+        configPanel.add(timerList);
 
         log = new JTextArea(5,20);
         log.setMargin(new Insets(5,5,5,5));
         log.setEditable(false);
         logScrollPane = new JScrollPane(log);
  
-        add(tracerPanel, BorderLayout.PAGE_START);
+        add(configPanel, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
 
     }
@@ -52,13 +101,12 @@ class TracerGUI extends JPanel implements ActionListener {
             }
             log.setCaretPosition(log.getDocument().getLength());
  
-        } else if (e.getSource() == zoomValues) {
+        } else if (e.getSource() == zoomList) {
             JComboBox cb = (JComboBox)e.getSource();
             String zoomValue = (String)cb.getSelectedItem();
             log.append("Zoom value: " + zoomValue + newline);
 
         }
-
     }
     
     protected static ImageIcon createImageIcon(String path) {
@@ -86,6 +134,7 @@ class TracerGUI extends JPanel implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
+}
 
 class GUIResponseHandler implements Observer {
     @Override
@@ -96,7 +145,6 @@ class GUIResponseHandler implements Observer {
         }
     }
 }
-
 
 public final class Tracer {
     static boolean renderShadows = true;
@@ -117,11 +165,10 @@ public final class Tracer {
         final TracerGUI gui = new TracerGUI();
         final GUIResponseHandler guiResponseHandler = new GUIResponseHandler();
 
-        gui.TracerGUIObservable.addObserver(guiResponseHandler);
+        //        gui.addObserver(guiResponseHandler);
 
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    //Turn off metal's use of bold fonts
                     UIManager.put("swing.boldMetal", Boolean.FALSE);
                     TracerGUI.createAndShowGUI();
                 }
@@ -129,7 +176,7 @@ public final class Tracer {
 
         final XmlParser parser = new XmlParser();
 
-        parseInputArguments(args);
+        //        parseInputArguments(args);
 
         computeImage(xpix,ypix,width,height);
 
@@ -172,4 +219,5 @@ public final class Tracer {
         if(hh == 0)
             height = ww*yy / xx;
 
+}
 }
