@@ -40,14 +40,16 @@ class TracerGUI extends JPanel implements ActionListener {
         zoomLabel = new JLabel("Select camera zoom value:");
         zoomLabel.setMaximumSize(new Dimension(250, 20));
         zoomList = new JComboBox(zoomValues);
-        zoomList.setMaximumSize(new Dimension(100, 20));
+        zoomList.setMaximumSize(new Dimension(50, 20));
+        zoomList.setAlignmentX(Component.LEFT_ALIGNMENT);
         zoomList.setSelectedIndex(0);
         zoomList.addActionListener(this);
 
         reflectionLabel = new JLabel("Use reflection:");
         reflectionLabel.setMaximumSize(new Dimension(200, 20));
         reflectionList = new JComboBox(reflectionValues);
-        reflectionList.setMaximumSize(new Dimension(100, 20));
+        reflectionList.setMaximumSize(new Dimension(50, 20));
+        reflectionList.setAlignmentX(Component.LEFT_ALIGNMENT);
         reflectionList.setSelectedIndex(0);
         reflectionList.addActionListener(this);
 
@@ -55,6 +57,7 @@ class TracerGUI extends JPanel implements ActionListener {
         depthLabel.setMaximumSize(new Dimension(150, 20));
         depthList = new JComboBox(depthValues);
         depthList.setMaximumSize(new Dimension(50, 20));
+        depthList.setAlignmentX(Component.LEFT_ALIGNMENT);
         depthList.setSelectedIndex(0);
         depthList.addActionListener(this);
 
@@ -62,20 +65,25 @@ class TracerGUI extends JPanel implements ActionListener {
         timerLabel.setMaximumSize(new Dimension(100, 20));
         timerList = new JComboBox(timerValues);
         timerList.setMaximumSize(new Dimension(50, 20));
+        timerList.setAlignmentX(Component.LEFT_ALIGNMENT);
         timerList.setSelectedIndex(0);
         timerList.addActionListener(this);
 
         configPanel = new JPanel();
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         configPanel.setPreferredSize(new Dimension(640, 480));
+        configPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         configPanel.add(openButton);
+        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
         configPanel.add(zoomLabel);
         configPanel.add(zoomList);
-        configPanel.add(Box.createRigidArea(new Dimension(0,50)));
+        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
         configPanel.add(reflectionLabel);
         configPanel.add(reflectionList);
+        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
         configPanel.add(depthLabel);
         configPanel.add(depthList);
+        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
         configPanel.add(timerLabel);
         configPanel.add(timerList);
 
@@ -120,17 +128,14 @@ class TracerGUI extends JPanel implements ActionListener {
     }
  
     /**
-     * Create the GUI and show it.  For thread safety,
+     * Create the GUI and show it. For thread safety,
      * this method should be invoked from the
      * event dispatch thread.
      */
     public static void createAndShowGUI() {
-
         JFrame frame = new JFrame("Raytracer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         frame.add(new TracerGUI());
-
         frame.pack();
         frame.setVisible(true);
     }
