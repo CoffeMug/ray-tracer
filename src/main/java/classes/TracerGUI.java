@@ -10,12 +10,13 @@ import javax.swing.*;
 import javax.swing.BorderFactory;
 import java.awt.Color;
 
-class TracerGUI extends JPanel implements ActionListener {
+class TracerGUI extends Observable implements ActionListener {
     static private final String newline = "\n";
     JTextArea log;
+    static JPanel mainWindow;
     JPanel configPanel;
     JPanel drawPanel;
-    JButton openButton; 
+    JButton openXMLButton; 
     JFileChooser fc;  
     JComboBox zoomList;
     JLabel zoomLabel;
@@ -33,11 +34,17 @@ class TracerGUI extends JPanel implements ActionListener {
     String[] timerValues = { "Yes", "No"};
  
     public TracerGUI() {
-        super(new BorderLayout());
         fc = new JFileChooser();
-        openButton = new JButton("Open a ppm File...", 
-                                 createImageIcon("images/Open.gif"));
-        openButton.addActionListener(this);
+
+        java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
+        if (imageURL != null) {
+            ImageIcon icon = new ImageIcon(imageURL);
+            openXMLButton = new JButton("Open a scence xml file...", icon);
+        } else {
+            openXMLButton = new JButton("Open a scence xml file...");
+        }
+
+        openXMLButton.addActionListener(this);
 
         zoomLabel = new JLabel("Select camera zoom value:");
         zoomLabel.setMaximumSize(new Dimension(250, 20));
@@ -75,7 +82,7 @@ class TracerGUI extends JPanel implements ActionListener {
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
         configPanel.setPreferredSize(new Dimension(640, 300));
         configPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        configPanel.add(openButton);
+        configPanel.add(openXMLButton);
         configPanel.add(Box.createRigidArea(new Dimension(0,10)));
         configPanel.add(zoomLabel);
         configPanel.add(zoomList);
@@ -94,20 +101,22 @@ class TracerGUI extends JPanel implements ActionListener {
         drawPanel.setPreferredSize(new Dimension(400, 400));
         drawPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
+        mainWindow = new JPanel(new BorderLayout());
+
         log = new JTextArea(5,20);
         log.setMargin(new Insets(5,5,5,5));
         log.setEditable(false);
         logScrollPane = new JScrollPane(log);
  
-        add(configPanel, BorderLayout.PAGE_START);
-        add(drawPanel, BorderLayout.CENTER);
-        add(logScrollPane, BorderLayout.PAGE_END);
+        mainWindow.add(configPanel, BorderLayout.PAGE_START);
+        mainWindow.add(drawPanel, BorderLayout.CENTER);
+        mainWindow.add(logScrollPane, BorderLayout.PAGE_END);
 
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == openButton) {
-            int returnVal = fc.showOpenDialog(TracerGUI.this);
+        if (e.getSource() == openXMLButton) {
+            int returnVal = fc.showOpenDialog(mainWindow);
  
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
@@ -143,7 +152,7 @@ class TracerGUI extends JPanel implements ActionListener {
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("Raytracer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new TracerGUI());
+        frame.add(mainWindow);
         frame.pack();
         frame.setVisible(true);
     }

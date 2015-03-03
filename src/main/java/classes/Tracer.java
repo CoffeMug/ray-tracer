@@ -8,9 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
-
-public final class Tracer {
+public final class Tracer implements Observer {
     static boolean renderShadows = true;
     static boolean renderReflection = true;
     static boolean renderDiffuse = true;
@@ -23,6 +21,11 @@ public final class Tracer {
     static int height = 400;
     static int noOfThreads = 1;
     static String sceneFile = "";
+
+    @Override
+    public void update(Observable obj, Object args) {
+
+    }
 
     public static void main (final String args[]){
 
