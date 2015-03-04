@@ -12,20 +12,20 @@ import java.awt.Color;
 
 class TracerGUI extends Observable implements ActionListener {
     static private final String newline = "\n";
-    JTextArea log;
-    static JPanel mainWindow;
-    JPanel configPanel;
-    JPanel drawPanel;
-    JButton openXMLButton; 
-    JFileChooser fc;  
-    JComboBox zoomList;
-    JLabel zoomLabel;
-    JComboBox reflectionList;
-    JLabel reflectionLabel;
-    JComboBox depthList;
-    JLabel depthLabel;
-    JComboBox timerList;
-    JLabel timerLabel;
+    static private JTextArea log;
+    static private JPanel mainWindow;
+    static private JPanel configPanel;
+    static private JPanel drawPanel;
+    static private JButton openXMLButton; 
+    static private JFileChooser fc;  
+    static private JComboBox zoomList;
+    static private JLabel zoomLabel;
+    static private JComboBox reflectionList;
+    static private JLabel reflectionLabel;
+    static private JComboBox depthList;
+    static private JLabel depthLabel;
+    static private JComboBox timerList;
+    static private JLabel timerLabel;
     
     JScrollPane logScrollPane;
     String[] zoomValues = { "1", "2", "3", "4" };
@@ -117,10 +117,15 @@ class TracerGUI extends Observable implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == openXMLButton) {
             int returnVal = fc.showOpenDialog(mainWindow);
+
+            TracerParam data = new TracerParam();
  
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 log.append("Opening: " + file.getName() + "." + newline);
+                data.setSceneFile(file.getName());
+                changeData(data);
+
             } else {
                 log.append("Open command cancelled by user." + newline);
             }
@@ -132,8 +137,16 @@ class TracerGUI extends Observable implements ActionListener {
             log.append("Zoom value: " + zoomValue + newline);
 
         }
+
     }
     
+
+    void changeData(Object data) {
+        setChanged(); // the two methods of Observable class
+        notifyObservers(data);
+    }
+
+
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = TracerGUI.class.getResource(path);
         if (imgURL != null) {
