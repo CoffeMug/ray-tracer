@@ -9,11 +9,18 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.BorderFactory;
 import java.awt.Color;
+import java.net.URL;
+import java.awt.*;
+import java.awt.image.*;
+import java.io.*;
+import java.net.URL;
+import javax.imageio.*;
 
 class TracerGUI extends Observable implements ActionListener {
-    static private final String newline = "\n";
+
+    static private Image resultImage;
+    static private JFrame frame;
     static private JTextArea log;
-    static private JPanel mainWindow;
     static private JPanel configPanel;
     static private JPanel drawPanel;
     static private JButton openXMLButton; 
@@ -35,7 +42,7 @@ class TracerGUI extends Observable implements ActionListener {
  
     public TracerGUI() {
         fc = new JFileChooser();
-
+        fc.setCurrentDirectory(new File("."));
         java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);
@@ -101,51 +108,48 @@ class TracerGUI extends Observable implements ActionListener {
         drawPanel.setPreferredSize(new Dimension(400, 400));
         drawPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        mainWindow = new JPanel(new BorderLayout());
-
-        log = new JTextArea(5,20);
-        log.setMargin(new Insets(5,5,5,5));
-        log.setEditable(false);
-        logScrollPane = new JScrollPane(log);
- 
-        mainWindow.add(configPanel, BorderLayout.PAGE_START);
-        mainWindow.add(drawPanel, BorderLayout.CENTER);
-        mainWindow.add(logScrollPane, BorderLayout.PAGE_END);
-
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == openXMLButton) {
-            int returnVal = fc.showOpenDialog(mainWindow);
-
+            int returnVal = fc.showOpenDialog(frame);
             TracerParam data = new TracerParam();
- 
+
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                log.append("Opening: " + file.getName() + "." + newline);
-                data.setSceneFile(file.getName());
+                data.setSceneFile(file.getAbsolutePath());
                 changeData(data);
+                paintResults();
 
             } else {
-                log.append("Open command cancelled by user." + newline);
+                System.out.println("Open command cancelled by user.");
             }
-            log.setCaretPosition(log.getDocument().getLength());
  
         } else if (e.getSource() == zoomList) {
             JComboBox cb = (JComboBox)e.getSource();
             String zoomValue = (String)cb.getSelectedItem();
-            log.append("Zoom value: " + zoomValue + newline);
-
         }
 
     }
     
 
     void changeData(Object data) {
-        setChanged(); // the two methods of Observable class
+        setChanged();
         notifyObservers(data);
     }
 
+
+    private static void paintResults() {
+        System.out.println("Painting the result!");
+
+        drawPanel.removeAll();
+
+        ImageIcon pic = new ImageIcon("output.jpeg");
+
+        drawPanel.add(new JLabel(pic));
+        frame.getContentPane().validate();
+        frame.getContentPane().repaint();
+    }
 
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = TracerGUI.class.getResource(path);
@@ -163,10 +167,12 @@ class TracerGUI extends Observable implements ActionListener {
      * event dispatch thread.
      */
     public static void createAndShowGUI() {
-        JFrame frame = new JFrame("Raytracer");
+        frame = new JFrame("Raytracer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(mainWindow);
+        frame.add(configPanel, BorderLayout.NORTH);
+        frame.add(drawPanel, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
     }
+
 }

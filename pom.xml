@@ -22,6 +22,13 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
     </dependency>
+<dependency>
+  <groupId>org.im4java</groupId>
+  <artifactId>im4java</artifactId>
+  <version>1.4.0</version>
+</dependency>
+
+
   </dependencies>
   <build>
     <plugins>
@@ -34,7 +41,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <classpathPrefix>lib/</classpathPrefix>
+              <classpathPrefix>${basedir}/src/main/resources/plug-ins</classpathPrefix>
               <mainClass>classes.Tracer</mainClass>
             </manifest>
           </archive>

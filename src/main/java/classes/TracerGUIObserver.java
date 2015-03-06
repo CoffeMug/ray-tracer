@@ -2,6 +2,8 @@ package classes;
 
 import java.util.Observable;
 import java.util.Observer; 
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IMOperation;
  
 public class TracerGUIObserver implements Observer {
 
@@ -31,15 +33,37 @@ public class TracerGUIObserver implements Observer {
             // if no parallelization is intended.
             if (param.getNoOfThreads() == 1){
                 rayt.rayTraceScene("output.ppm", scene, viewport, param.getDepth(), param.getEnableTimer(),"1", param.getNoOfThreads());
+                convertToJpeg ("output.ppm");
+
             }
             // if we want to have parallelization we create as many threads as user
             // entered as argument.
             else if(param.getNoOfThreads() > 1){ //here we should bound number of threads && noOfThreads <)
                 for (int i=1; i<= param.getNoOfThreads(); i++){
                     new TracerThread(i, rayt, scene, viewport, param.getDepth(), param.getEnableTimer(), param.getNoOfThreads());
+                    convertToJpeg ("output.ppm");
+
                 }
             }
         }
+    }
+
+    private static void convertToJpeg(final String ppm) {
+
+        try {
+
+            IMOperation op = new IMOperation();
+            op.addImage(ppm);
+            op.addImage("output.jpeg");
+
+            ConvertCmd cmd = new ConvertCmd();
+            cmd.run(op);
+
+        }
+        catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        } 
+
     }
 
     /**
@@ -56,6 +80,4 @@ public class TracerGUIObserver implements Observer {
         if(hh == 0)
             param.setHeight(ww*yy/xx);
     }
-
-    
 }

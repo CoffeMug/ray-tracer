@@ -15,14 +15,18 @@ public final class Tracer {
     final static TracerGUIObserver guiObserver = new TracerGUIObserver();
 
     public static void main (final String args[]){
-
-        SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    UIManager.put("swing.boldMetal", Boolean.FALSE);
-                    TracerGUI.createAndShowGUI();
-                }
-            });
-
-        gui.addObserver(guiObserver);
+        try {
+            SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        UIManager.put("swing.boldMetal", Boolean.FALSE);
+                        TracerGUI.createAndShowGUI();
+                    }
+                });
+            gui.addObserver(guiObserver);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
