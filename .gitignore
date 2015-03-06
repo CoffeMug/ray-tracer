@@ -3,4 +3,7 @@
 # Package Files #
 *.war
 *.ear
+*.ppm
+*.jpeg
+*.txt
 /target
