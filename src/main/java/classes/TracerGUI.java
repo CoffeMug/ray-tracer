@@ -18,7 +18,6 @@ import javax.imageio.*;
 
 class TracerGUI extends Observable implements ActionListener {
 
-    static private Image resultImage;
     static private JFrame frame;
     static private JTextArea log;
     static private JPanel configPanel;
@@ -33,7 +32,9 @@ class TracerGUI extends Observable implements ActionListener {
     static private JLabel depthLabel;
     static private JComboBox timerList;
     static private JLabel timerLabel;
-    
+    static private JLabel resultPic;    
+    static private ImageIcon resultImage;
+
     JScrollPane logScrollPane;
     String[] zoomValues = { "1", "2", "3", "4" };
     String[] reflectionValues = { "Yes", "No"};
@@ -42,7 +43,7 @@ class TracerGUI extends Observable implements ActionListener {
  
     public TracerGUI() {
         fc = new JFileChooser();
-        fc.setCurrentDirectory(new File("."));
+        fc.setCurrentDirectory(new File("./src/main/"));
         java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);
@@ -87,7 +88,7 @@ class TracerGUI extends Observable implements ActionListener {
 
         configPanel = new JPanel();
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
-        configPanel.setPreferredSize(new Dimension(640, 300));
+        configPanel.setPreferredSize(new Dimension(400, 300));
         configPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         configPanel.add(openXMLButton);
         configPanel.add(Box.createRigidArea(new Dimension(0,10)));
@@ -104,6 +105,8 @@ class TracerGUI extends Observable implements ActionListener {
         configPanel.add(timerList);
 
         drawPanel = new JPanel();
+        resultPic = new JLabel();
+        resultImage = new ImageIcon();
         drawPanel.setLayout(new BoxLayout(drawPanel, BoxLayout.X_AXIS));
         drawPanel.setPreferredSize(new Dimension(400, 400));
         drawPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -118,6 +121,7 @@ class TracerGUI extends Observable implements ActionListener {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 data.setSceneFile(file.getAbsolutePath());
+                drawPanel.removeAll();
                 changeData(data);
                 paintResults();
 
@@ -131,30 +135,43 @@ class TracerGUI extends Observable implements ActionListener {
         }
 
     }
-    
 
     void changeData(Object data) {
         setChanged();
         notifyObservers(data);
     }
 
-
     private static void paintResults() {
         System.out.println("Painting the result!");
 
-        drawPanel.removeAll();
+        if (resultImage.getImage() == null) {
+            resultImage = createImageIconResult("output.jpeg"); 
+        }
+        else {
+            resultImage.getImage().flush();
+            resultImage = createImageIconResult("output.jpeg"); 
+        }
 
-        ImageIcon pic = new ImageIcon("output.jpeg");
-
-        drawPanel.add(new JLabel(pic));
-        frame.getContentPane().validate();
-        frame.getContentPane().repaint();
+        resultPic.setIcon(resultImage);
+        drawPanel.add(resultPic);
+        drawPanel.revalidate();
+        drawPanel.repaint();
     }
 
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = TracerGUI.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+
+
+    protected static ImageIcon createImageIconResult(String path) {
+        if (path != null) {
+            return new ImageIcon(path);
         } else {
             System.err.println("Couldn't find file: " + path);
             return null;
@@ -174,5 +191,4 @@ class TracerGUI extends Observable implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
-
 }
