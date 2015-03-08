@@ -27,7 +27,7 @@ class TracerParam {
         this.width = 400;
         this.height = 400;
         this.noOfThreads = 1;
-        this.sceneFile = "Hi this is Amin";
+        //        this.sceneFile = "";
     }
 
     public void setRenderShadows(boolean renderShadows) {

@@ -69,7 +69,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/person1-inv.ppm"/>
+            <ppm file="src/main/resources/ppm/person1-inv.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -88,7 +88,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/person1.ppm"/>
+            <ppm file="src/main/resources/ppm/person1.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -107,7 +107,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/person2-inv.ppm"/>
+            <ppm file="src/main/resources/ppm/person2-inv.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -126,7 +126,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/person2.ppm"/>
+            <ppm file="src/main/resources/ppm/person2.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -145,7 +145,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/person3-inv.ppm"/>
+            <ppm file="src/main/resources/ppm/person3-inv.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -164,7 +164,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/person3.ppm"/>
+            <ppm file="src/main/resources/ppm/person3.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -184,7 +184,7 @@
         <finish diffuse="0.700"/>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/worldmap.ppm"/>
+            <ppm file="src/main/resources/ppm/worldmap.ppm"/>
           </image>
         </pigment>
       </surface>

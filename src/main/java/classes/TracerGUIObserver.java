@@ -49,16 +49,13 @@ public class TracerGUIObserver implements Observer {
     }
 
     private static void convertToJpeg(final String ppm) {
-
         try {
-
             IMOperation op = new IMOperation();
             op.addImage(ppm);
             op.addImage("output.jpeg");
 
             ConvertCmd cmd = new ConvertCmd();
             cmd.run(op);
-
         }
         catch (Exception exception) {
             System.out.println(exception.getMessage());
