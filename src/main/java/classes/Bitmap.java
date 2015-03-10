@@ -6,6 +6,11 @@ import java.util.Scanner;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import javax.imageio.stream.*;
+import javax.imageio.ImageWriter;
+import java.util.Iterator;;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.IIOImage;
 
 /**
  * this is an abstract data type for holding a bitmap information. bitmap class
@@ -292,8 +297,17 @@ public class Bitmap implements IBitmap {
                     img.setRGB(i, j, rgb);
                 }
             }
-            outputfile = new File("output.jpg");
-            ImageIO.write(img, "jpg", outputfile);
+            outputfile = new File("output.jpeg");
+
+            ImageOutputStream ios = ImageIO.createImageOutputStream(outputfile);
+            Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = iter.next();
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            iwp.setCompressionQuality(0.95f);
+            writer.setOutput(ios);
+            writer.write(null, new IIOImage(img,null,null), iwp);
+            writer.dispose();
         }
          
         catch (Exception e) {
