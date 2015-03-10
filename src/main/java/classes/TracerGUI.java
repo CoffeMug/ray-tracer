@@ -87,11 +87,11 @@ class TracerGUI extends Observable implements ActionListener {
         System.out.println("Painting the result!");
 
         if (resultImage.getImage() == null) {
-            resultImage = createImageIconResult("output.jpeg"); 
+            resultImage = createImageIconResult("output.jpg"); 
         }
         else {
             resultImage.getImage().flush();
-            resultImage = createImageIconResult("output.jpeg"); 
+            resultImage = createImageIconResult("output.jpg"); 
         }
 
         resultPic.setIcon(resultImage);

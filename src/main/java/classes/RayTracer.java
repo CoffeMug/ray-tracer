@@ -137,6 +137,7 @@ public class RayTracer {
         }
         //write result of raytracing into a bitmap file.
         viewport.writeBitmapToFile(1,bmpfile);
+        viewport.convertToJPG();
     }
 
     /** this method returns color of intersection point if intersection

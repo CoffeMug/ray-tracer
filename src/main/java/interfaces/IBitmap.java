@@ -43,6 +43,10 @@ public interface IBitmap {
      */
     boolean writeBitmapToFile(int variant, String filePath);
         
+
+    void convertToJPG();
+
+
     /**
      * this method searches for a pixel in our bitmap ADT having pixel's
      * X and Y coordinates. then given a color c, it will change pixel's
