@@ -1,4 +1,14 @@
 RayTracer
 =========
 
-This is a raytracer project implemented in Java
+This is a raytracer project implemented in Java.
+There are currently three branches in the project. Master, gui and core_improvement.
+In order to run the gui based RayTracer clone the gui branch and buil it using maven.
+Maven 2 or above is needed. Also Oracle JDK 7.0 or above must be available in your system.
+Use the command mvn package -Dmaven.test.skip=true to build the project witouht running the 
+tests since some tests are currently failing (work is ongoing to fix them).
+
+You will have two packages under target directory after a successful build.
+Run them by the command `java -jar PACKAGE_NAME`
+Select a xml file from ppm folder and hit Trace the scene button very hard!
+
