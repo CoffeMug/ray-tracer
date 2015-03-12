@@ -50,6 +50,10 @@ public class MockBitmap implements IBitmap {
         return flag;
     }
 
+    public void convertToJPG() {
+        return;
+    }
+
     private boolean checkFilePath() {
         // this should use a regular expression checker to check if our path is
         // valid path both in Windows and Linux os.

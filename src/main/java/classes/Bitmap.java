@@ -3,6 +3,14 @@ package classes;
 import interfaces.IBitmap;
 import java.io.*;
 import java.util.Scanner;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import javax.imageio.stream.*;
+import javax.imageio.ImageWriter;
+import java.util.Iterator;;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.IIOImage;
 
 /**
  * this is an abstract data type for holding a bitmap information. bitmap class
@@ -33,7 +41,7 @@ public class Bitmap implements IBitmap {
         this.width = width;
         this.height = height;
         if (width>0 && height>0){
-        	final Color[] pixels = new Color[width*height];
+        	final Color[] pixels = new Color[width * height];
         	this.pixels = pixels;
         }   
     }
@@ -62,10 +70,10 @@ public class Bitmap implements IBitmap {
      * @param xCord x-coordinate of pixel.
      * @param yCord y-coordinate of pixel.
      */
-    public Color getSinglePixel(final int xCord, final int yCord) throws Exception{
-        if ((xCord >= 0 && xCord <= width) && (yCord >= 0 && yCord <= height)){
+    public Color getSinglePixel(final int xCord, final int yCord) throws Exception {
+        if ((xCord >= 0 && xCord < width) && (yCord >= 0 && yCord < height)){
             Color pixel = new Color();
-            pixel = pixels[(yCord - 1) * this.width + xCord - 1];
+            pixel = pixels[yCord * this.width + xCord];
             return pixel;
         }
         throw new Exception("this is not a valid pixel!");
@@ -275,6 +283,36 @@ public class Bitmap implements IBitmap {
         private static int makeRgb( final int red, final int green, final int blue )
     {
         return 0xff000000 | ( red << 16 ) | ( green << 8 ) | blue;
+    }
+
+    public void convertToJPG() {
+        BufferedImage img = null;
+        File outputfile = null;
+        try {
+            img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
+            for (int i=0; i < this.height; i++) {
+                for (int j=0; j < this.width; j++) {
+                    Color cl = this.getSinglePixel(i,j);
+                    int rgb = this.makeRgb(cl.getRed(), cl.getGreen(), cl.getBlue());
+                    img.setRGB(i, j, rgb);
+                }
+            }
+            outputfile = new File("output.jpeg");
+
+            ImageOutputStream ios = ImageIO.createImageOutputStream(outputfile);
+            Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = iter.next();
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            iwp.setCompressionQuality(0.95f);
+            writer.setOutput(ios);
+            writer.write(null, new IIOImage(img,null,null), iwp);
+            writer.dispose();
+        }
+         
+        catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
     }
 
     /**
