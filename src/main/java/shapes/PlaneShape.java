@@ -81,7 +81,8 @@ public class PlaneShape extends BaseShape {
         return info;
     }
 
-    @Override   public String toString(){
+    @Override   
+    public String toString(){
         return String.format("Plane {0}x+{1}y+{2}z+{3}=0)", position.toString(), dist);
     }
 }

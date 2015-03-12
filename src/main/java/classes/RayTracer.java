@@ -173,11 +173,8 @@ public class RayTracer {
     private Color rayTrace(final IntersectInfo info,final Ray ray,
                            final Scene scene) {
 
-
         Color color = new Color();
         Color tmpColor = new Color();
-
-
         final Vector3D ri = info.position;
         final Vector3D rn = info.normal;
         final Vector3D so = ri.vectorAddition(rn.vectorMultiply(eps));
@@ -195,8 +192,6 @@ public class RayTracer {
                 // calculate shadow, create ray from intersection point to light
                 final Vector3D sd = (light.position.vectorReduction(so)).normalize();   
                 final Double cosPhi = Math.abs(rn.dotProduct(sd));
-
-
                 final Ray shadowray = new Ray(so, sd);
                 IntersectInfo shadow = new IntersectInfo();
 
@@ -205,7 +200,6 @@ public class RayTracer {
 
                 // here we compute the color of hit point
                 tmpColor = light.getColor(shadow, info, cosPhi); 
-
 
                 color = color.addColor(tmpColor);
             }
@@ -271,7 +265,6 @@ public class RayTracer {
     private Ray getReflectionRay(final Vector3D Ri, final Vector3D Rn,
                                  final Vector3D Rd) {
 
-
         final Vector3D To = Ri.vectorAddition(Rn.vectorMultiply(eps));
         final Vector3D Td = Rd.vectorReduction(Rn.vectorMultiply(Rn.dotProduct(Rd)*2)); 
         return new Ray(To, Td);
@@ -293,7 +286,6 @@ public class RayTracer {
         best.distance = Double.MAX_VALUE;
 
         for (IShape elt : scene.shapes) {
-
             final IntersectInfo info = elt.intersect(ray);
             if (info.isHit && info.distance < best.distance
                 && info.distance > 0 ) {

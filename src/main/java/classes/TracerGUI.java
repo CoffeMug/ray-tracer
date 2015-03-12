@@ -33,7 +33,7 @@ class TracerGUI extends Observable implements ActionListener {
     static private ImageIcon resultImage;
     static private TracerParam data;
 
-    String[] zoomValues = { "1", "2", "3", "4" };
+    String[] zoomValues = { "100", "200", "300", "400" };
     String[] reflectionValues = { "Yes", "No"};
     String[] depthValues = { "1", "2", "3", "4" };
     String[] timerValues = { "Yes", "No"};

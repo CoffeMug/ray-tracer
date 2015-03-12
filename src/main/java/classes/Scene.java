@@ -18,16 +18,16 @@ public class Scene {
     /**
      * scene class constructor with manual values.
      */
-    public  Scene(){
-        camera = new Camera(new Vector3D(0,-5,200), new Vector3D(0.6,0,0) ,
-                            new Vector3D(0,5,0) );
+    public Scene(){
+        camera = new Camera(new Vector3D(0,-5,200), new Vector3D(0.6,0,0),
+                            new Vector3D(0,5,0));
         shapes = new Shapes();
         lights = new Lights();
         background = new Color(0, 0, 128);
     }
    
-    public  Scene(final Camera camera, final Color background,
-                  final Shapes shapes, final Lights lights,final SpotLights spotlights){
+    public Scene(final Camera camera, final Color background,
+                  final Shapes shapes, final Lights lights, final SpotLights spotlights){
          
         this.camera = camera;
         this.shapes = shapes;
@@ -35,5 +35,4 @@ public class Scene {
         this.spotlights = spotlights;
         this.background = background;
     }
-
 }

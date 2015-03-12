@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 import shapes.*;
 
 public class XmlParser {
-    private transient Document  dom;
+    private transient Document dom;
 
     /**
      * this methods gets path of a XML scene file and parses scene elements into
@@ -42,8 +42,7 @@ public class XmlParser {
             try {
                 scc = parseDocument();
             } catch (Exception e) {
-                        
-                throw new RuntimeException(e.getMessage());
+                 throw new RuntimeException(e.getMessage());
             }
 
         }catch(ParserConfigurationException pce) {
@@ -61,7 +60,7 @@ public class XmlParser {
      * @return a scene object.
      * @throws Exception if number of objects in a scene exceeds 20 parsing will stop.
      */
-    private Scene parseDocument() throws Exception{
+    private Scene parseDocument() throws Exception {
         int spheres_nbr = 0;
         int triangles_nbr = 0;
         int planes_nbr = 0;
@@ -90,11 +89,6 @@ public class XmlParser {
         spotLights_nbr = docElement.getElementsByTagName("spotlight").getLength();
         sum = spheres_nbr + triangles_nbr + planes_nbr + lights_nbr;
 
-        /*if (sum>20){
-          System.out.println();
-          throw new Exception("Warning: number of objects exceeds 20\n");
-          }*/
-
         final NodeList spheres = docElement.getElementsByTagName("sphere");
         final NodeList planes = docElement.getElementsByTagName("plane");
         final NodeList triangles = docElement.getElementsByTagName("triangle");
@@ -104,22 +98,22 @@ public class XmlParser {
         shapes = new Shapes();
         lights = new Lights();
         spotlights = new SpotLights();
-        for (int i=0 ; i<planes_nbr; i++){
+        for (int i=0 ; i < planes_nbr; i++){
             shapes.add(getPlane((Element)planes.item(i)));
         }
-        for (int i=0 ; i<spheres_nbr; i++){
+        for (int i=0 ; i < spheres_nbr; i++){
             shapes.add(getSphere((Element)spheres.item(i)));
         }
-        for (int i=0 ; i<triangles_nbr; i++){
+        for (int i=0 ; i < triangles_nbr; i++){
             shapes.add(getTriangle((Element)triangles.item(i)));
         }
-        for (int i=0 ; i<lights_nbr; i++){
+        for (int i=0 ; i < lights_nbr; i++){
             lights.add(getLight((Element)lamps.item(i)));
         }
-        for (int i=0 ; i<spotLights_nbr; i++){
+        for (int i=0 ; i < spotLights_nbr; i++){
             spotlights.add(getSpotLight((Element)spotlamps.item(i)));
         }
-        scene = new Scene(camera, backgroundColor, shapes, lights,spotlights);
+        scene = new Scene(camera, backgroundColor, shapes, lights, spotlights);
         return scene;
     }
 
@@ -170,9 +164,7 @@ public class XmlParser {
         final Element elm = (Element) backElement.getElementsByTagName("color").item(0);
         try {
             background = getColor(elm);
-                        
         } catch (Exception e) {
-
             throw new Exception(e.toString());
         }
         return background;
@@ -186,7 +178,7 @@ public class XmlParser {
      * @return plane object
      * @throws Exception
      */
-    private PlaneShape getPlane(final Element planeElement)throws Exception{
+    private PlaneShape getPlane(final Element planeElement) throws Exception {
         Vector3D normal;
         Vector3D point = null;
         double distance = -1;
@@ -194,9 +186,9 @@ public class XmlParser {
         TextureMaterial txMaterial;
                 
         PlaneShape plane = null;
-        if (!planeElement.getAttribute("distance").isEmpty()){
+        if (!planeElement.getAttribute("distance").isEmpty()) {
             distance = Double.parseDouble(
-                                          planeElement.getAttribute("distance").toString());
+                       planeElement.getAttribute("distance").toString());
         }
         final Element normalElement =(Element)planeElement.
             getElementsByTagName("normal").item(0);
@@ -239,7 +231,6 @@ public class XmlParser {
                 txMaterial = getTextureMaterial(materialElement);
             } catch (Exception e) {
                 throw new Exception(e.toString());
-
             }
             if (point != null) {
                 plane = new PlaneShape(point, normal, txMaterial);
@@ -252,7 +243,6 @@ public class XmlParser {
                 throw new Exception("The plain definition in XML file" +
                                     " is not correct");
             }
-                        
         }
         return plane;
     }

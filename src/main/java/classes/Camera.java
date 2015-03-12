@@ -1,21 +1,21 @@
 package classes;
 
 /**
- * The camera class which has three Vectors and and five integer variables 
+ * The camera class which has three Vectors and five integer variables 
  * as camera properties and one method to handle the rays in the scene 
  * from the camera perspective
  * @author amin
  */
 
 public class Camera {
-    public transient Vector3D location;// location of camera in the scene
+    public transient Vector3D location;
     public transient Vector3D lookAt; 
-    public transient Vector3D upside; // defines the up side of the scene
-    public transient int zoom; // the zoom of camera in the scene
-    public transient int width; // the width of the image of the world
-    public transient int height; // the height of the image of the world
-    public transient int xpix; // the number of pixels in x Axis of the image
-    public transient int ypix; // the number of pixels in the y Axis of the image
+    public transient Vector3D upside; 
+    public transient int zoom; 
+    public transient int width; 
+    public transient int height; 
+    public transient int xpix; 
+    public transient int ypix; 
     public transient boolean isValid;
 
     /**
@@ -23,9 +23,8 @@ public class Camera {
      * @param position
      * @param lookat
      */
-    public Camera(final Vector3D location, final Vector3D lookat,final Vector3D upward){
-
-        this(location, lookat,upward ,300,400,400,400,400);
+    public Camera(final Vector3D location, final Vector3D lookat, final Vector3D upward){
+        this(location, lookat, upward, 300, 400, 400, 400, 400);
     }
 
     /**
@@ -34,11 +33,11 @@ public class Camera {
      * @param lookat
      * @param upward
      */
-    public Camera(final Vector3D location, final Vector3D lookat, final Vector3D upward
-                  ,final int zoom,final int width,final int height,final int xcord,
+    public Camera(final Vector3D location, final Vector3D lookat, final Vector3D upward, 
+                  final int zoom, final int width, final int height, final int xcord,
                   final int ycord) {
 
-        if (validateCamera(zoom,width,height,xcord,ycord)){
+        if (validateCamera(zoom, width, height, xcord, ycord)) {
             this.upside = upward.normalize();
             this.location = location;
             this.lookAt = lookat;
@@ -71,12 +70,12 @@ public class Camera {
         final Vector3D cdVect = (crVect.crossProduct(cVect)).normalize();
 
         final Vector3D ccVect = location.vectorAddition(cVect.vectorMultiply(zoom)).
-                                vectorReduction(crVect.vectorMultiply(width/2)).
-                                vectorReduction(cdVect.vectorMultiply(height/2));
+            vectorReduction(crVect.vectorMultiply(width/2)).
+            vectorReduction(cdVect.vectorMultiply(height/2));
 
         final Vector3D Pxy = ccVect.vectorAddition(crVect.vectorMultiply((width/xpix)*
-                             (vectx+0.5))).vectorAddition(cdVect.vectorMultiply
-                             ((height/ypix)*(vecty+0.5)));
+                                                   (vectx+0.5))).vectorAddition(cdVect.vectorMultiply
+                                                   ((height/ypix)*(vecty+0.5)));
 
         final Vector3D dir = Pxy.vectorReduction(location);
         //Ray newRay = new Ray(location, dir.normalize());
@@ -102,7 +101,6 @@ public class Camera {
             flag = false;
         }
         else{
-
             flag = true;
         }
         return flag;
