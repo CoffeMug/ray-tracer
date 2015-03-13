@@ -18,10 +18,10 @@ class TracerParam {
     public TracerParam() {
         this.renderShadows = true;
         this.renderReflection = true;
-        this.renderDiffuse = true;
+        this.renderDiffuse = false;
         this.enableTimer = false;
-        this.depth = 5;
-        this.zoom = 200;
+        this.depth = 1;
+        this.zoom = 100;
         this.xpix = 400;
         this.ypix = 400;
         this.width = 400;

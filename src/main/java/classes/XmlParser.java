@@ -60,7 +60,7 @@ public class XmlParser {
      * @return a scene object.
      * @throws Exception if number of objects in a scene exceeds 20 parsing will stop.
      */
-    private Scene parseDocument() throws Exception {
+    private Scene parseDocument() {
         int spheres_nbr = 0;
         int triangles_nbr = 0;
         int planes_nbr = 0;
@@ -99,7 +99,12 @@ public class XmlParser {
         lights = new Lights();
         spotlights = new SpotLights();
         for (int i=0 ; i < planes_nbr; i++){
+            try {
             shapes.add(getPlane((Element)planes.item(i)));
+            }
+            catch (Exception pe) {
+                System.out.println(pe.getMessage());
+            }
         }
         for (int i=0 ; i < spheres_nbr; i++){
             shapes.add(getSphere((Element)spheres.item(i)));
@@ -154,9 +159,9 @@ public class XmlParser {
      * @return background object
      * @throws Exception
      */
-    private Color getBackground(final Element backElement)throws Exception {
+    private Color getBackground(final Element backElement) {
 
-        Color background;
+        Color background = null;
         if (backElement == null){
             background = new Color();
             return background;
@@ -165,7 +170,7 @@ public class XmlParser {
         try {
             background = getColor(elm);
         } catch (Exception e) {
-            throw new Exception(e.toString());
+            System.out.println(e.getMessage());
         }
         return background;
 
@@ -182,10 +187,10 @@ public class XmlParser {
         Vector3D normal;
         Vector3D point = null;
         double distance = -1;
-        SolidMaterial material;
-        TextureMaterial txMaterial;
-                
+        SolidMaterial material = null;
+        TextureMaterial txMaterial = null;
         PlaneShape plane = null;
+
         if (!planeElement.getAttribute("distance").isEmpty()) {
             distance = Double.parseDouble(
                        planeElement.getAttribute("distance").toString());
@@ -210,18 +215,16 @@ public class XmlParser {
             try {
                 material = getSolidMaterial(materialElement);
             } catch (Exception e) {
-                throw new Exception(e.toString());
-
+                System.out.println(e.getMessage());
             }
             if (point != null) {
                 plane = new PlaneShape(point, normal, material);
             }
             else if(distance != -1) {
                 plane = new PlaneShape(distance, normal, material);
-                                
             }
             else {
-                throw new RuntimeException("The plain definition in XML file" +
+                throw new Exception("The plain definition in XML file" +
                                            " is not correct");
             }
         }
@@ -230,18 +233,17 @@ public class XmlParser {
             try {
                 txMaterial = getTextureMaterial(materialElement);
             } catch (Exception e) {
-                throw new Exception(e.toString());
+                System.out.println(e.getMessage());
             }
             if (point != null) {
                 plane = new PlaneShape(point, normal, txMaterial);
             }
             else if(distance != -1) {
                 plane = new PlaneShape(distance, normal, txMaterial);
-                                
             }
             else {
                 throw new Exception("The plain definition in XML file" +
-                                    " is not correct");
+                                           " is not correct");
             }
         }
         return plane;
@@ -254,7 +256,7 @@ public class XmlParser {
      * @return Sphere object
      * @throws Exception
      */
-    private SphereShape getSphere(final Element SphereElement)throws Exception{
+    private SphereShape getSphere(final Element SphereElement) {
         double rDbl;
         Vector3D position;
         SolidMaterial material;
@@ -283,15 +285,14 @@ public class XmlParser {
         if (materialElement.getElementsByTagName("ppm").getLength()>0){
             try {
                 txMaterial = getTextureMaterial(materialElement);
-            } catch (Exception e) {
-                throw new Exception(e.toString());
+                sphere = new SphereShape(position, rDbl, txMaterial);
 
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            sphere = new SphereShape(position, rDbl, txMaterial);
         }
 
         return sphere;
-
     }
 
     /**
@@ -301,7 +302,7 @@ public class XmlParser {
      * @return triangle object
      * @throws Exception
      */
-    private TriangleShape getTriangle(final Element triangleElement)throws Exception{
+    private TriangleShape getTriangle(final Element triangleElement) {
         TriangleShape triangle = null;
         Vector3D c0Vect;
         Vector3D c1Vect;
@@ -377,7 +378,7 @@ public class XmlParser {
      * @return material object
      * @throws Exception
      */
-    private SolidMaterial getSolidMaterial(final Element matElement) throws Exception {
+    private SolidMaterial getSolidMaterial(final Element matElement) {
         SolidMaterial mat=null;
         double diff=1;
         double ref=0;
@@ -394,13 +395,13 @@ public class XmlParser {
             try {
                 mat = new SolidMaterial(getColor(elm),ref,diff);
             } catch (Exception e) {
-                throw new Exception(e.toString());
+                System.out.println(e.getMessage());
             }
         }
         return mat;
     }
 
-    private TextureMaterial getTextureMaterial(final Element matElement) throws Exception {
+    private TextureMaterial getTextureMaterial(final Element matElement) {
         TextureMaterial mat=null;
         Texture texture;
         final Bitmap bmp= Bitmap.createNewBitmap(0,0);
@@ -408,13 +409,12 @@ public class XmlParser {
         if (matElement.getElementsByTagName("ppm").getLength()> 0){
             final Element elm= (Element) matElement.getElementsByTagName("ppm").item(0) ;
             final String bitmapFile = elm.getAttribute("file").toString();
-            bmp.createBitmapFromFile(bitmapFile);
-            texture = Texture.fromBitmap(bmp);
             try {
+                bmp.createBitmapFromFile(bitmapFile);
+                texture = Texture.fromBitmap(bmp);
                 mat = new TextureMaterial(texture,0);
             } catch (Exception e) {
-                throw new RuntimeException(e.toString());
-
+                System.out.println(e.getMessage());
             }
         }
         return mat;
@@ -426,7 +426,7 @@ public class XmlParser {
      * @return color object
      * @throws Exception
      */
-    private Color getColor(final Element docElement) throws Exception {
+    private Color getColor(final Element docElement) {
         String strRed;
         String strGreen;
         String strBlue;
