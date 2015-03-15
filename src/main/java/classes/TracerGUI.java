@@ -93,15 +93,15 @@ class TracerGUI extends Observable implements ActionListener {
         notifyObservers(data);
     }
 
-    private static void paintResults() {
+    private void paintResults() {
         System.out.println("Painting the result!");
 
         if (resultImage.getImage() == null) {
-            resultImage = createImageIconResult("output.jpeg"); 
+            resultImage = createImageIcon("output.jpeg"); 
         }
         else {
             resultImage.getImage().flush();
-            resultImage = createImageIconResult("output.jpeg"); 
+            resultImage = createImageIcon("output.jpeg"); 
         }
         resultPic.setIcon(resultImage);
         drawPanel.add(resultPic);
@@ -109,17 +109,7 @@ class TracerGUI extends Observable implements ActionListener {
         drawPanel.repaint();
     }
 
-    protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = TracerGUI.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
-
-    protected static ImageIcon createImageIconResult(String path) {
+    private ImageIcon createImageIcon(String path) {
         if (path != null) {
             return new ImageIcon(path);
         } else {
