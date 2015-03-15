@@ -19,7 +19,8 @@ public class TracerGUIObserver implements Observer {
             computeImage(param.getXpix(), param.getYpix(), param.getWidth(), param.getHeight(), param);
 
             final Scene scene = parser.parseXmlFile(param.getSceneFile());
-            final RayTracer rayt = new RayTracer(param.getRenderDiffuse(), param.getRenderShadows(), param.getRenderReflection());
+            final RayTracer rayt = new RayTracer(param.getRenderDiffuse(), param.getRenderShadows(), 
+                                                 param.getRenderReflection());
             final Bitmap viewport = Bitmap.createNewBitmap(param.getWidth(),param.getHeight());
 
             scene.camera.height = param.getHeight();
@@ -30,13 +31,15 @@ public class TracerGUIObserver implements Observer {
 
             // if no parallelization is intended.
             if (param.getNoOfThreads() == 1){
-                rayt.rayTraceScene("output.ppm", scene, viewport, param.getDepth(), param.getEnableTimer(),"1", param.getNoOfThreads());
+                rayt.rayTraceScene("output.ppm", scene, viewport, param.getDepth(), 
+                                   param.getEnableTimer(),"1", param.getNoOfThreads());
             }
             // if we want to have parallelization we create as many threads as user
             // entered as argument.
             else if(param.getNoOfThreads() > 1){ //here we should bound number of threads && noOfThreads <)
                 for (int i=1; i<= param.getNoOfThreads(); i++){
-                    new TracerThread(i, rayt, scene, viewport, param.getDepth(), param.getEnableTimer(), param.getNoOfThreads());
+                    new TracerThread(i, rayt, scene, viewport, param.getDepth(), 
+                                     param.getEnableTimer(), param.getNoOfThreads());
                 }
             }
         }
@@ -46,7 +49,7 @@ public class TracerGUIObserver implements Observer {
      * this method computes the image properties based on its arguments
      * parse from input
      */
-    private static void computeImage(final int xx, final int yy, final int ww, final int hh, TracerParam param){
+    private static void computeImage(final int xx, final int yy, final int ww, final int hh, TracerParam param) {
         if(xx == 0)
             param.setXpix(ww*yy/hh);
         if(yy == 0)

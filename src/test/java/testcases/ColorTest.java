@@ -1,7 +1,5 @@
 package testcases;
 
-
-
 import classes.Color;
 import junit.framework.TestCase;
 
