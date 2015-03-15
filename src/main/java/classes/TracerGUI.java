@@ -15,9 +15,8 @@ import javax.imageio.*;
 
 class TracerGUI extends Observable implements ActionListener {
 
-    static private JFrame frame;
-    static private JPanel configPanel;
-    static private JPanel drawPanel;
+    // Left config panel 
+    static private JPanel configPanelLeft;
     static private JButton openXMLButton; 
     static private JButton trace;
     static private JFileChooser fc;  
@@ -29,24 +28,34 @@ class TracerGUI extends Observable implements ActionListener {
     static private JLabel depthLabel;
     static private JComboBox timerList;
     static private JLabel timerLabel;
+
+    // Right config panel
+    static private JPanel configPanelRight;
+    static private JComboBox shadowList;
+    static private JLabel shadowLabel;
+    static private JComboBox diffuseList;
+    static private JLabel diffuseLabel;
+
+    // Rest
+    static private JFrame frame;
+    static private JPanel drawPanel;
+    static private JPanel configPanelTop;
     static private JLabel resultPic;    
     static private ImageIcon resultImage;
     static private TracerParam data;
 
     String[] zoomValues = { "100", "200", "300", "400" };
-    String[] reflectionValues = { "Yes", "No"};
     String[] depthValues = { "1", "2", "3", "4" };
-    String[] timerValues = { "Yes", "No"};
+    String[] reflectionValues = { "True", "False"};
+    String[] timerValues = { "True", "False"};
+    String[] diffuseValues = { "True", "False"};
+    String[] shadowValues = { "True", "False"};
  
     public TracerGUI() {
         data = new TracerParam();
-        createFileOpen(); 
-        createTraceButton();
-        createZoomOption("Select camera zoom value:");
-        createReflectionOption("Use reflection:");
-        createDepthOption("Select depth:"); 
-        createTimerOption("Use timer:");
-        createConfigPanel();
+        configPanelTop = createConfigPanel("top", configPanelTop);
+        configPanelLeft = createConfigPanel("left", configPanelLeft);
+        configPanelRight = createConfigPanel("right", configPanelRight);
         createDrawPanel();
     }
 
@@ -62,16 +71,17 @@ class TracerGUI extends Observable implements ActionListener {
                 System.out.println("Open command cancelled by user.");
             }
 
-        } else if (e.getSource() == zoomList) {
-            JComboBox cb = (JComboBox)e.getSource();
-            String zoomValue = (String)cb.getSelectedItem();
-            data.setZoom(Integer.parseInt(zoomValue));
-
         } else if (e.getSource() == trace) {
             if (data.getSceneFile() == null) {
                 JOptionPane.showMessageDialog(null, "Please select a scene xml file first!");
             } 
             else {
+                data.setZoom(Integer.parseInt(zoomList.getSelectedItem().toString()));
+                data.setDepth(Integer.parseInt(depthList.getSelectedItem().toString()));
+                data.setRenderReflection(Boolean.parseBoolean(reflectionList.getSelectedItem().toString()));
+                data.setRenderDiffuse(Boolean.parseBoolean(diffuseList.getSelectedItem().toString()));
+                data.setRenderShadows(Boolean.parseBoolean(shadowList.getSelectedItem().toString()));
+                data.setEnableTimer(Boolean.parseBoolean(timerList.getSelectedItem().toString()));
                 changeData(data);
                 paintResults();
             }
@@ -93,7 +103,6 @@ class TracerGUI extends Observable implements ActionListener {
             resultImage.getImage().flush();
             resultImage = createImageIconResult("output.jpeg"); 
         }
-
         resultPic.setIcon(resultImage);
         drawPanel.add(resultPic);
         drawPanel.revalidate();
@@ -109,7 +118,6 @@ class TracerGUI extends Observable implements ActionListener {
             return null;
         }
     }
-
 
     protected static ImageIcon createImageIconResult(String path) {
         if (path != null) {
@@ -128,72 +136,80 @@ class TracerGUI extends Observable implements ActionListener {
     public static void createAndShowGUI() {
         frame = new JFrame("Raytracer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(configPanel, BorderLayout.NORTH);
+        frame.add(configPanelTop, BorderLayout.NORTH);
+        frame.add(configPanelLeft, BorderLayout.WEST);
+        frame.add(configPanelRight, BorderLayout.EAST);
         frame.add(drawPanel, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private void createZoomOption(String label) {
-        zoomLabel = new JLabel(label);
-        zoomLabel.setMaximumSize(new Dimension(150, 20));
-        zoomList = new JComboBox(zoomValues);
-        zoomList.setMaximumSize(new Dimension(50, 20));
-        zoomList.setAlignmentX(Component.LEFT_ALIGNMENT);
-        zoomList.setSelectedIndex(0);
-        zoomList.addActionListener(this);
+    private JLabel createLabel(String title, JLabel label) {
+        label = new JLabel(title);
+        label.setMaximumSize(new Dimension(150, 20));
+        return label;
     }
 
-    private void createReflectionOption(String label) {
-        reflectionLabel = new JLabel(label);
-        reflectionLabel.setMaximumSize(new Dimension(200, 20));
-        reflectionList = new JComboBox(reflectionValues);
-        reflectionList.setMaximumSize(new Dimension(50, 20));
-        reflectionList.setAlignmentX(Component.LEFT_ALIGNMENT);
-        reflectionList.setSelectedIndex(0);
-        reflectionList.addActionListener(this);
+    private JComboBox createList(JComboBox list, String[] values) {
+        list = new JComboBox(values);
+        list.setMaximumSize(new Dimension(50, 20));
+        list.setAlignmentX(Component.LEFT_ALIGNMENT);
+        list.setSelectedIndex(0);
+        return list;
     }
 
-    private void createDepthOption(String label) {
-        depthLabel = new JLabel(label);
-        depthLabel.setMaximumSize(new Dimension(150, 20));
-        depthList = new JComboBox(depthValues);
-        depthList.setMaximumSize(new Dimension(50, 20));
-        depthList.setAlignmentX(Component.LEFT_ALIGNMENT);
-        depthList.setSelectedIndex(0);
-        depthList.addActionListener(this);
-    }
+    private JPanel createConfigPanel(final String position, JPanel panel) {
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-    private void createTimerOption(String label) {
-        timerLabel = new JLabel(label);
-        timerLabel.setMaximumSize(new Dimension(100, 20));
-        timerList = new JComboBox(timerValues);
-        timerList.setMaximumSize(new Dimension(50, 20));
-        timerList.setAlignmentX(Component.LEFT_ALIGNMENT);
-        timerList.setSelectedIndex(0);
-        timerList.addActionListener(this);
-    }
+        switch (position) {
 
-    private void createConfigPanel() {
-        configPanel = new JPanel();
-        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
-        configPanel.setPreferredSize(new Dimension(400, 300));
-        configPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        configPanel.add(openXMLButton);
-        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
-        configPanel.add(zoomLabel);
-        configPanel.add(zoomList);
-        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
-        configPanel.add(reflectionLabel);
-        configPanel.add(reflectionList);
-        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
-        configPanel.add(depthLabel);
-        configPanel.add(depthList);
-        configPanel.add(Box.createRigidArea(new Dimension(0,10)));
-        configPanel.add(timerLabel);
-        configPanel.add(timerList);
-        configPanel.add(Box.createRigidArea(new Dimension(0,20)));
-        configPanel.add(trace);
+        case "top" :
+            panel.setPreferredSize(new Dimension(200, 50));
+            createFileOpen(); 
+            panel.add(openXMLButton);
+            break;
+        case "left" :
+            panel.setPreferredSize(new Dimension(200, 50));
+            createTraceButton();
+            zoomLabel = createLabel("Camera zoom value", zoomLabel);
+            zoomList = createList(zoomList, zoomValues);
+            reflectionLabel = createLabel("Trace reflection", reflectionLabel);
+            reflectionList = createList(reflectionList, reflectionValues);
+            depthLabel = createLabel("Trace depth", depthLabel);
+            depthList = createList(depthList, depthValues);
+            timerLabel = createLabel("Timer", timerLabel);
+            timerList = createList(timerList, timerValues);
+            panel.add(zoomLabel);
+            panel.add(zoomList);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            panel.add(reflectionLabel);
+            panel.add(reflectionList);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            panel.add(depthLabel);
+            panel.add(depthList);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            panel.add(timerLabel);
+            panel.add(timerList);
+            panel.add(Box.createRigidArea(new Dimension(0,20)));
+            panel.add(trace);
+            break;
+        case "right" :
+            panel.setPreferredSize(new Dimension(200, 300));
+            diffuseLabel = createLabel("Render diffuse", diffuseLabel);
+            diffuseList = createList(diffuseList, diffuseValues);
+            shadowLabel = createLabel("Render shadow", shadowLabel);
+            shadowList = createList(shadowList, shadowValues);
+            panel.add(diffuseLabel);
+            panel.add(diffuseList);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            panel.add(shadowLabel);
+            panel.add(shadowList);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            break;
+        }
+            return panel;
     }
 
     private void createDrawPanel() {
