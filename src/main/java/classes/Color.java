@@ -25,7 +25,7 @@ public class Color{
 
     /**this is default constructor and by default sets color to black. 
      */
-    public Color (){
+    public Color() {
         red=0;
         blue=0;
         green=0;
@@ -36,7 +36,7 @@ public class Color{
      * @param newColor the color we are going to assign to this color instance.
      */
     public void setColor(final Color newColor){
-        this.red= newColor.red;
+        this.red = newColor.red;
         this.green = newColor.green;
         this.blue = newColor.blue;
     }
@@ -81,7 +81,7 @@ public class Color{
     }
         
     /**
-     * class for blending the colors with each other,every RGB component will be added respectively and 
+     * class for blending the colors with each other, every RGB component will be added respectively and 
      * create new color.
      * @param clr is new RGB component which become as an parameter to this class and with some operation with the last one ,
      * new color be created.
@@ -99,7 +99,7 @@ public class Color{
     }
 
     /**
-     * class for blending the colors with each other,every RGB component will be multiplied respectively and 
+     * class for blending the colors with each other, every RGB component will be multiplied respectively and 
      * create new color.
      * @param clr is new RGB component which become as an parameter to this class and with some operation with the last one ,
      * new color be created.

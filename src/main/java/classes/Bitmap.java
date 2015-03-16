@@ -421,7 +421,6 @@ public class Bitmap implements IBitmap {
             }
         catch(FileNotFoundException fnfe)
             {
-                        
                 System.out.println( "Files were not found ");
             }
         return flag; 

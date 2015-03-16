@@ -16,7 +16,6 @@ public class Vector3D {
      * default constructor for vector class sets Vector's coordinates to zero values
      */
     public Vector3D(){
-
         xpos = 0;
         ypos = 0;
         zpos = 0;
@@ -30,7 +29,7 @@ public class Vector3D {
      */
     public Vector3D(final double xcord,
                     final double ycord,
-                    final double zcord){
+                    final double zcord) {
         this.xpos = xcord;
         this.ypos = ycord;
         this.zpos = zcord;
@@ -41,7 +40,7 @@ public class Vector3D {
      * constructor to create a Vector based on another vectors coordinate
      * @param xpos
      */
-    public Vector3D (final Vector3D vect ){
+    public Vector3D (final Vector3D vect ) {
         this.xpos = vect.xpos;
         this.ypos = vect.ypos;
         this.zpos = vect.zpos;

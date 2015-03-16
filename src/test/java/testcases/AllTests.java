@@ -8,7 +8,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for testcases");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(RayTracerTest.class);
+        //		suite.addTestSuite(RayTracerTest.class);
         //		suite.addTestSuite(BitmapTest.class);
 		suite.addTestSuite(ColorTest.class);
 		suite.addTestSuite(CameraTest.class);
