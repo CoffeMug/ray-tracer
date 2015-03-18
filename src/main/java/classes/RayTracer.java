@@ -228,7 +228,7 @@ public class RayTracer {
 
             if (info.element.getMaterial().getReflection() > 0 && 
                 traceDepth < this.reflectionDepth){
-                final Ray reflectionray = getReflectionRay(info.position, info.normal, ray.direction);
+                final Ray reflectionray = getReflectionRay(info.position, info.normal, ray.getDirection());
                 final IntersectInfo refl = testIntersection(reflectionray, scene);
 
                 if (refl.isHit && refl.distance > 0){

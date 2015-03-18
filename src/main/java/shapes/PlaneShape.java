@@ -8,8 +8,8 @@ import classes.*;
  * 
  */
 public class PlaneShape extends BaseShape {
-    public transient double dist;
-    public transient Vector3D pNorm;
+    private double dist;
+    private Vector3D pNorm;
         
     /**
      * the simple constructor which just produce a simple plane 
@@ -57,18 +57,18 @@ public class PlaneShape extends BaseShape {
      */
     @Override  public IntersectInfo intersect(final Ray ray){
         final IntersectInfo info = new IntersectInfo();
-        final double vD = pNorm.dotProduct(ray.direction);
+        final double vD = pNorm.dotProduct(ray.getDirection());
 
         if (vD == 0){
             return info; // no intersection the ray is parallel to the plane
         }
                 
-        final double v0 = dist - pNorm.dotProduct(ray.origin);
+        final double v0 = dist - pNorm.dotProduct(ray.getOrigin());
         final double tmp = (v0 / vD);
                 
         if (tmp < 0) return info;// the ray does not hit the plane
                 
-        final Vector3D ri = ray.origin.vectorAddition(ray.direction.vectorMultiply(tmp));
+        final Vector3D ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
         final Vector3D rn = vD < 0 ? pNorm : pNorm.vectorMultiply(-1);
         //
         info.element = this;

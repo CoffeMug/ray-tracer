@@ -7,10 +7,9 @@ package classes;
  */
 
 public class Vector3D {
-    private transient final double xpos;
-    private transient final double ypos;
-    private transient final double zpos;
-
+    private final double xpos;
+    private final double ypos;
+    private final double zpos;
 
     /**
      * default constructor for vector class sets Vector's coordinates to zero values
@@ -40,7 +39,7 @@ public class Vector3D {
      * constructor to create a Vector based on another vectors coordinate
      * @param xpos
      */
-    public Vector3D (final Vector3D vect ) {
+    public Vector3D (final Vector3D vect) {
         this.xpos = vect.xpos;
         this.ypos = vect.ypos;
         this.zpos = vect.zpos;
@@ -61,14 +60,14 @@ public class Vector3D {
 
     /**
      * computes cross product of vector v and current vector
-     * @param vect a vector we want to calculate its dot product 
+     * @param vect which is a vector we want to calculate its dot product 
      * with current vector.
-     * @return a Vector ,cross product of 2 vectors
+     * @return a vector which cross product of 2 vectors
      */
     public Vector3D crossProduct(final Vector3D vect){
-        return new Vector3D( this.ypos * vect.zpos - this.zpos * vect.ypos,
-                             this.zpos * vect.xpos - this.xpos * vect.zpos,
-                             this.xpos * vect.ypos - this.ypos * vect.xpos);
+        return new Vector3D(this.ypos * vect.zpos - this.zpos * vect.ypos,
+                            this.zpos * vect.xpos - this.xpos * vect.zpos,
+                            this.xpos * vect.ypos - this.ypos * vect.xpos);
     }
         
     /**
@@ -76,7 +75,7 @@ public class Vector3D {
      * @param vect a vector we want to add to current vector
      * @return result of addition as vector
      */
-    public Vector3D vectorAddition (final Vector3D vect){
+    public Vector3D vectorAddition(final Vector3D vect){
         return new Vector3D(this.xpos + vect.xpos,
                             this.ypos + vect.ypos,
                             this.zpos + vect.zpos);
@@ -87,7 +86,7 @@ public class Vector3D {
      * @param vect a vector we want to reduce from current vector
      * @return result of reduction as vector.
      */
-    public Vector3D vectorReduction (final Vector3D vect){
+    public Vector3D vectorReduction(final Vector3D vect){
         return new Vector3D(this.xpos - vect.xpos,
                             this.ypos - vect.ypos,
                             this.zpos - vect.zpos);
@@ -99,7 +98,7 @@ public class Vector3D {
      * @param scale a float number which will be multiplied by current vector.
      * @return a vector which is result of multiplying current vector by s.
      */
-    public Vector3D vectorMultiply (final double scale){
+    public Vector3D vectorMultiply(final double scale){
         return new Vector3D(this.xpos * scale,
                             this.ypos * scale,
                             this.zpos * scale);
@@ -107,22 +106,32 @@ public class Vector3D {
         
     /**
      * computes a vector length
-     * @return a  float value indicates length of vector.
+     * @return a float value indicates length of vector vect.
      */
-    public  double vectorLength(){
-        return  Math.sqrt((this.xpos * this.xpos) +
-                          (this.ypos * this.ypos) + 
-                          (this.zpos * this.zpos));
+    public double vectorLength(final Vector3D vect){
+        return Math.sqrt((vect.xpos * vect.xpos) +
+                         (vect.ypos * vect.ypos) + 
+                         (vect.zpos * vect.zpos));
     }
         
+    /**
+     * computes this vector's length
+     * @return a float value indicates length of current vector.
+     */
+    public double vectorLength(){
+        return Math.sqrt((this.xpos * this.xpos) +
+                         (this.ypos * this.ypos) + 
+                         (this.zpos * this.zpos));
+    }
+
     /**
      * computes current vector's length
      * @return a float value
      */
     public double magnitude(){
-        return Math.sqrt(((xpos * xpos) +
-                          (ypos * ypos) +
-                          (zpos * zpos)));
+        return Math.sqrt((xpos * xpos) +
+                         (ypos * ypos) +
+                         (zpos * zpos));
     }
         
     /**
@@ -131,7 +140,7 @@ public class Vector3D {
      */
     public Vector3D normalize(){
         final double tmp = this.magnitude();
-        return new Vector3D(xpos / tmp, ypos / tmp, zpos / tmp);
+        return new Vector3D(xpos/tmp, ypos/tmp, zpos/tmp);
     }
         
     /**
@@ -139,17 +148,16 @@ public class Vector3D {
      * @return true if vector is normalized and false if it is not.
      */
     public boolean normalizeCheck(){
-        boolean flag;
-        final double test = (this.xpos * this.xpos) +
+        final double test = 
+            (this.xpos * this.xpos) +
             (this.ypos * this.ypos) +
             (this.zpos * this.zpos);
-        if(test == 1){
-            flag = true;
+        if(Double.compare(test, 1.0) == 0){
+            return true;
         }
         else {
-            flag = false;
+            return false;
         }
-        return flag;
     }
         
     /**
@@ -158,14 +166,15 @@ public class Vector3D {
      * @param vect2 Vector number two
      * @return true if both vectors are equal, if not return false
      */
-    @Override public boolean equals(final Object vect){
+    @Override 
+    public boolean equals(final Object vect) {
         if(this == vect){return true;}
         if(!(vect instanceof Vector3D)) {return false;}
         final Vector3D newv = (Vector3D)vect;
                 
-        if((newv.xpos - this.xpos <= 0.0001 ) && 
-           (newv.ypos - this.ypos <= 0.0001 ) && 
-           (newv.zpos - this.zpos <= 0.0001)){
+        if((newv.xpos - this.xpos <= 0.00001 ) && 
+           (newv.ypos - this.ypos <= 0.00001 ) && 
+           (newv.zpos - this.zpos <= 0.00001)){
             return true;
         }
         return false;           
@@ -183,6 +192,6 @@ public class Vector3D {
      * returns the xpos,ypos,zpos as string
      */
     @Override public String toString(){
-        return String.format("{0},{1},{2}", xpos,ypos,zpos);
+        return String.format("{0},{1},{2}", xpos, ypos, zpos);
     }
 }

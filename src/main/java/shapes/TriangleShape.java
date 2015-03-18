@@ -64,8 +64,8 @@ public class TriangleShape extends BaseShape {
         final Vector3D bVec = vecT2.vectorReduction(vecT0);
         final Vector3D Pn = (aVec.crossProduct(bVec)).normalize();//normal vector of triangle plane
         final double dist = vecT0.dotProduct(Pn);//distance from origin of of coordinate system to the plane
-        final double vd = Pn.dotProduct(ray.direction);
-        final double v0 = dist - (Pn.dotProduct(ray.origin));
+        final double vd = Pn.dotProduct(ray.getDirection());
+        final double v0 = dist - (Pn.dotProduct(ray.getOrigin()));
         if (vd == 0){
             return info; // no intersection
         }
@@ -73,7 +73,7 @@ public class TriangleShape extends BaseShape {
         final double tmp = v0 / vd;
                 
         if (tmp >= 0){
-            final Vector3D ri = ray.origin.vectorAddition(ray.direction.vectorMultiply(tmp));
+            final Vector3D ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
             final Vector3D rn = vd < 0 ? Pn : Pn.vectorMultiply(-1);
             //q is the vector between the origin of the triangle and the intersection point
             final Vector3D qVec = ri.vectorReduction(vecT0);

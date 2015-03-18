@@ -26,12 +26,13 @@ public class SphereShape extends BaseShape {
     /**
      * the overided method to compute the intersection point 
      */
-    @Override public IntersectInfo intersect(final Ray ray){
+    @Override 
+    public IntersectInfo intersect(final Ray ray){
         final IntersectInfo info = new IntersectInfo();
         info.element = this;
-        final Vector3D oc =this.position.vectorReduction(ray.origin);
+        final Vector3D oc =this.position.vectorReduction(ray.getOrigin());
         final double l2oc = oc.dotProduct(oc);
-        final double tca = oc.dotProduct(ray.direction);
+        final double tca = oc.dotProduct(ray.getDirection());
         final double t2hc = (this.radius * this.radius) - l2oc + (tca * tca);
         //      final double t = Product(dst) - (this.rDbl * this.rDbl);
         final double sr2 = (this.radius * this.radius);
@@ -39,22 +40,22 @@ public class SphereShape extends BaseShape {
         if (sr2 > l2oc ){ // origin of the ray is inside the sphere.
             info.isHit = true;
             info.distance = tca + (double)Math.sqrt(t2hc);
-            info.position = ray.origin.vectorAddition(
-                                                      ray.direction.vectorMultiply(info.distance));
+            info.position = ray.getOrigin().vectorAddition(
+                                                           ray.getDirection().vectorMultiply(info.distance));
             info.normal = info.position.vectorReduction(position).vectorMultiply(-1/this.radius);
         }
         else if (sr2 < l2oc && tca > 0 ){ // origin of the ray is outside the sphere and ray hits the sphere.
             info.isHit = true;
             info.distance = tca - (double)Math.sqrt(t2hc);
-            info.position = ray.origin.vectorAddition(
-                                                      ray.direction.vectorMultiply(info.distance));
+            info.position = ray.getOrigin().vectorAddition(
+                                                           ray.getDirection().vectorMultiply(info.distance));
             info.normal = info.position.vectorReduction(position).vectorMultiply(1/this.radius);
         }
         else if (t2hc >= 0){
             info.isHit = true;
             info.distance = tca - (double)Math.sqrt(t2hc);
-            info.position = ray.origin.vectorAddition(
-                                                      ray.direction.vectorMultiply(info.distance));
+            info.position = ray.getOrigin().vectorAddition(
+                                                           ray.getDirection().vectorMultiply(info.distance));
             info.normal = info.position.vectorReduction(position).vectorMultiply(1/this.radius);
         }
         else{ // no intersection!

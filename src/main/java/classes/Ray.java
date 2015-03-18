@@ -6,8 +6,8 @@ package classes;
  * @author Behzad
  */
 public class Ray {
-    public transient Vector3D origin;
-    public transient Vector3D direction;
+    private Vector3D origin;
+    private Vector3D direction;
     //public Vector position;
     /**
      * constructor to create a ray from a point of origin and a 
@@ -15,10 +15,14 @@ public class Ray {
      * @param origin
      * @param direction
      */
-    public Ray(final Vector3D origin, final Vector3D direction){
-
+    public Ray(final Vector3D origin, final Vector3D direction) {
         this.origin = origin;
-        this.direction = direction;
+        if (direction.normalizeCheck() == true) {
+                this.direction = direction;
+            }
+        else { 
+            this.direction = direction.normalize();
+        }
     }
 
     /**
@@ -28,21 +32,37 @@ public class Ray {
      * {@link #vectorAddition(Vector3D, Vector3D) vectorAddition
      * @throws Exception 
      */
-    public Vector3D intersectionPoint(final double tmp)  {
-        if(tmp <=0 || ! this.direction.normalizeCheck()){
-            System.out.print(
-                             "v is not normalized, or t is not greater than 0");
-            //throw exp;
+    public Vector3D intersectionPoint(final double tmp) {
+        if(tmp <= 0 || ! this.direction.normalizeCheck()){
+            System.out.print("v is not normalized, or t is not greater than 0");
         }
-        return this.direction.vectorAddition(origin.vectorMultiply(tmp));
+        return this.origin.vectorAddition(direction.vectorMultiply(tmp));
     }
+
+    public Vector3D getDirection() {
+        return this.direction;
+    }
+
+    public void setDirection(final Vector3D direction) {
+        this.direction = direction;
+    }
+
+    public Vector3D getOrigin() {
+        return this.origin;
+    }
+
+    public void setOrigin(final Vector3D origin) {
+        this.origin = origin;
+    }
+
 
     /**
      * we override method equals() in class ray to be able to compare two rays.
      * here it is not necessary to implement method hashCode() because, ray
      * uses class vector3D equals method which has hashCode() method.
      */
-    @Override  public boolean equals(final Object ray){
+    @Override  
+    public boolean equals(final Object ray) {
 
         if(this == ray){return true;}
         if(!(ray instanceof Ray)) {return false;}
