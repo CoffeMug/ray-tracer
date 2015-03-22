@@ -27,7 +27,7 @@ public class Bitmap implements IBitmap {
     private transient int maxval;
     private transient int width;
     private transient int height;
-    private transient Color[] pixels;
+    private transient Color[][] pixels;
     private transient int bitshift = -1;
     private transient int bits;
    
@@ -41,8 +41,7 @@ public class Bitmap implements IBitmap {
         this.width = width;
         this.height = height;
         if (width>0 && height>0){
-        	final Color[] pixels = new Color[width * height];
-        	this.pixels = pixels;
+        	this.pixels = new Color[width][height];
         }   
     }
     
@@ -73,7 +72,7 @@ public class Bitmap implements IBitmap {
     public Color getSinglePixel(final int xCord, final int yCord) throws Exception {
         if ((xCord >= 0 && xCord < width) && (yCord >= 0 && yCord < height)){
             Color pixel = new Color();
-            pixel = pixels[yCord * this.width + xCord];
+            pixel = pixels[xCord][yCord];
             return pixel;
         }
         throw new Exception("this is not a valid pixel!");
@@ -84,8 +83,7 @@ public class Bitmap implements IBitmap {
      * @param inp inputstream reading from file.
      * @throws IOException
      */
-    public void readBitmapPropertiesFromFileHeaser( final InputStream inp ) throws IOException
-    {
+    public void readBitmapPropertiesFromFileHeaser(final InputStream inp) throws IOException {
         char char1, char2;
         
         char1 = (char) readByte(inp);
@@ -97,20 +95,20 @@ public class Bitmap implements IBitmap {
         maxval = readInt(inp);
     }
     
-    private void checkFormatFromHeader(char firstChar) throws IOException{
+    private void checkFormatFromHeader(char firstChar) throws IOException {
     	if ( firstChar != 'P' ){
             throw new IOException( "not a PPM file" );
         }
     }
     
-    private void checkFileType(char bitMapFileSecondChar) throws IOException{
+    private void checkFileType(char bitMapFileSecondChar) throws IOException {
     	switch (bitMapFileSecondChar)
         {
         case '3':
-            type = PPM_ASCII;
+            this.type = PPM_ASCII;
             break;
         case '6':
-            type = PPM_RAW;
+            this.type = PPM_RAW;
             break;
         default:
             throw new IOException( "not a standard PBM/PGM/PPM file" );
@@ -122,39 +120,39 @@ public class Bitmap implements IBitmap {
      * @param inp file input stream.
      * @throws IOException
      */
-    private void readPixels( final InputStream inp ) throws IOException{
-        int col, red, green, blue1;
-        final int size = (width*height);
-        Color filePixels[] = new Color[size];        
-        Color pixelColour = null;
-        
-        for ( col = 0; col <size ; ++col ){
-            switch ( type ){
-            case PPM_ASCII:
-                red = readInt( inp );
-                green = readInt( inp );
-                blue1 = readInt( inp );
-                pixelColour = new Color(red,green, blue1);
-                break;
-            case PPM_RAW:
-                red = readByte( inp );
-                green = readByte( inp );
-                blue1 = readByte( inp );
-                if ( maxval != 255 ){
-                    red = fixDepth( red );
-                    green = fixDepth( green );
-                    blue1 = fixDepth( blue1 );
+    private void readPixels(final InputStream inp) throws IOException {
+        int red, green, blue;
+        Color filePixels[][] = new Color[this.width][this.height];        
+        Color pixelColour= null;
+
+        for (int i = 0; i < this.width; i++ ){
+            for (int j = 0; j < this.height; j++) {
+                switch (this.type) {
+                case PPM_ASCII:
+                    red = readInt(inp);
+                    green = readInt(inp);
+                    blue = readInt(inp);
+                    pixelColour = new Color(red, green, blue);
+                    break;
+                case PPM_RAW:
+                    red = readByte(inp);
+                    green = readByte(inp);
+                    blue = readByte(inp);
+                    if (maxval != 255){
+                        red = fixDepth(red);
+                        green = fixDepth(green);
+                        blue = fixDepth(blue);
+                    }
+                    pixelColour = new Color(red, green, blue);
+                    break;
+                default: break;
                 }
-                pixelColour = new Color(red,green, blue1);
-                break;
-            default: break;
+
+                filePixels[i][j] = pixelColour;
             }
-            filePixels[col] = new Color();
-            filePixels[col] = pixelColour;
         }
         this.pixels = filePixels;
     }
-    
 
     /**
      * routine to read a byte.  Instead of returning -1 on
@@ -165,11 +163,14 @@ public class Bitmap implements IBitmap {
      */
     private static int readByte(final InputStream inp) throws IOException
     {
-        final int binp = inp.read();
-        if ( binp == -1 ){
+        final int binInp;
+        try {
+            binInp = inp.read();
+        }
+        catch (Exception io) {
             throw new EOFException();
         }
-        return binp;
+        return binInp;
     }
 
    
@@ -325,8 +326,6 @@ public class Bitmap implements IBitmap {
      */
     public boolean writeBitmapToFile(final int variant, final String filePath) {
         final String magic = variant == PPM_ASCII ? "P3" : "P6";
-        int count = 0;
-        int icont;
         PrintWriter outputStream = null;
         try
             {
@@ -342,21 +341,16 @@ public class Bitmap implements IBitmap {
         outputStream.printf("%d %d\n", this.width, this.height);
         outputStream.printf( "255\n");
 
-        for (icont = 0; icont < (this.width * this.height); icont++) {
-
-            if (variant == PPM_ASCII){
-                outputStream.printf(pixels[icont].getColorAsAsciiString()+ " \n");
+        for (int i=0; i < this.height; i++) {
+            for (int j=0; j < this.width; j++) {
+                if (variant == PPM_ASCII){
+                    outputStream.printf(this.pixels[i][j].getColorAsAsciiString() + " \n");
+                }
+                else{
+                    outputStream.printf(this.pixels[i][j].getColorAsBinaryString()) ;
+                }
             }
-            else{
-                outputStream.printf(pixels[icont].getColorAsBinaryString()) ;
-            }
-            //count++;
-            //if ((variant == PPM_ASCII) && (count >=3 /*this.width*/)) {
-            //              outputStream.printf( "\n");
-            //              count = 0;
-            //      }
-                
-        }
+        }                
         outputStream.close();
         return true;
     }
@@ -370,26 +364,27 @@ public class Bitmap implements IBitmap {
      * @throws exception of type IOException if can not find bitmap file.
      */
 
-    public void createBitmapFromFile(final String fileName)throws IOException {
-
+    public void createBitmapFromFile(final String fileName) throws IOException {
         //String word;
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(fileName);
-                        
+            readBitmapPropertiesFromFileHeaser(inputStream);
+            readPixels(inputStream);
         } 
         catch (FileNotFoundException e) {
+            System.out.println("file not found" + fileName);
             throw new RuntimeException(e.getMessage());
         }
+        finally {
+            inputStream.close();
+        }
 
-        readChar(inputStream);
-        readPixels(inputStream);
-                
     }
 
 
     public void setPixel(final int xCord, final int yCord, final Color colr) {
-        this.pixels[(yCord - 1) * this.width + xCord - 1] = colr;
+        this.pixels[xCord][yCord] = colr;
     }
 
     /**

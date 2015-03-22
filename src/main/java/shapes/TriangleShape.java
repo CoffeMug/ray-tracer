@@ -58,7 +58,7 @@ public class TriangleShape extends BaseShape {
      * this method checks if the ray stroke the triangle or not.
      * if so,it will return the intersection point info
      */
-    public IntersectInfo intersect(final Ray ray){
+    public IntersectInfo intersect(final Ray ray) {
         final IntersectInfo info = new IntersectInfo();
         final Vector3D aVec = vecT1.vectorReduction(vecT0);
         final Vector3D bVec = vecT2.vectorReduction(vecT0);
@@ -91,20 +91,15 @@ public class TriangleShape extends BaseShape {
                 vTmp = (qb - uTmp*ab)/bb;
                                 
                 if (vTmp > 0 && vTmp < 1 && uTmp + vTmp <= 1) {
-                    info.element = this;
-                    info.isHit = true;
-                    info.position = ri;
-                    info.normal = rn;
-                    info.distance = tmp;
-                                        
+                    Color color;
                     if (material.hasTexture())
                         {
-                            info.color = this.material.getColor(vTmp , uTmp);
+                            color = this.material.getColor(vTmp, uTmp);
                         }       
                     else{
-                        info.color = getMaterial().getColor(0,0);
+                        color = getMaterial().getColor(0,0);
                     }
-                    return info;
+                    return new IntersectInfo(true, this, ri, rn, color, tmp); 
                 }
             }
         }

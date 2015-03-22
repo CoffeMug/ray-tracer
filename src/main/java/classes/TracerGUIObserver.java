@@ -23,11 +23,11 @@ public class TracerGUIObserver implements Observer {
                                                  param.getRenderReflection());
             final Bitmap viewport = Bitmap.createNewBitmap(param.getWidth(),param.getHeight());
 
-            scene.camera.height = param.getHeight();
-            scene.camera.width = param.getWidth();
-            scene.camera.zoom = param.getZoom();
-            scene.camera.xpix = param.getXpix();
-            scene.camera.ypix = param.getYpix();
+            scene.camera.setHeight(param.getHeight());
+            scene.camera.setWidth(param.getWidth());
+            scene.camera.setZoom(param.getZoom());
+            scene.camera.setXpix(param.getXpix());
+            scene.camera.setYpix(param.getYpix());
 
             // if no parallelization is intended.
             if (param.getNoOfThreads() == 1){

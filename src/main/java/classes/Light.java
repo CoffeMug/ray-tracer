@@ -23,15 +23,15 @@ public class Light {
      */
     public Color getColor (IntersectInfo intersection,
                            IntersectInfo info,Double cosPhi){
-        Color color=info.color;
+        Color color = info.getColor();
         Color tmpColor = new Color();
                 
-        if (!intersection.isHit || (intersection.isHit   &&  
-            (intersection.position.vectorReduction(info.position).vectorLength()>=
-            (this.position.vectorReduction(info.position)).vectorLength()))) {
+        if (!intersection.getIsHit() || (intersection.getIsHit()   &&  
+                                         (intersection.getPosition().vectorReduction(info.getPosition()).vectorLength()>=
+                                          (this.position.vectorReduction(info.getPosition())).vectorLength()))) {
                         
-            color = info.color.multiplyColorByAnotherValue(cosPhi).
-            		multiplyColorByAnotherValue(info.element.getMaterial().getDiffuse());
+            color = info.getColor().multiplyColorByAnotherValue(cosPhi).
+                multiplyColorByAnotherValue(info.getElement().getMaterial().getDiffuse());
             tmpColor = tmpColor.addColor(color);
                         
         }

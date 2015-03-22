@@ -73,11 +73,11 @@ public class Color{
      * @return white space separated components of color as a string.
      */
     public String getColorAsAsciiString(){
-        return String.format("%d %d %d", this.red&0xFF , this.green&0xFF , this.blue&0xFF) ; 
+        return String.format("%d %d %d", this.red&0xFF, this.green&0xFF, this.blue&0xFF) ; 
     }
 
     public String getColorAsBinaryString(){
-        return String.format("%c %c %c", this.red&0xFF , this.green&0xFF , this.blue&0xFF);
+        return String.format("%c %c %c", this.red&0xFF, this.green&0xFF, this.blue&0xFF);
     }
         
     /**

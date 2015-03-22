@@ -71,12 +71,12 @@ public class PlaneShape extends BaseShape {
         final Vector3D ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
         final Vector3D rn = vD < 0 ? pNorm : pNorm.vectorMultiply(-1);
         //
-        info.element = this;
-        info.isHit = true;
-        info.position = ri;
-        info.normal = rn;
-        info.distance = tmp;
-        info.color = material.getColor(0,0);
+        info.setElement(this);
+        info.setIsHit(true);
+        info.setPosition(ri);
+        info.setNormal(rn);
+        info.setDistance(tmp);
+        info.setColor(material.getColor(0,0));
 
         return info;
     }

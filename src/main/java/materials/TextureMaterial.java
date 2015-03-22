@@ -28,7 +28,8 @@ public class TextureMaterial extends BaseMaterial {
         this.texture = text;
     }
 
-    @Override public boolean hasTexture() {
+    @Override 
+    public boolean hasTexture() {
         return true;
     }
 
@@ -37,15 +38,16 @@ public class TextureMaterial extends BaseMaterial {
      * the shape in vector coordinates, according to its corresponding color
      * on a texture object in X,Y coordinates.
      */
-    @Override public Color getColor(final double ui, final double vi){
-        double uu = (ui)  * texture.width;
-        double vv = (1-vi) * texture.height;
-        Color c1 = texture.colorMap[(int)uu][(int)vv];
-
+    @Override 
+    public Color getColor(final double ui, final double vi){
+        double uu = (ui) * this.texture.getWidth();
+        double vv = (vi) * this.texture.getHeight();
+        Color c1 = texture.getColorMap()[(int)uu][(int)vv];
         return c1;
     }
      
-    @Override    public  double getDiffuse(){
+    @Override    
+    public double getDiffuse(){
         return 1.0;
     }
 }

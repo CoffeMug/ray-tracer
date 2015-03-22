@@ -14,15 +14,41 @@ import classes.Color;
  * picture we want to project on our shapes. 
  */
 public class Texture {
-        
-    public transient int width;
-    public transient int height;
-    public transient Color[][] colorMap;
+    private int width;
+    private int height; 
+    private static transient Color[][] colorMap;
      
     public Texture(final Color[][] colormap){
-        width = colormap.length;
-        height = colormap[0].length;
-        colorMap = colormap;
+        this.colorMap = colormap;
+    }
+
+    public Texture(final int width, final int height, final Color[][] colormap) {
+        this.width = width;
+        this.height = height;
+        this.colorMap = colormap;
+    }
+    public Color[][] getColorMap() {
+        return this.colorMap;
+    }
+
+    public void setColorMatp(final Color[][] map) {
+        this.colorMap = map;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     /**
@@ -33,13 +59,13 @@ public class Texture {
      * to project a ppm file as a texture on a shape.
      * @throws Exception
      */
-    static public Texture fromBitmap(final IBitmap bmp1) throws Exception{
-        Color[][] colormap = new Color[bmp1.getWidth()][bmp1.getHeight()];
-        final Texture texture = new Texture(colormap);
+    public static Texture fromBitmap(final IBitmap bmp) throws Exception{
+        Color[][] colormap = new Color[bmp.getWidth()][bmp.getHeight()];
+        final Texture texture = new Texture(bmp.getWidth(), bmp.getHeight(), colormap);
          
-        for (int y = 1; y <= texture.height; y++){
-            for (int x = 1; x <= texture.width; x++){
-                colormap[x-1][y-1] = bmp1.getSinglePixel(x, y);
+        for (int y = 0; y < bmp.getHeight(); y++){
+            for (int x = 0; x < bmp.getWidth(); x++){
+                colorMap[x][y] = bmp.getSinglePixel(x, y);
             }
         }
         return texture;

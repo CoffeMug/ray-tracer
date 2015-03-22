@@ -82,7 +82,7 @@ public class RayTracer {
                               final IBitmap viewport ,final int depth , final boolean showTime, 
                               final String thread , final int noOfWindows) {
 
-        Color[][] buffer = new Color[viewport.getWidth()][ viewport.getHeight()];
+        Color[][] buffer = new Color[viewport.getWidth()][viewport.getHeight()];
         final int width = viewport.getWidth();
         final int height = viewport.getHeight();
         final int tNumber =Integer.parseInt(thread);
@@ -103,21 +103,21 @@ public class RayTracer {
         final int upperBoundY = (tNumber == noOfWindows && 
                                  tNumber*wHeight < height) ?
             height : tNumber*wHeight ;
-        final int lowerBoundY = (tNumber-1)*wHeight + 1;
+        final int lowerBoundY = (tNumber-1)*wHeight;
 
         Ray ray;
 
-        for (int y = lowerBoundY; y <= upperBoundY; y++) {
-            for (int x = 1; x <= width ; x++) {
+        for (int y = lowerBoundY; y < upperBoundY; y++) {
+            for (int x = 0; x < width; x++) {
 
                 ray = scene.camera.getRay(x,y); // was xp , yp
 
                 // this will trigger the ray tracing algorithm
-                buffer[x-1][y-1] = calculateColor(ray, scene);
+                buffer[x][y] = calculateColor(ray, scene);
 
                 //after getting color of each pixel on image plane we 
                 //save it in viewport Bitmap object.
-                viewport.setPixel(x, y, buffer[x-1][y-1]);
+                viewport.setPixel(x, y, buffer[x][y]);
             }
 
         }
@@ -136,7 +136,7 @@ public class RayTracer {
             System.out.print("Tracetime: " + duration + " ms");
         }
         //write result of raytracing into a bitmap file.
-        viewport.writeBitmapToFile(1,bmpfile);
+        viewport.writeBitmapToFile(1, bmpfile);
         viewport.convertToJPG();
     }
 
@@ -151,10 +151,9 @@ public class RayTracer {
     public Color calculateColor(final Ray ray,final Scene scene){
         final IntersectInfo info = testIntersection(ray, scene);
         Color colr;
-        if (info.isHit){
+        if (info.getIsHit()){
             traceDepth = 0;
-            colr = rayTrace(info,ray,scene);
-
+            colr = rayTrace(info, ray, scene);
         }
         else{
             colr = scene.background;
@@ -175,8 +174,8 @@ public class RayTracer {
 
         Color color = new Color();
         Color tmpColor = new Color();
-        final Vector3D ri = info.position;
-        final Vector3D rn = info.normal;
+        final Vector3D ri = info.getPosition();
+        final Vector3D rn = info.getNormal();
         final Vector3D so = ri.vectorAddition(rn.vectorMultiply(eps));
 
         /* this is the max depth of raytracing.
@@ -226,28 +225,23 @@ public class RayTracer {
 
         if (renderReflection){
 
-            if (info.element.getMaterial().getReflection() > 0 && 
+            if (info.getElement().getMaterial().getReflection() > 0 && 
                 traceDepth < this.reflectionDepth){
-                final Ray reflectionray = getReflectionRay(info.position, info.normal, ray.getDirection());
+                final Ray reflectionray = getReflectionRay(info.getPosition(), info.getNormal(), ray.getDirection());
                 final IntersectInfo refl = testIntersection(reflectionray, scene);
 
-                if (refl.isHit && refl.distance > 0){
+                if (refl.getIsHit() && refl.getDistance() > 0){
                     // recursive call, this makes reflections expensive
                     traceDepth++ ;
-
-                    refl.color = rayTrace(refl, reflectionray, scene);
-
+                    refl.setColor(rayTrace(refl, reflectionray, scene));
                 }
                 else  // does not reflect an object, then reflect background color
-
-                    refl.color = info.color;
-
-                color = color.addColor(refl.color.multiplyColorByAnotherValue(
-                                           info.element.getMaterial().getReflection()));
+                    refl.setColor(info.getColor());
+                color = color.addColor(refl.getColor().multiplyColorByAnotherValue(
+                                                                                   info.getElement().getMaterial().getReflection()));
             }
 
         }
-
         return color;
     }
 
@@ -282,18 +276,17 @@ public class RayTracer {
     public IntersectInfo testIntersection(final Ray ray ,
                                           final Scene scene) {
         int hitcount = 0;
-        IntersectInfo best = new IntersectInfo();
-        best.distance = Double.MAX_VALUE;
+        IntersectInfo best = new IntersectInfo(Double.MAX_VALUE);
 
         for (IShape elt : scene.shapes) {
             final IntersectInfo info = elt.intersect(ray);
-            if (info.isHit && info.distance < best.distance
-                && info.distance > 0 ) {
+            if (info.getIsHit() && info.getDistance() < best.getDistance()
+                && info.getDistance() > 0 ) {
                 best = info;
                 hitcount++;
             }
         }
-        best.hitCount = hitcount;
+        best.setHitCount(hitcount);
         return best;
     }
 

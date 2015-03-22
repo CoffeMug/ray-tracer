@@ -405,7 +405,6 @@ public class XmlParser {
         TextureMaterial mat=null;
         Texture texture;
         final Bitmap bmp= Bitmap.createNewBitmap(0,0);
-
         if (matElement.getElementsByTagName("ppm").getLength()> 0){
             final Element elm= (Element) matElement.getElementsByTagName("ppm").item(0) ;
             final String bitmapFile = elm.getAttribute("file").toString();
@@ -413,6 +412,7 @@ public class XmlParser {
                 bmp.createBitmapFromFile(bitmapFile);
                 texture = Texture.fromBitmap(bmp);
                 mat = new TextureMaterial(texture,0);
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

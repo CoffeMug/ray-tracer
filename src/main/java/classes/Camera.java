@@ -8,23 +8,23 @@ package classes;
  */
 
 public class Camera {
-    public transient Vector3D location;
-    public transient Vector3D lookAt; 
-    public transient Vector3D upside; 
-    public transient int zoom; 
-    public transient int width; 
-    public transient int height; 
-    public transient int xpix; 
-    public transient int ypix; 
-    public transient boolean isValid;
+    private Vector3D location;
+    private Vector3D lookAt; 
+    private Vector3D upside; 
+    private int zoom; 
+    private int width; 
+    private int height; 
+    private int xpix; 
+    private int ypix; 
+    private boolean isValid;
 
     /**
      * the default constructor camera used in XmlParser class 
      * @param position
      * @param lookat
      */
-    public Camera(final Vector3D location, final Vector3D lookat, final Vector3D upward){
-        this(location, lookat, upward, 300, 400, 400, 400, 400);
+    public Camera(final Vector3D location, final Vector3D lookAt, final Vector3D upward){
+        this(location, lookAt, upward, 300, 400, 400, 400, 400);
     }
 
     /**
@@ -104,6 +104,75 @@ public class Camera {
             flag = true;
         }
         return flag;
+    }
+
+    /**
+     * Getters and setters.
+     *
+     */
+
+    public int getZoom() {
+        return this.zoom;
+    }
+
+    public void setZoom(final int zoom) {
+        this.zoom = zoom;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(final int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(final int height) {
+        this.height = height;
+    }
+
+    public int getXpix() {
+        return this.xpix;
+    }
+
+    public void setXpix(final int xpix) {
+        this.xpix = xpix;
+    }
+
+    public int getYpix() {
+        return this.ypix;
+    }
+
+    public void setYpix(final int ypix) {
+        this.ypix = ypix;
+    }
+
+    public Vector3D getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(final Vector3D location) {
+        this.location = location;
+    }
+
+    public Vector3D getLookAt() {
+        return this.lookAt;
+    }
+
+    public void setLookAt(final Vector3D lookAt) {
+        this.lookAt = lookAt;
+    }
+
+    public Vector3D getUpside() {
+        return this.upside;
+    }
+ 
+    public void setUpside(final Vector3D upside) {
+        this.upside = upside;
     }
 }
 

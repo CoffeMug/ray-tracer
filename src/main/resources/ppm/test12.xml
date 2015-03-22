@@ -50,7 +50,7 @@
         <finish reflect="0.700"/>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/web.ppm"/>
+            <ppm file="src/main/resources/ppm/web.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -63,7 +63,7 @@
       <surface>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/water.ppm"/>
+            <ppm file="src/main/resources/ppm/water.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -77,7 +77,7 @@
         <finish reflect="0.800"/>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/water.ppm"/>
+            <ppm file="src/main/resources/ppm/water.ppm"/>
           </image>
         </pigment>
       </surface>

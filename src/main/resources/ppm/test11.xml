@@ -33,7 +33,7 @@
         <finish diffuse="1.000"/>
         <pigment>
           <image>
-            <ppm file="/stud/csd/kurs/pm2/ht97/pov/johan.ppm"/>
+            <ppm file="src/main/resources/ppm/johan.ppm"/>
           </image>
         </pigment>
       </surface>
@@ -193,7 +193,7 @@
         <finish diffuse="1.000" reflect="0.000"/>
         <pigment>
           <image>
-            <ppm file="/stud/csd/kurs/pm2/ht97/pov/johan.ppm"/>
+            <ppm file="src/main/resources/ppm/johan.ppm"/>
           </image>
         </pigment>
       </surface>
