@@ -34,7 +34,7 @@ public class VectorTest {
 
 	@Test
 	public void magnitudeOfVector(){
-		assertEquals(3, vectMagnitude.magnitude(),0);
+		assertEquals(3, vectMagnitude.vectorLength(),0);
 	}
 
 	@Test
@@ -75,13 +75,13 @@ public class VectorTest {
 
 	@Test
 	public void normalizeCheck(){
-		assertTrue(normVec.normalizeCheck());
+		assertTrue(normVec.isNormal());
 	}
 
 	@Test
 	public void normalize(){
 		Vector normVec2 = vect1.normalize();
-		assertEquals(1, normVec2.magnitude(), 0.05);
+		assertEquals(1, normVec2.vectorLength(), 0.05);
 	}
 
 	@Test

@@ -1,7 +1,7 @@
 package scene;
 
 import domain.Light;
-import shapes.Shapes;
+import shapes.BaseShape;
 
 import java.util.ArrayList;
 
@@ -10,10 +10,10 @@ import java.util.ArrayList;
  */
 public class World {
 
-    public transient Shapes shapes;
+    public transient ArrayList<BaseShape> shapes;
     public transient ArrayList<Light> lights;
 
-    public World(final Shapes shapes, final ArrayList<Light> lights) {
+    public World(final ArrayList<BaseShape> shapes, final ArrayList<Light> lights) {
         this.shapes = shapes;
         this.lights = lights;
     }

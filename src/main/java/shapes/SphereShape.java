@@ -7,19 +7,13 @@ import materials.BaseMaterial;
 import materials.IMaterial;
 
 /**
- * 
+ * The sphere class which makes the sphere shape based on a position vector and the sphere radius
  * @author amin
- * the sphere class which make the sphere shape based on a position vector and the sphere radius
+ *
  */
 public class SphereShape extends BaseShape {
     public transient double radius;
 
-    /**
-     * default constructor to produce a single sphere
-     * @param pos
-     * @param rtmp
-     * @param material
-     */
     public SphereShape(final Vector pos, final double radius, final BaseMaterial material){
         super();
         this.radius = radius;
@@ -27,9 +21,6 @@ public class SphereShape extends BaseShape {
         this.material = material;
     }
 
-    /**
-     * the overided method to compute the intersection point 
-     */
     @Override 
     public IntersectInfo intersect(final Ray ray) {
         final IntersectInfo info = new IntersectInfo();
@@ -71,12 +62,9 @@ public class SphereShape extends BaseShape {
         return info;
     }
 
-    private Color calculateColor(final IntersectInfo info, final IMaterial material) {
-        //                System.out.println("Salam mikham bebinam in dayerehe material dare ya na?!");
-
+    private Color calculateColor(final IntersectInfo info, final BaseMaterial material) {
         if (material.hasTexture())
             {
-                //                System.out.println("Salam material dare in dayerehe!");
                 //TextureMaterial tmpMaterial = (TextureMaterial) this.material;
                 final Vector sp = new Vector(0, 1, 0).normalize(); // north pole / up
                 // equator / sphere orientation
@@ -102,7 +90,8 @@ public class SphereShape extends BaseShape {
             }
     }
 
-    @Override public  String toString(){
+    @Override
+    public  String toString(){
         return String.format("Sphere ({0},{1},{2}) Radius: {3}", position.toString(), radius);
     }
 }

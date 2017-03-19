@@ -3,7 +3,6 @@ package domain;
 import bitmap.BitmapVariant;
 import org.junit.Before;
 
-import domain.Color;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -50,34 +49,34 @@ public class ColorTest {
 
 	@Test
 	public void getColorAsAsciiColorsInRange() {
-		assertEquals("76 80 83", colorOne.getColorByFormate(BitmapVariant.PPM_ASCII));
+		assertEquals("76 80 83", colorOne.getColorByFormat(BitmapVariant.PPM_ASCII));
 	}
 
 	@Test
 	public void getColorAsAsciiColorsOutOfRangePositive() {
-		assertEquals("255 255 255", colorFour.getColorByFormate(BitmapVariant.PPM_ASCII));
+		assertEquals("255 255 255", colorFour.getColorByFormat(BitmapVariant.PPM_ASCII));
 	}
 
 	@Test
 	public void getColorAsAsciiColorsOutOfRangeNegative() {
-		assertEquals("0 0 0", colorFive.getColorByFormate(BitmapVariant.PPM_ASCII));
+		assertEquals("0 0 0", colorFive.getColorByFormat(BitmapVariant.PPM_ASCII));
 	}
 
 	@Test
 	public void getColorAsBinaryColorsInRange() {
-		assertEquals("LPS", colorOne.getColorByFormate(BitmapVariant.PPM_RAW));
+		assertEquals("LPS", colorOne.getColorByFormat(BitmapVariant.PPM_RAW));
 	}
 
 	@Test
 	public void getColorAsBinaryColorsOutOfRangeRangePositive() {
-		assertEquals("ÿÿÿ", colorFour.getColorByFormate(BitmapVariant.PPM_RAW));
+		assertEquals("ÿÿÿ", colorFour.getColorByFormat(BitmapVariant.PPM_RAW));
 	}
 
 	@Ignore
 	@Test
 	public void getColorAsBinaryColorsOutOfRangeRangeNegative() {
 		String tmpColors = String.format("%c%c%c", (-100&0xFF), (-35&0xFF), (-1&0xFF));
-		assertEquals(tmpColors, colorFive.getColorByFormate(BitmapVariant.PPM_RAW));
+		assertEquals(tmpColors, colorFive.getColorByFormat(BitmapVariant.PPM_RAW));
 	}
 
 }

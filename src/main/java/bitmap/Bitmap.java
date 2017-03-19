@@ -345,10 +345,10 @@ public class Bitmap implements IBitmap {
         for (int i=0; i < this.height; i++) {
             for (int j=0; j < this.width; j++) {
                 if (variant == PPM_ASCII){
-                    outputStream.printf(this.pixels[i][j].getColorByFormate(BitmapVariant.PPM_ASCII) + " \n");
+                    outputStream.printf(this.pixels[i][j].getColorByFormat(BitmapVariant.PPM_ASCII) + " \n");
                 }
                 else{
-                    outputStream.printf(this.pixels[i][j].getColorByFormate(BitmapVariant.PPM_RAW));
+                    outputStream.printf(this.pixels[i][j].getColorByFormat(BitmapVariant.PPM_RAW));
                 }
             }
         }                

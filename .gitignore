@@ -4,3 +4,7 @@
 *.war
 *.ear
 /target
+.idea/
+out.txt
+output.jpeg
+output.ppm

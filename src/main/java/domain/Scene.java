@@ -1,6 +1,5 @@
 package domain;
 
-import domain.Color;
 import scene.Camera;
 import scene.World;
 

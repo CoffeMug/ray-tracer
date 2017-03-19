@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import bitmap.Bitmap;
 import domain.*;
+import domain.Color;
 import materials.BaseMaterial;
 import materials.SolidMaterial;
 import materials.Texture;
@@ -108,9 +109,12 @@ public class XmlParser {
         final NodeList triangles = worldElement.getElementsByTagName("triangle");
         final NodeList lamps = worldElement.getElementsByTagName("light");
 
-        Shapes shapes = new Shapes();
+        // Parse lights
         ArrayList<Light> lights = new ArrayList<>();
+        IntStream.range(0, lamps.getLength()).forEach(i -> lights.add(parseLight((Element) lamps.item(i))));
 
+        // Parse shapes
+        ArrayList<BaseShape> shapes = new ArrayList<>();
         IntStream.range(0, planes.getLength()).forEach(i -> {
             try {
                 shapes.add(parsePlane((Element) planes.item(i)));
@@ -121,7 +125,6 @@ public class XmlParser {
 
         IntStream.range(0, spheres.getLength()).forEach(i -> shapes.add(parseSphere((Element) spheres.item(i))));
         IntStream.range(0, triangles.getLength()).forEach(i -> shapes.add(parseTriangle((Element) triangles.item(i))));
-        IntStream.range(0, lamps.getLength()).forEach(i -> lights.add(getLight((Element) lamps.item(i))));
 
         return new World(shapes, lights);
     }
@@ -134,7 +137,7 @@ public class XmlParser {
         BaseMaterial material;
 
         final Element materialElement =(Element)planeElement.getElementsByTagName("surface").item(0);
-        material = getMaterial(materialElement);
+        material = parseMaterial(materialElement);
 
         final Element normalElement =(Element)planeElement.getElementsByTagName("normal").item(0);
         normal = parseVector((Element)normalElement.getElementsByTagName("vector").item(0));
@@ -149,13 +152,6 @@ public class XmlParser {
         }
     }
 
-    /**
-     * this methods gets a SphereElement element, parse it and returns a corresponding
-     * Sphere object.
-     * @param SphereElement
-     * @return Sphere object
-     * @throws Exception
-     */
     private SphereShape parseSphere(final Element SphereElement) {
         double radius;
         Vector position;
@@ -168,7 +164,7 @@ public class XmlParser {
         position = parseVector(elm);
 
         final Element materialElement =(Element)SphereElement.getElementsByTagName("surface").item(0);
-        material = getMaterial(materialElement);
+        material = parseMaterial(materialElement);
 
         return new SphereShape(position, radius, material);
     }
@@ -212,11 +208,11 @@ public class XmlParser {
             c2Vect = TriangleShape.triangleComputeCorner(c0Vect, c2Vect);
         }
 
-        material = getMaterial(materialElement);
+        material = parseMaterial(materialElement);
         return new TriangleShape(c0Vect, c1Vect, c2Vect, material);
     }
 
-    private BaseMaterial getMaterial(final Element materialElement) {
+    private BaseMaterial parseMaterial(final Element materialElement) {
         BaseMaterial material = null;
         Texture texture;
         final Bitmap bmp= Bitmap.createNewBitmap(0, 0);
@@ -248,33 +244,15 @@ public class XmlParser {
         return material;
     }
 
-    /** this methods gets a docElement element, parse it and returns a 
-     * material's color object.
-     * @param docElement
-     * @return color object
-     * @throws Exception
-     */
-    private Color parseColor(final Element docElement) {
-        int red =(int) (Double.parseDouble(docElement.getAttribute("red")) * 255);
-        int green =(int) (Double.parseDouble(docElement.getAttribute("green")) * 255);
-        int blue = (int) (Double.parseDouble(docElement.getAttribute("blue")) * 255);
+    private Color parseColor(final Element colorElement) {
+        int red =(int) (Double.parseDouble(colorElement.getAttribute("red")) * 255);
+        int green =(int) (Double.parseDouble(colorElement.getAttribute("green")) * 255);
+        int blue = (int) (Double.parseDouble(colorElement.getAttribute("blue")) * 255);
 
         return new Color(red, green, blue);
     }
 
-    private Double getReflection(final Element docElement){
-        double ref;
-        ref = Double.parseDouble(docElement.getAttribute("reflect").toString());
-        return ref;
-    }
-
-    /**
-     * this methods gets a lightElement element, parse it and returns a corresponding
-     * light object.
-     * @param lightElement
-     * @return light object
-     */
-    private Light getLight(final Element lightElement) {
+    private Light parseLight(final Element lightElement) {
         Light light;
         final Element posElement =(Element) lightElement.getElementsByTagName("position").item(0);
         final Element elm = (Element)posElement.getElementsByTagName("vector").item(0);

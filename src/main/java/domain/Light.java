@@ -8,22 +8,20 @@ package domain;
 
 public class Light {
     public transient Vector position;
-    public Light(){
-        this.position = null;
-    }
 
     public Light(final Vector pos){
         position = pos;
     }
 
     /**
-     * this method will compute the color of the Intersection 
+     * this method will compute the color of the Intersection
      * point based on current light source,and it will return
      * the color value of it.
      */
     public Color getColor (IntersectInfo intersection,
-                           IntersectInfo info, Double cosPhi){
-        Color color = info.getColor();
+                           IntersectInfo info,
+                           Double cosPhi){
+        Color color;
         Color tmpColor = new Color();
                 
         if (!intersection.getIsHit() || (intersection.getIsHit()   &&  
@@ -38,11 +36,9 @@ public class Light {
         color = tmpColor;
         return color;
     }
-        
-    /**
-     * returns light position vector as string.
-     */
-    @Override  public  String toString(){
+
+    @Override
+    public String toString() {
         return String.format("Light ({1})" + position.toString()) ;
     }
 

@@ -16,12 +16,11 @@ public interface IMaterial {
      */
     boolean hasTexture(); 
         
-    /**
+/*    *//**
      * gets a coordinate on shape and returns color of that coordinate. 
      * @param uDbl
      * @param vDbl
      * @return color of the pixel located on that coordinate.
-     */
-    Color getColor(double uDbl, double vDbl);
-
+     *//*
+    Color getColor(double uDbl, double vDbl);*/
 }

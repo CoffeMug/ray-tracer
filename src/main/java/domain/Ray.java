@@ -8,16 +8,10 @@ package domain;
 public class Ray {
     private Vector origin;
     private Vector direction;
-    //public Vector position;
-    /**
-     * constructor to create a ray from a point of origin and a 
-     * direction vector
-     * @param origin
-     * @param direction
-     */
+
     public Ray(final Vector origin, final Vector direction) {
         this.origin = origin;
-        if (direction.normalizeCheck() == true) {
+        if (direction.isNormal()) {
                 this.direction = direction;
             }
         else { 
@@ -33,7 +27,7 @@ public class Ray {
      * @throws Exception 
      */
     public Vector intersectionPoint(final double tmp) {
-        if(tmp <= 0 || ! this.direction.normalizeCheck()){
+        if(tmp <= 0 || ! this.direction.isNormal()){
             System.out.print("v is not normalized, or t is not greater than 0");
         }
         return this.origin.vectorAddition(direction.vectorMultiply(tmp));
