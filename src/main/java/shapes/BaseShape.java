@@ -1,7 +1,8 @@
 package shapes;
-import interfaces.IMaterial;
-import interfaces.IShape;
-import classes.*;
+import domain.IntersectInfo;
+import domain.Ray;
+import domain.Vector;
+import materials.BaseMaterial;
 
 /**
  * 
@@ -10,14 +11,14 @@ import classes.*;
  */
 
 public abstract class BaseShape implements IShape {
-    protected Vector3D position;
-    protected IMaterial material;
+    protected Vector position;
+    protected BaseMaterial material;
         
     /**
      * default constructor
      */
     public BaseShape(){
-        position = new Vector3D(0, 0, 0);
+        position = new Vector(0, 0, 0);
     }
 
     public abstract IntersectInfo intersect(Ray ray);
@@ -25,22 +26,22 @@ public abstract class BaseShape implements IShape {
     /**
      * @return the position
      */
-    public Vector3D getPosition() {
+    public Vector getPosition() {
         return position;
     }
 
     /**
      * @param position the position to set
      */
-    public void setPosition(final Vector3D position) {
+    public void setPosition(final Vector position) {
         this.position = position;
     }
         
-    public IMaterial getMaterial(){
+    public BaseMaterial getMaterial(){
         return material;
     }
         
-    public void setMaterial(final IMaterial material){
+    public void setMaterial(final BaseMaterial material){
         this.material = material;
     }
 }

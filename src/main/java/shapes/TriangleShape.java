@@ -1,8 +1,11 @@
 package shapes;
 
-import materials.TextureMaterial;
-import interfaces.IMaterial;
-import  classes.*;
+import domain.Color;
+import domain.IntersectInfo;
+import domain.Ray;
+import domain.Vector;
+import materials.BaseMaterial;
+
 /**
  * the Triangle class which is based on three Vectors
  * @author amin
@@ -10,9 +13,9 @@ import  classes.*;
  */
 
 public class TriangleShape extends BaseShape {
-    private transient Vector3D vecT0;
-    private transient Vector3D vecT1;
-    private transient Vector3D vecT2;
+    private transient Vector vecT0;
+    private transient Vector vecT1;
+    private transient Vector vecT2;
 
     /**
      * the constructor which construct the triangle based on three Vectors(as its three corners)
@@ -20,8 +23,8 @@ public class TriangleShape extends BaseShape {
      * @param t1vec
      * @param t2vec
      */
-    public TriangleShape (final Vector3D t0vec, final Vector3D t1vec,
-                          final Vector3D t2vec, final IMaterial material){
+    public TriangleShape (final Vector t0vec, final Vector t1vec,
+                          final Vector t2vec, final BaseMaterial material){
         super();
         if (triangleTest(t0vec, t1vec, t2vec)){
             vecT0 = t0vec;
@@ -40,7 +43,7 @@ public class TriangleShape extends BaseShape {
      * @param tnvec
      * @return the side between t0 and tn corners
      */
-    public static Vector3D triangleComputeSide(final Vector3D t0vec, final Vector3D tnvec){
+    public static Vector triangleComputeSide(final Vector t0vec, final Vector tnvec){
         return tnvec.vectorReduction(t0vec);
     }
         
@@ -51,7 +54,7 @@ public class TriangleShape extends BaseShape {
      * @return the corner next to t0 and along side a
      */
         
-    public static Vector3D triangleComputeCorner(final Vector3D t0vec, final Vector3D avec){
+    public static Vector triangleComputeCorner(final Vector t0vec, final Vector avec){
         return t0vec.vectorAddition(avec);
     }
     /**
@@ -60,9 +63,9 @@ public class TriangleShape extends BaseShape {
      */
     public IntersectInfo intersect(final Ray ray) {
         final IntersectInfo info = new IntersectInfo();
-        final Vector3D aVec = vecT1.vectorReduction(vecT0);
-        final Vector3D bVec = vecT2.vectorReduction(vecT0);
-        final Vector3D Pn = (aVec.crossProduct(bVec)).normalize();//normal vector of triangle plane
+        final Vector aVec = vecT1.vectorReduction(vecT0);
+        final Vector bVec = vecT2.vectorReduction(vecT0);
+        final Vector Pn = (aVec.crossProduct(bVec)).normalize();//normal vector of triangle plane
         final double dist = vecT0.dotProduct(Pn);//distance from origin of of coordinate system to the plane
         final double vd = Pn.dotProduct(ray.getDirection());
         final double v0 = dist - (Pn.dotProduct(ray.getOrigin()));
@@ -73,10 +76,10 @@ public class TriangleShape extends BaseShape {
         final double tmp = v0 / vd;
                 
         if (tmp >= 0){
-            final Vector3D ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
-            final Vector3D rn = vd < 0 ? Pn : Pn.vectorMultiply(-1);
+            final Vector ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
+            final Vector rn = vd < 0 ? Pn : Pn.vectorMultiply(-1);
             //q is the vector between the origin of the triangle and the intersection point
-            final Vector3D qVec = ri.vectorReduction(vecT0);
+            final Vector qVec = ri.vectorReduction(vecT0);
             double uTmp ; 
             double vTmp ;
             final double bb = bVec.dotProduct(bVec);
@@ -106,10 +109,10 @@ public class TriangleShape extends BaseShape {
         return info;
     }
 
-    public static Boolean triangleTest(final Vector3D vecT0, final Vector3D vecT1, final Vector3D vecT2){
-        final Vector3D sidea = triangleComputeSide(vecT0, vecT1);
-        final Vector3D sideb = triangleComputeSide(vecT0, vecT2);
-        final Vector3D sidec = sideb.vectorReduction(sidea);
+    public static Boolean triangleTest(final Vector vecT0, final Vector vecT1, final Vector vecT2){
+        final Vector sidea = triangleComputeSide(vecT0, vecT1);
+        final Vector sideb = triangleComputeSide(vecT0, vecT2);
+        final Vector sidec = sideb.vectorReduction(sidea);
                 
         // this is to control that if the triangle is constructed correctly
         if(sidea.vectorLength()+sideb.vectorLength() <= sidec.vectorLength()){

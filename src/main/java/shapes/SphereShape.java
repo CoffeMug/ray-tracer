@@ -1,7 +1,11 @@
 package shapes;
-import materials.TextureMaterial;
-import interfaces.IMaterial;
-import classes.*;
+import domain.Color;
+import domain.IntersectInfo;
+import domain.Ray;
+import domain.Vector;
+import materials.BaseMaterial;
+import materials.IMaterial;
+
 /**
  * 
  * @author amin
@@ -16,7 +20,7 @@ public class SphereShape extends BaseShape {
      * @param rtmp
      * @param material
      */
-    public SphereShape(final Vector3D pos, final double radius, final IMaterial material){
+    public SphereShape(final Vector pos, final double radius, final BaseMaterial material){
         super();
         this.radius = radius;
         this.position = pos;
@@ -30,7 +34,7 @@ public class SphereShape extends BaseShape {
     public IntersectInfo intersect(final Ray ray) {
         final IntersectInfo info = new IntersectInfo();
         info.setElement(this);
-        final Vector3D oc = this.position.vectorReduction(ray.getOrigin());
+        final Vector oc = this.position.vectorReduction(ray.getOrigin());
         final double l2oc = oc.dotProduct(oc);
         final double tca = oc.dotProduct(ray.getDirection());
         final double t2hc = (this.radius * this.radius) - l2oc + (tca * tca);
@@ -74,11 +78,11 @@ public class SphereShape extends BaseShape {
             {
                 //                System.out.println("Salam material dare in dayerehe!");
                 //TextureMaterial tmpMaterial = (TextureMaterial) this.material;
-                final Vector3D sp = new Vector3D(0, 1, 0).normalize(); // north pole / up
+                final Vector sp = new Vector(0, 1, 0).normalize(); // north pole / up
                 // equator / sphere orientation
-                final Vector3D se = new Vector3D(0, 0, 1).normalize(); 
+                final Vector se = new Vector(0, 0, 1).normalize();
                 //points from center of sphere to intersection 
-                final Vector3D rn = info.getNormal();
+                final Vector rn = info.getNormal();
                 final double phi = Math.acos((rn.vectorMultiply(-1)).dotProduct(sp));
                 final double vi = phi / Math.PI;
                 final double ui;

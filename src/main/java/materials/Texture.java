@@ -3,10 +3,10 @@
  */
 package materials;
 
-import interfaces.IBitmap;
+import bitmap.IBitmap;
 
 
-import classes.Color;
+import domain.Color;
 
 /**
  * @author majid

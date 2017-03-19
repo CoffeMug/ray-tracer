@@ -1,6 +1,8 @@
 package shapes;
-import interfaces.IMaterial;
-import classes.*;
+import domain.IntersectInfo;
+import domain.Ray;
+import domain.Vector;
+import materials.BaseMaterial;
 
 /**
  * the plane class which will produce the plane shape based its position and normal vector  
@@ -9,14 +11,14 @@ import classes.*;
  */
 public class PlaneShape extends BaseShape {
     private double dist;
-    private Vector3D pNorm;
+    private Vector pNorm;
         
     /**
      * the simple constructor which just produce a simple plane 
      * @param pos
      * @param nVector
      */
-    public PlaneShape(final Vector3D pos, final Vector3D normal, final IMaterial material){
+    public PlaneShape(final Vector pos, final Vector normal, final BaseMaterial material){
         super();// for suppressing PMD errors
         position = pos;
         this.pNorm = normal.normalize(); 
@@ -31,7 +33,7 @@ public class PlaneShape extends BaseShape {
      * @param dist
 
      */
-    public PlaneShape(final Vector3D pos, final double dist){
+    public PlaneShape(final Vector pos, final double dist){
         super();// for suppressing PMD warnings
         position = pos;
         this.dist = dist;
@@ -43,13 +45,14 @@ public class PlaneShape extends BaseShape {
      * @param material
      */
         
-    public PlaneShape(final double dist, final Vector3D normal, final IMaterial material){
+    public PlaneShape(final double dist, final Vector normal, final BaseMaterial material){
         super();
         position = normal.vectorMultiply(dist);
         this.dist = dist;
         this.pNorm = normal.normalize();
         this.material = material;
     }
+
 
     /**
      * this method computes the intersection point between ray and the plane if there are any.
@@ -68,8 +71,8 @@ public class PlaneShape extends BaseShape {
                 
         if (tmp < 0) return info;// the ray does not hit the plane
                 
-        final Vector3D ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
-        final Vector3D rn = vD < 0 ? pNorm : pNorm.vectorMultiply(-1);
+        final Vector ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
+        final Vector rn = vD < 0 ? pNorm : pNorm.vectorMultiply(-1);
         //
         info.setElement(this);
         info.setIsHit(true);

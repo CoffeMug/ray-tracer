@@ -3,7 +3,7 @@
  */
 package materials;
 
-import classes.Color;
+import domain.Color;
 
 
 /** this class extends base material class and is used when we want to 
@@ -21,10 +21,9 @@ public class TextureMaterial extends BaseMaterial {
      * @param text texture object.
      * @param reflection amount of reflection the texture should implement.
      */
-    public TextureMaterial(final Texture text, final double reflection)
+    public TextureMaterial(final Texture text, final double reflection, final double diffuse)
     {
-        super(); // used for suppressing PMD warning
-        this.reflection = reflection;
+        super(diffuse, reflection); // used for suppressing PMD warning
         this.texture = text;
     }
 
@@ -45,10 +44,6 @@ public class TextureMaterial extends BaseMaterial {
         Color c1 = texture.getColorMap()[(int)uu][(int)vv];
         return c1;
     }
-     
-    @Override    
-    public double getDiffuse(){
-        return 1.0;
-    }
+
 }
 
