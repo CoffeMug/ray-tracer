@@ -5,20 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import bitmap.Bitmap;
+import domain.*;
 import exceptions.InvalidPixelException;
 import materials.SolidMaterial;
 import shapes.BaseShape;
 import shapes.PlaneShape;
 import shapes.SphereShape;
 import shapes.TriangleShape;
-import domain.Camera;
-import domain.Color;
-import domain.IntersectInfo;
-import domain.Light;
+import scene.Camera;
 import utils.MD5Sum;
-import domain.Ray;
-import domain.Scene;
-import domain.Vector3D;
+
+
 import junit.framework.TestCase;
 
 /**
@@ -48,22 +45,22 @@ public class RayTracerTest extends TestCase {
 
 		SolidMaterial sMat = new SolidMaterial(
 				new Color(150, 2, 20), 0.800, 1.000);
-		sphere1= new SphereShape(new Vector3D(-10, 7, 118), 8, sMat);
+		sphere1= new SphereShape(new Vector(-10, 7, 118), 8, sMat);
 
 		sMat = new SolidMaterial(new Color(150, 50, 40), 0.800, 1.000);
-		sphere2= new SphereShape(new Vector3D(10, 7, 118), 8, sMat);
+		sphere2= new SphereShape(new Vector(10, 7, 118), 8, sMat);
 
 		sMat = new SolidMaterial(new Color(100, 58, 58), 0.8, 1.000);
-		sphere3 = new SphereShape(new Vector3D(0, 14, 107), 4, sMat);
+		sphere3 = new SphereShape(new Vector(0, 14, 107), 4, sMat);
 
 		sMat = new SolidMaterial(new Color(200, 0, 0), 0, 1.000);
-		sphere4 = new SphereShape(new Vector3D(0, 14, 124), 4, sMat);
+		sphere4 = new SphereShape(new Vector(0, 14, 124), 4, sMat);
 
 		sMat = new SolidMaterial(new Color(210, 158, 20), 0, 1.000);
-		testPlane = new PlaneShape(150 ,new Vector3D(-1, 0, 2), sMat);
+		testPlane = new PlaneShape(150 ,new Vector(-1, 0, 2), sMat);
 
-		light1 = new Light(new Vector3D(10, 0, 50));
-		light2 = new Light(new Vector3D(-20, 70, 50));
+		light1 = new Light(new Vector(10, 0, 50));
+		light2 = new Light(new Vector(-20, 70, 50));
 
 
 		testShapes = new ArrayList<>();
@@ -78,11 +75,11 @@ public class RayTracerTest extends TestCase {
 		testLights.add(light2);
 		//testLights.add(light3);
 
-		testCamera = new Camera(new Vector3D(-30, 50, 100) ,
-				new Vector3D(-10, 10, 114) ,new Vector3D(1, 0, 0));
+		testCamera = new Camera(new Vector(-30, 50, 100) ,
+				new Vector(-10, 10, 114) ,new Vector(1, 0, 0));
 
 		testScene = new Scene(testCamera, new Color(128,128,128),
-				testShapes, testLights,null);
+				null);
 	}
 
 	/**
@@ -102,14 +99,14 @@ public class RayTracerTest extends TestCase {
 
 		SolidMaterial sMat = new SolidMaterial(
 				new Color(150, 2, 20), 0.800, 1.000);
-		TriangleShape triangle1 = new TriangleShape(new Vector3D(-60, 0,0),
-				new Vector3D(35,0,0), new Vector3D(0,50,0) ,sMat);
+		TriangleShape triangle1 = new TriangleShape(new Vector(-60, 0,0),
+				new Vector(35,0,0), new Vector(0,50,0) ,sMat);
 
 		sMat = new SolidMaterial(new Color(150, 50, 40), 0.800, 1.000);
-		TriangleShape triangle2 = new TriangleShape(new Vector3D(-60, 0,3),
-				new Vector3D(35,0,3), new Vector3D(0,50,3) ,sMat);
+		TriangleShape triangle2 = new TriangleShape(new Vector(-60, 0,3),
+				new Vector(35,0,3), new Vector(0,50,3) ,sMat);
 
-		light2 = new Light(new Vector3D(35, 10, 10));
+		light2 = new Light(new Vector(35, 10, 10));
 
 
 		testShapes = new ArrayList<>();
@@ -122,11 +119,11 @@ public class RayTracerTest extends TestCase {
 		testLights.add(light2);
 		//testLights.add(light3);
 
-		testCamera = new Camera(new Vector3D(40, 5, 6) ,
-				new Vector3D(0, 0, 0) ,new Vector3D(0, 1, 0));
+		testCamera = new Camera(new Vector(40, 5, 6) ,
+				new Vector(0, 0, 0) ,new Vector(0, 1, 0));
 
 		testScene = new Scene(testCamera, new Color(128,128,128),
-				testShapes, testLights,null);
+				null);
 
 
 		Ray testRay = testCamera.getRay(84, 207);
@@ -176,14 +173,14 @@ public class RayTracerTest extends TestCase {
 
 		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false, "1", 1);
 
-		Light light3 = new Light(new Vector3D(-20, 70, 50));
-		testScene.lights.add(light3);
+		Light light3 = new Light(new Vector(-20, 70, 50));
+		testScene.world.lights.add(light3);
 		testTracer.rayTraceScene("testResult.ppm", testScene, viewport1, 5, false, "1", 1);
 
 		try {
 
-			firstColor = viewport.getASinglePixelFromBitmap(214, 200);
-			secondColor = viewport1.getASinglePixelFromBitmap(214, 200);
+			firstColor = viewport.getSinglePixel(214, 200);
+			secondColor = viewport1.getSinglePixel(214, 200);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -223,7 +220,7 @@ public class RayTracerTest extends TestCase {
 			e.printStackTrace();
 		}
 
-		testScene.camera.setLocation(new Vector3D(30, -50, -100));
+		testScene.camera.setLocation(new Vector(30, -50, -100));
 		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false ,"1" ,1);
 		bmpFile = new File("testResult.ppm");
 		try {
@@ -235,7 +232,7 @@ public class RayTracerTest extends TestCase {
 
 		assertFalse(bmpFileHash1.equals(bmpFileHash2));
 
-		testScene.camera.setLocation(new Vector3D(-30, 50, 100));
+		testScene.camera.setLocation(new Vector(-30, 50, 100));
 		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false,"1",1);
 		bmpFile = new File("testResult.ppm");
 		try {
@@ -268,9 +265,9 @@ public class RayTracerTest extends TestCase {
 		info.setElement(testPlane);
 		info.setHitCount(1);
 		info.setIsHit(true);
-		info.setNormal(new Vector3D(0.447, 0, -0.894));
-		info.setPosition(new Vector3D(-8.830, 5.184, 163.289));
-		Vector3D rayd = new Vector3D(-0.085, 0.494, -0.864);
+		info.setNormal(new Vector(0.447, 0, -0.894));
+		info.setPosition(new Vector(-8.830, 5.184, 163.289));
+		Vector rayd = new Vector(-0.085, 0.494, -0.864);
 
 		// calculate shadow, create ray from intersection point to light
 		Ray shadowray = new Ray(info.getPosition(), rayd);
@@ -287,9 +284,9 @@ public class RayTracerTest extends TestCase {
 		info.setElement(testPlane);
 		info.setHitCount(1);
 		info.setIsHit(true);
-		info.setNormal(new Vector3D(0.447, 0, -0.894));
-		info.setPosition(new Vector3D(11.772, -16.265, 173.591));
-		rayd = new Vector3D(-0.206, 0.560, -0.802);
+		info.setNormal(new Vector(0.447, 0, -0.894));
+		info.setPosition(new Vector(11.772, -16.265, 173.591));
+		rayd = new Vector(-0.206, 0.560, -0.802);
 
 		// calculate shadow, create ray from intersection point to light
 		shadowray = new Ray(info.getPosition(), rayd);
