@@ -1,6 +1,6 @@
 package tracer;
 
-class TracerParam {
+public class TracerParam {
 
     private static boolean renderShadows;
     private static boolean renderReflection;

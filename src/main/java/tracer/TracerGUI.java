@@ -37,7 +37,7 @@ public class TracerGUI extends Observable implements ActionListener {
     static private JPanel configPanelTop;
     static private JLabel resultPic;    
     static private ImageIcon resultImage;
-    static private TracerParam data;
+    static private TracerParam tracerParam;
 
     String[] zoomValues = { "100", "200", "300", "400" };
     String[] depthValues = { "1", "2", "3", "4" };
@@ -46,8 +46,8 @@ public class TracerGUI extends Observable implements ActionListener {
     String[] diffuseValues = { "True", "False"};
     String[] shadowValues = { "True", "False"};
  
-    public TracerGUI() {
-        data = new TracerParam();
+    public TracerGUI(TracerParam tracerParam) {
+        this.tracerParam = tracerParam;
         configPanelTop = createConfigPanel("top", configPanelTop);
         configPanelLeft = createConfigPanel("left", configPanelLeft);
         configPanelRight = createConfigPanel("right", configPanelRight);
@@ -61,23 +61,23 @@ public class TracerGUI extends Observable implements ActionListener {
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                data.setSceneFile(file.getAbsolutePath());
+                tracerParam.setSceneFile(file.getAbsolutePath());
             } else {
                 System.out.println("Open command cancelled by user.");
             }
 
         } else if (e.getSource() == trace) {
-            if (data.getSceneFile() == null) {
+            if (tracerParam.getSceneFile() == null) {
                 JOptionPane.showMessageDialog(null, "Please select a scene xml file first!");
             } 
             else {
-                data.setZoom(Integer.parseInt(zoomList.getSelectedItem().toString()));
-                data.setDepth(Integer.parseInt(depthList.getSelectedItem().toString()));
-                data.setRenderReflection(Boolean.parseBoolean(reflectionList.getSelectedItem().toString()));
-                data.setRenderDiffuse(Boolean.parseBoolean(diffuseList.getSelectedItem().toString()));
-                data.setRenderShadows(Boolean.parseBoolean(shadowList.getSelectedItem().toString()));
-                data.setEnableTimer(Boolean.parseBoolean(timerList.getSelectedItem().toString()));
-                changeData(data);
+                tracerParam.setZoom(Integer.parseInt(zoomList.getSelectedItem().toString()));
+                tracerParam.setDepth(Integer.parseInt(depthList.getSelectedItem().toString()));
+                tracerParam.setRenderReflection(Boolean.parseBoolean(reflectionList.getSelectedItem().toString()));
+                tracerParam.setRenderDiffuse(Boolean.parseBoolean(diffuseList.getSelectedItem().toString()));
+                tracerParam.setRenderShadows(Boolean.parseBoolean(shadowList.getSelectedItem().toString()));
+                tracerParam.setEnableTimer(Boolean.parseBoolean(timerList.getSelectedItem().toString()));
+                changeData(tracerParam);
                 paintResults();
             }
         }
@@ -126,6 +126,8 @@ public class TracerGUI extends Observable implements ActionListener {
         frame.add(configPanelRight, BorderLayout.EAST);
         frame.add(drawPanel, BorderLayout.SOUTH);
         frame.pack();
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -213,13 +215,13 @@ public class TracerGUI extends Observable implements ActionListener {
 
     private void createFileOpen() {
         fc = new JFileChooser();
-        fc.setCurrentDirectory(new File("./src/main/"));
+        fc.setCurrentDirectory(new File("./src/main/resources/ppm"));
         java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);
-            openXMLButton = new JButton("Open a scence xml file...", icon);
+            openXMLButton = new JButton("Open a scene xml file...", icon);
         } else {
-            openXMLButton = new JButton("Open a scence xml file...");
+            openXMLButton = new JButton("Open a scene xml file...");
         }
         openXMLButton.addActionListener(this);
     }

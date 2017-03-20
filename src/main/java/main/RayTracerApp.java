@@ -2,12 +2,13 @@ package main;
 
 import tracer.TracerGUI;
 import tracer.TracerGUIObserver;
+import tracer.TracerParam;
 
 import javax.swing.*;
 
-public final class Tracer {
+public final class RayTracerApp {
 
-    final static TracerGUI gui = new TracerGUI();
+    final static TracerGUI gui = new TracerGUI(new TracerParam());
     final static TracerGUIObserver guiObserver = new TracerGUIObserver();
 
     public static void main (final String args[]){
