@@ -3,6 +3,8 @@ package tracer;
 import bitmap.Bitmap;
 import domain.Scene;
 
+import java.io.IOException;
+
 /**
  * this class is implementing runnable interface to enable multi-threading.
  * @author majid
@@ -42,7 +44,11 @@ public class TracerThread implements Runnable {
     }
         
     public void run() {
-        rayt.rayTraceScene("PPM.PPM", scene, viewport, depth, timer, tName, noOfThreads);
+        try {
+            rayt.rayTraceScene("PPM.PPM", scene, viewport, depth, timer, tName, noOfThreads);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
         
 }

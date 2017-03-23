@@ -44,11 +44,13 @@ public class Color{
     
     public String getColorByFormat(BitmapVariant variant) {
         switch (variant) {
-            case PPM_ASCII: return String.format("%d %d %d", this.red , this.green , this.blue);
-            case PPM_RAW: return String.format("%c%c%c", this.red & 0xFF, this.green & 0xFF, this.blue & 0xFF);
+            case PPM_ASCII: return String.format("%d %d %d ", this.red, this.green, this.blue);
+            case PPM_BINARY: return String.format("%c%c%c", this.red & 0xFF, this.green & 0xFF, this.blue & 0xFF);
             default: return new String("");
         }
     }
+
+
 
     public Color addColor(final Color colorToBeAdded){
         final Color finalColor = new Color();
@@ -61,7 +63,7 @@ public class Color{
         return finalColor;
     }
 
-    public Color multiplyColorByAnotherValue(final double intensity){
+    public Color multiplyColorByValue(final double intensity){
         final Color finalColor = new Color();
         finalColor.blue = (int)((this.blue*intensity)>255 ? 255 :
                              (this.blue*intensity));

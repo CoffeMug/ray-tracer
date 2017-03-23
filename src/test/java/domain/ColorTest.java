@@ -64,19 +64,19 @@ public class ColorTest {
 
 	@Test
 	public void getColorAsBinaryColorsInRange() {
-		assertEquals("LPS", colorOne.getColorByFormat(BitmapVariant.PPM_RAW));
+		assertEquals("LPS", colorOne.getColorByFormat(BitmapVariant.PPM_BINARY));
 	}
 
 	@Test
 	public void getColorAsBinaryColorsOutOfRangeRangePositive() {
-		assertEquals("ÿÿÿ", colorFour.getColorByFormat(BitmapVariant.PPM_RAW));
+		assertEquals("ÿÿÿ", colorFour.getColorByFormat(BitmapVariant.PPM_BINARY));
 	}
 
 	@Ignore
 	@Test
 	public void getColorAsBinaryColorsOutOfRangeRangeNegative() {
 		String tmpColors = String.format("%c%c%c", (-100&0xFF), (-35&0xFF), (-1&0xFF));
-		assertEquals(tmpColors, colorFive.getColorByFormat(BitmapVariant.PPM_RAW));
+		assertEquals(tmpColors, colorFive.getColorByFormat(BitmapVariant.PPM_BINARY));
 	}
 
 }

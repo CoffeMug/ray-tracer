@@ -28,8 +28,8 @@ public class Light {
                                          (intersection.getPosition().vectorReduction(info.getPosition()).vectorLength()>=
                                           (this.position.vectorReduction(info.getPosition())).vectorLength()))) {
                         
-            color = info.getColor().multiplyColorByAnotherValue(cosPhi).
-                multiplyColorByAnotherValue(info.getElement().getMaterial().getDiffuse());
+            color = info.getColor().multiplyColorByValue(cosPhi).
+                    multiplyColorByValue(info.getElement().getMaterial().getDiffuse());
             tmpColor = tmpColor.addColor(color);
                         
         }

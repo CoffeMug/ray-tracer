@@ -5,5 +5,5 @@ package bitmap;
  */
 public enum BitmapVariant {
     PPM_ASCII,
-    PPM_RAW
+    PPM_BINARY
 }

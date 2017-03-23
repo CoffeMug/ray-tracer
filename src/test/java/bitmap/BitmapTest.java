@@ -31,8 +31,8 @@ public class BitmapTest {
 
 	@Ignore
 	@Test
-	public void writeToFile(){
-		bmp.writeBitmapToFile(1, "Tempbitmap.PPM");
+	public void writeToFile() throws IOException {
+		bmp.writeBitmapToFile(BitmapVariant.PPM_ASCII, "Tempbitmap.PPM");
 		//assert(bmp.compareTwoFiles(ppmFile , "Tempbitmap.PPM"));
 		final File temp = new File("Tempbitmap.PPM");
 		temp.delete();
@@ -42,8 +42,8 @@ public class BitmapTest {
 	public void setPixel() throws Exception{
 
 		final Color tempColor = new Color((byte)25,(byte)40,(byte)90);
-		bmp.setPixel(3, 2,tempColor );
-		assert(tempColor.equals(bmp.getSinglePixel(3, 2)));
+		bmp.writePixel(3, 2,tempColor );
+		assert(tempColor.equals(bmp.readPixel(3, 2)));
 	}
 
 }

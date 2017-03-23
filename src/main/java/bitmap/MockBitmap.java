@@ -17,18 +17,18 @@ public class MockBitmap implements IBitmap {
             colPixs[i] = new Color(110,0,110);
         }
     }
-        
+
+    @Override
     public int getWidth() {
-                
-        return width;
+        return this.width;
     }
-        
-    public int getHeight(){
-                
-        return height;
+
+    @Override
+    public int getHeight() {
+        return this.height;
     }
-        
-    public Color getSinglePixel(final int xCord, final int yCord) throws Exception{
+
+    public Color readPixel(final int xCord, final int yCord) throws Exception{
                 
         if ((xCord>=0 && xCord<= width) && (yCord>=0 && yCord<= height)){
             Color pixel = new Color();
@@ -39,18 +39,11 @@ public class MockBitmap implements IBitmap {
                 
     }
         
-    public boolean writeBitmapToFile(final int variant, final String filePath) {
-        boolean flag;
-        if ((variant == 1 || variant == 2) && checkFilePath()) {
-            flag = true;
-        }
-        else{
-            flag = false;
-        }
-        return flag;
+    public void writeBitmapToFile(final BitmapVariant variant, final String filePath) {
+
     }
 
-    public void convertToJPG() {
+    public void convertPPMToJPG() {
         return;
     }
 
@@ -60,9 +53,9 @@ public class MockBitmap implements IBitmap {
         return true;
     }
         
-    public void setPixel(final int xCord, final int yCord, final Color colr) {
+    public void writePixel(final int xCord, final int yCord, final Color color) {
                 
-        this.colPixs[(xCord - 1) * this.width + yCord - 1] = colr;
+        this.colPixs[(xCord - 1) * this.width + yCord - 1] = color;
 
     }
 }

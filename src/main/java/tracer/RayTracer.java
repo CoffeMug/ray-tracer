@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import bitmap.BitmapVariant;
 import domain.*;
 import bitmap.IBitmap;
 import shapes.IShape;
@@ -81,8 +82,8 @@ public class RayTracer {
      */
 
     public void rayTraceScene(final String bmpfile, final Scene scene ,
-                              final IBitmap viewport ,final int depth , final boolean showTime, 
-                              final String thread , final int noOfWindows) {
+                              final IBitmap viewport , final int depth , final boolean showTime,
+                              final String thread , final int noOfWindows) throws IOException {
 
         Color[][] buffer = new Color[viewport.getWidth()][viewport.getHeight()];
         final int width = viewport.getWidth();
@@ -119,7 +120,7 @@ public class RayTracer {
 
                 //after getting color of each pixel on image plane we 
                 //save it in viewport Bitmap object.
-                viewport.setPixel(x, y, buffer[x][y]);
+                viewport.writePixel(x, y, buffer[x][y]);
             }
 
         }
@@ -138,8 +139,8 @@ public class RayTracer {
             System.out.print("Tracetime: " + duration + " ms");
         }
         //write result of raytracing into a bitmap file.
-        viewport.writeBitmapToFile(1, bmpfile);
-        viewport.convertToJPG();
+        viewport.writeBitmapToFile(BitmapVariant.PPM_ASCII, bmpfile);
+        viewport.convertPPMToJPG();
     }
 
     /** this method returns color of intersection point if intersection
@@ -220,7 +221,7 @@ public class RayTracer {
                 }
                 else  // does not reflect an object, then reflect background color
                     refl.setColor(info.getColor());
-                color = color.addColor(refl.getColor().multiplyColorByAnotherValue(
+                color = color.addColor(refl.getColor().multiplyColorByValue(
                                                                                    info.getElement().getMaterial().getReflection()));
             }
 

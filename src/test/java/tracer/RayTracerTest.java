@@ -179,8 +179,8 @@ public class RayTracerTest extends TestCase {
 
 		try {
 
-			firstColor = viewport.getSinglePixel(214, 200);
-			secondColor = viewport1.getSinglePixel(214, 200);
+			firstColor = viewport.readPixel(214, 200);
+			secondColor = viewport1.readPixel(214, 200);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

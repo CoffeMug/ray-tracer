@@ -3,9 +3,8 @@
  */
 package materials;
 
+
 import bitmap.IBitmap;
-
-
 import domain.Color;
 
 /**
@@ -65,7 +64,7 @@ public class Texture {
          
         for (int y = 0; y < bmp.getHeight(); y++){
             for (int x = 0; x < bmp.getWidth(); x++){
-                colorMap[x][y] = bmp.getSinglePixel(x, y);
+                colorMap[x][y] = bmp.readPixel(x, y);
             }
         }
         return texture;

@@ -4,6 +4,7 @@ import bitmap.Bitmap;
 import domain.Scene;
 import utils.XmlParser;
 
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer; 
  
@@ -25,7 +26,7 @@ public class TracerGUIObserver implements Observer {
             final Scene scene = parser.parseXmlFile(param.getSceneFile());
             final RayTracer rayt = new RayTracer(param.getRenderDiffuse(), param.getRenderShadows(), 
                                                  param.getRenderReflection());
-            final Bitmap viewport = Bitmap.createNewBitmap(param.getWidth(),param.getHeight());
+            final Bitmap viewport = new Bitmap(param.getWidth(), param.getHeight());
 
             scene.camera.setHeight(param.getHeight());
             scene.camera.setWidth(param.getWidth());
@@ -35,8 +36,12 @@ public class TracerGUIObserver implements Observer {
 
             // if no parallelization is intended.
             if (param.getNoOfThreads() == 1){
-                rayt.rayTraceScene("output.ppm", scene, viewport, param.getDepth(), 
-                                   param.getEnableTimer(),"1", param.getNoOfThreads());
+                try {
+                    rayt.rayTraceScene("output.ppm", scene, viewport, param.getDepth(),
+                                       param.getEnableTimer(),"1", param.getNoOfThreads());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             // if we want to have parallelization we create as many threads as user
             // entered as argument.
