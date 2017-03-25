@@ -35,6 +35,8 @@ public class TracerGUI extends Observable implements ActionListener {
     static private JLabel shadowLabel;
     static private JComboBox diffuseList;
     static private JLabel diffuseLabel;
+    static private JComboBox threadList;
+    static private JLabel threadLable;
 
     // Rest
     static private JFrame frame;
@@ -50,6 +52,7 @@ public class TracerGUI extends Observable implements ActionListener {
     String[] timerValues = { "True", "False"};
     String[] diffuseValues = { "True", "False"};
     String[] shadowValues = { "True", "False"};
+    String[] threadValues = {"1", "2", "3", "4", "5"};
  
     public TracerGUI(TracerParam tracerParam) {
         this.tracerParam = tracerParam;
@@ -82,6 +85,7 @@ public class TracerGUI extends Observable implements ActionListener {
                 tracerParam.setRenderDiffuse(Boolean.parseBoolean(diffuseList.getSelectedItem().toString()));
                 tracerParam.setRenderShadows(Boolean.parseBoolean(shadowList.getSelectedItem().toString()));
                 tracerParam.setEnableTimer(Boolean.parseBoolean(timerList.getSelectedItem().toString()));
+                tracerParam.setNoOfThreads(Integer.parseInt(threadList.getSelectedItem().toString()));
                 changeData(tracerParam);
                 paintResults();
             }
@@ -185,11 +189,16 @@ public class TracerGUI extends Observable implements ActionListener {
             diffuseList = createList(diffuseList, diffuseValues);
             shadowLabel = createLabel("Render shadow", shadowLabel);
             shadowList = createList(shadowList, shadowValues);
+            threadLable = createLabel("Number of threads", threadLable);
+            threadList = createList(threadList, threadValues);
             panel.add(diffuseLabel);
             panel.add(diffuseList);
             panel.add(Box.createRigidArea(new Dimension(0,10)));
             panel.add(shadowLabel);
             panel.add(shadowList);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
+            panel.add(threadLable);
+            panel.add(threadList);
             panel.add(Box.createRigidArea(new Dimension(0,10)));
             break;
         }

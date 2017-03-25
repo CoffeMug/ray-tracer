@@ -12,7 +12,7 @@ import java.io.IOException;
  *
  */
 public class TracerThread implements Runnable {
-    String tName;
+    String threadName;
     Thread t;
     RayTracer rayt;
     Scene scene;
@@ -33,20 +33,20 @@ public class TracerThread implements Runnable {
      */
     public TracerThread (int threadName, RayTracer tracer, Scene scene,
                          Bitmap viewport, int depth, boolean timer, int noOfThreads) {
-        tName = Integer.toString(threadName);
         rayt = tracer;
         this.scene = scene;
         this.viewport = viewport;
         this.depth = depth;
         this.timer = timer;
         this.noOfThreads = noOfThreads;
-        t = new Thread (this, tName);
+        this.threadName = Integer.toString(threadName);
+        t = new Thread (this, "Thread " + threadName);
         t.start();
     }
         
     public void run() {
         try {
-            rayt.rayTraceScene(scene, viewport, depth, timer, tName, noOfThreads);
+            rayt.rayTraceScene(scene, viewport, depth, timer, threadName, noOfThreads);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidPixelException e) {

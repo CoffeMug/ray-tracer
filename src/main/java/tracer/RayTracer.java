@@ -21,7 +21,6 @@ public class RayTracer {
     private Boolean renderShadow;
     private Boolean renderReflection;
     private int traceDepth = 0;
-    private int reflectionDepth = 5;
     private final double eps = 0.0001;
 
     public RayTracer() {
@@ -36,62 +35,36 @@ public class RayTracer {
         this.renderReflection = renderReflection;
     }
 
-    public int getDepth(){
-        return this.reflectionDepth;
-    }
-
-    public void setDepth(int dep){
-        this.reflectionDepth = dep;
-    }
-
     public void rayTraceScene(final Scene scene,
                               final IBitmap viewport,
                               final int depth,
                               final boolean showTime,
                               final String thread,
-                              final int noOfWindows) throws IOException, InvalidPixelException {
+                              final int noOfThreads) throws IOException, InvalidPixelException {
 
-        Color[][] buffer = new Color[viewport.getWidth()][viewport.getHeight()];
         final int width = viewport.getWidth();
         final int height = viewport.getHeight();
-        final int tNumber =Integer.parseInt(thread);
-        final int wHeight = (int) Math.floor(viewport.getHeight()/noOfWindows);
-        this.reflectionDepth = depth;
-
+        final int threadNumber = Integer.parseInt(thread);
+        final int wHeight = (int) Math.floor(viewport.getHeight()/noOfThreads);
 
         // if number of threads does not fit all image plane we ask final
         // thread to process its own window plus all remaining pixels.
-        final int upperBoundY = (tNumber == noOfWindows && 
-                                 tNumber*wHeight < height) ?
-            height : tNumber*wHeight ;
-        final int lowerBoundY = (tNumber-1)*wHeight;
-
-        Ray ray;
+        final int upperBoundY = (threadNumber == noOfThreads && threadNumber * wHeight < height) ? height : threadNumber * wHeight ;
+        final int lowerBoundY = (threadNumber - 1) * wHeight;
 
         double startTime = System.currentTimeMillis();
 
         for (int y = lowerBoundY; y < upperBoundY; y++) {
             for (int x = 0; x < width; x++) {
-
-                ray = scene.camera.getRay(x,y); // was xp , yp
-
-                // this will trigger the ray tracing algorithm
-                buffer[x][y] = calculateColor(ray, scene);
-
-                //after getting color of each pixel on image plane we 
-                //save it in viewport Bitmap object.
-                viewport.writePixel(x, y, buffer[x][y]);
+                Ray ray = scene.camera.getRay(x, y);
+                viewport.writePixel(x, y, calculateColor(ray, scene, depth));
             }
 
         }
 
-        // here we calculate trace time.
-        double duration = System.currentTimeMillis() - startTime ;
-
         if (showTime){
-            logger.info("Trace time: {} ms", duration);
+            logger.info("Trace time: {} ms", System.currentTimeMillis() - startTime);
         }
-
     }
 
     /** this method returns color of intersection point if intersection
@@ -101,13 +74,12 @@ public class RayTracer {
      * @param scene current scene we test ray intersection with.
      * @return color of intersection point.
      */
-
-    public Color calculateColor(final Ray ray,final Scene scene){
+    private Color calculateColor(final Ray ray, final Scene scene, final int depth){
         final IntersectInfo info = testIntersection(ray, scene);
         Color color;
         if (info.getIsHit()){
             traceDepth = 0;
-            color = rayTrace(info, ray, scene);
+            color = rayTrace(info, ray, scene, depth);
         }
         else{
             color = scene.background;
@@ -123,8 +95,10 @@ public class RayTracer {
      * @param scene
      * @return Color in intersection point.
      */
-    private Color rayTrace(final IntersectInfo info,final Ray ray,
-                           final Scene scene) {
+    private Color rayTrace(final IntersectInfo info,
+                           final Ray ray,
+                           final Scene scene,
+                           final int reflectionDepth) {
 
         Color color = new Color();
         final Vector ri = info.getPosition();
@@ -143,13 +117,13 @@ public class RayTracer {
         }
 
         if (renderReflection){
-            if (info.getElement().getMaterial().getReflection() > 0 && traceDepth < this.reflectionDepth){
+            if (info.getElement().getMaterial().getReflection() > 0 && traceDepth < reflectionDepth){
                 final Ray reflectionRay = getReflectionRay(info.getPosition(), info.getNormal(), ray.getDirection());
                 final IntersectInfo intersectInfo = testIntersection(reflectionRay, scene);
 
                 if (intersectInfo.getIsHit() && intersectInfo.getDistance() > 0){
                     traceDepth++ ;
-                    intersectInfo.setColor(rayTrace(intersectInfo, reflectionRay, scene));
+                    intersectInfo.setColor(rayTrace(intersectInfo, reflectionRay, scene, reflectionDepth));
                 }
                 else {
                     intersectInfo.setColor(info.getColor());
@@ -169,9 +143,8 @@ public class RayTracer {
         return new Ray(To, Td);
     }
 
-
-    public IntersectInfo testIntersection(final Ray ray ,
-                                          final Scene scene) {
+    private IntersectInfo testIntersection(final Ray ray,
+                                           final Scene scene) {
         int hitCount = 0;
         IntersectInfo best = new IntersectInfo(Double.MAX_VALUE);
 
@@ -186,6 +159,4 @@ public class RayTracer {
         best.setHitCount(hitCount);
         return best;
     }
-
 }
-

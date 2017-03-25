@@ -6,7 +6,7 @@ import tracer.TracerParam;
 
 import javax.swing.*;
 
-public final class RayTracerApp {
+public final class RayTracerApplication {
 
     final static TracerGUI gui = new TracerGUI(new TracerParam());
     final static TracerGUIObserver guiObserver = new TracerGUIObserver();

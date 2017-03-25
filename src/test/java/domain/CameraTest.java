@@ -39,44 +39,4 @@ public class CameraTest {
         //@formatter:on
 	}
 
-	@Test
-	public void cameraValid() {
-		testCamera = new Camera(position, lookat, upward, 200, 200, 200, 200, 200);
-		assertTrue(testCamera.isValid());
-	}
-
-	@Test
-	public void cameraInvalidZoomAboveRange() {
-		testCamera = new Camera(position, lookat, upward, 600,
-				400, 400, 400, 400);
-		assertFalse(testCamera.isValid());
-	}
-
-	@Test
-	public void cameraInvalidWidthOutOfRange() {
-		testCamera = new Camera(position, lookat, upward, 50,
-				3000, 400, 400, 400);
-		assertFalse(testCamera.isValid());
-	}
-
-	@Test
-	public void cameraInvalidHeightOutOfRange() {
-		testCamera =new Camera(position, lookat, upward,50,
-				400,4000,400,400);
-		assertFalse(testCamera.isValid());
-	}
-
-	@Test
-	public void cameraInvalidXcordOutOfRange() {
-		testCamera = new Camera(position, lookat, upward, 50,
-				400, 400, 4000, 400);
-		assertFalse(testCamera.isValid());
-	}
-
-	@Test
-	public void cameraInvalidYcordOutOfRange() {
-		testCamera = new Camera(position, lookat, upward,50,
-				400,400,400,4000);
-		assertFalse(testCamera.isValid());
-	}
 }

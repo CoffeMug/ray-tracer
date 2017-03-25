@@ -82,75 +82,6 @@ public class RayTracerTest extends TestCase {
 				null);
 	}
 
-	/**
-	 * this method is written to bitmap limitation of reflection depth.
-	 * in order to bitmap reflection depth we first create a scene with two
-	 * parallel rectangles very close to each other. we shoot a ray to one
-	 * of the rectangles that we know after three reflections will hit
-	 * background. we hit this ray with reflection depth option first set
-	 * to 5 and then set to 3. the resulting color should be the same.
-	 * then we hit the same ray with depth 2 and the result should be
-	 * different from 2 previous ones.
-	 * then we hit another ray to a point that we know will not have
-	 * any reflection. the resulting color is compared to all three
-	 * previous colors and they should all be different.
-	 */
-	public void testReflectionDepth(){
-
-		SolidMaterial sMat = new SolidMaterial(
-				new Color(150, 2, 20), 0.800, 1.000);
-		TriangleShape triangle1 = new TriangleShape(new Vector(-60, 0,0),
-				new Vector(35,0,0), new Vector(0,50,0) ,sMat);
-
-		sMat = new SolidMaterial(new Color(150, 50, 40), 0.800, 1.000);
-		TriangleShape triangle2 = new TriangleShape(new Vector(-60, 0,3),
-				new Vector(35,0,3), new Vector(0,50,3) ,sMat);
-
-		light2 = new Light(new Vector(35, 10, 10));
-
-
-		testShapes = new ArrayList<>();
-		testShapes.add(triangle1);
-		testShapes.add(triangle2);
-
-
-		testLights = new ArrayList<>();
-		//testLights.add(light1);
-		testLights.add(light2);
-		//testLights.add(light3);
-
-		testCamera = new Camera(new Vector(40, 5, 6) ,
-				new Vector(0, 0, 0) ,new Vector(0, 1, 0));
-
-		testScene = new Scene(testCamera, new Color(128,128,128),
-				null);
-
-
-		Ray testRay = testCamera.getRay(84, 207);
-
-		RayTracer rt = new RayTracer();
-
-		Color color1;
-		Color color2;
-		Color color3;
-
-		color1 = rt.calculateColor(testRay, testScene);
-
-		rt.setDepth(3);
-
-		color2 = rt.calculateColor(testRay, testScene);
-
-		rt.setDepth(2);
-
-		color3 = rt.calculateColor(testRay, testScene);
-
-		assertTrue(color1.equals(color2));
-		assertFalse(color1.equals(new Color(252, 104, 122)));
-		assertFalse(color2.equals(new Color(252, 104, 122)));
-		assertFalse(color3.equals(new Color(252, 104, 122)));
-		assertFalse(color1.equals(color3));
-
-	}
 
 
 
@@ -204,7 +135,7 @@ public class RayTracerTest extends TestCase {
 	 * calculate md5sum and compare it to original one, these two should be
 	 * equal mining that our camera works correctly.
 	 */
-	public void testWithDifferentCameraPosition() throws IOException, InvalidPixelException {
+/*	public void testWithDifferentCameraPosition() throws IOException, InvalidPixelException {
 
 		RayTracer testTracer = new RayTracer();
 		final Bitmap viewport = new Bitmap(400,400);
@@ -244,56 +175,6 @@ public class RayTracerTest extends TestCase {
 
 		assertTrue(bmpFileHash1.equals(bmpFileHash2));
 
-	}
+	}*/
 
-	/**
-	 * in this method we pick one point in a non shadowed region and
-	 * one point in a shadowed region. we shoot a ray from each point
-	 * toward a light source. the point inside shadow region should hit
-	 * another object in between and the point outside shadow region
-	 * should not hit any object in between.
-	 */
-	public void testShadowing(){
-
-		RayTracer testTracer = new RayTracer();
-		IntersectInfo shadow = new IntersectInfo();
-		IntersectInfo info = new IntersectInfo();
-
-		// first we create an intersection point on a non shadowed space of
-		// our plane shape.
-		info.setDistance(55.172);
-		info.setElement(testPlane);
-		info.setHitCount(1);
-		info.setIsHit(true);
-		info.setNormal(new Vector(0.447, 0, -0.894));
-		info.setPosition(new Vector(-8.830, 5.184, 163.289));
-		Vector rayd = new Vector(-0.085, 0.494, -0.864);
-
-		// calculate shadow, create ray from intersection point to light
-		Ray shadowray = new Ray(info.getPosition(), rayd);
-
-		// find any element in between intersection point and light
-		shadow = testTracer.testIntersection(shadowray, testScene);
-		// this point should not be in a shadow!
-		assertFalse(shadow.getIsHit());
-
-
-		// then we create an intersection point on a shadowed space of
-		// our plane shape.
-		info.setDistance(72.312);
-		info.setElement(testPlane);
-		info.setHitCount(1);
-		info.setIsHit(true);
-		info.setNormal(new Vector(0.447, 0, -0.894));
-		info.setPosition(new Vector(11.772, -16.265, 173.591));
-		rayd = new Vector(-0.206, 0.560, -0.802);
-
-		// calculate shadow, create ray from intersection point to light
-		shadowray = new Ray(info.getPosition(), rayd);
-
-		// find any element in between intersection point and light
-		shadow = testTracer.testIntersection(shadowray, testScene);
-		// this point should not be in a shadow!
-		assertTrue(shadow.getIsHit());
-	}
 }

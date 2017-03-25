@@ -13,54 +13,42 @@ import domain.Vector;
 public class Camera {
     private Vector location;
     private Vector lookAt;
-    private Vector upside;
+    private Vector up;
     private int zoom; 
     private int width; 
     private int height; 
     private int xpix; 
-    private int ypix; 
-    private boolean isValid;
+    private int ypix;
 
-    public boolean isValid() {
-        return isValid;
+    public Camera(final Vector location, final Vector lookAt, final Vector up){
+        this.location = location;
+        this.lookAt = lookAt;
+        this.up = up;
     }
 
-    /**
-     * the default constructor camera used in XmlParser class 
-     * @param position
-     * @param lookat
-     */
-    public Camera(final Vector location, final Vector lookAt, final Vector upward){
-        this(location, lookAt, upward, 300, 400, 400, 400, 400);
+    public Camera withZoom(final int zoom) {
+        this.zoom = zoom;
+        return this;
     }
 
-    /**
-     * the more detailed constructor 
-     * @param position
-     * @param lookat
-     * @param upward
-     */
-    public Camera(final Vector location, final Vector lookat, final Vector upward,
-                  final int zoom, final int width, final int height, final int xcord,
-                  final int ycord) {
+    public Camera withWidth(final int width) {
+        this.width = width;
+        return this;
+    }
 
-        if (validateCamera(zoom, width, height, xcord, ycord)) {
-            this.upside = upward.normalize();
-            this.location = location;
-            this.lookAt = lookat;
-            this.upside = upward;
-            this.width = width;
-            this.height = height;
-            this.xpix = xcord;
-            this.ypix = ycord;
-            this.zoom = zoom;
-            this.isValid = true;
-        }
-        else{
+    public Camera withHeight(final int height) {
+        this.height = height;
+        return this;
+    }
 
-            this.isValid = false ;
-        }
+    public Camera withXpix(final int xpix) {
+        this.xpix = xpix;
+        return this;
+    }
 
+    public Camera withYpix(final int ypix) {
+        this.ypix = ypix;
+        return this;
     }
 
     /**
@@ -70,10 +58,9 @@ public class Camera {
      * @param vecty
      * @return
      */
-
     public Ray getRay(final float vectx, final float vecty){
         final Vector cVect = (lookAt.vectorReduction(location)).normalize();
-        final Vector crVect = (upside.crossProduct(cVect)).normalize();
+        final Vector crVect = (up.crossProduct(cVect)).normalize();
         final Vector cdVect = (crVect.crossProduct(cVect)).normalize();
 
         final Vector ccVect = location.vectorAddition(cVect.vectorMultiply(zoom)).
@@ -87,99 +74,6 @@ public class Camera {
         final Vector dir = Pxy.vectorReduction(location);
         //Ray newRay = new Ray(location, dir.normalize());
         return new Ray(location, dir.normalize());
-    }
-
-    /**
-     * this method is to check if the camera is constructed properly
-     * @param zoom
-     * @param width
-     * @param height
-     * @param xcord
-     * @param ycord
-     * @return
-     */
-    public static boolean validateCamera(final int zoom,final int width,
-                                         final int height, final int xcord,
-                                         final int ycord){
-        boolean flag;
-        if( zoom < 1 || zoom > 300 || height < 1 ||
-            height > 2000 || width < 1 || width > 2000 ||
-            xcord < 1 || xcord > 2000 || ycord < 1 || ycord > 2000 ){
-            flag = false;
-        }
-        else{
-            flag = true;
-        }
-        return flag;
-    }
-
-    /**
-     * Getters and setters.
-     *
-     */
-
-    public int getZoom() {
-        return this.zoom;
-    }
-
-    public void setZoom(final int zoom) {
-        this.zoom = zoom;
-    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public void setWidth(final int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
-    public void setHeight(final int height) {
-        this.height = height;
-    }
-
-    public int getXpix() {
-        return this.xpix;
-    }
-
-    public void setXpix(final int xpix) {
-        this.xpix = xpix;
-    }
-
-    public int getYpix() {
-        return this.ypix;
-    }
-
-    public void setYpix(final int ypix) {
-        this.ypix = ypix;
-    }
-
-    public Vector getLocation() {
-        return this.location;
-    }
-
-    public void setLocation(final Vector location) {
-        this.location = location;
-    }
-
-    public Vector getLookAt() {
-        return this.lookAt;
-    }
-
-    public void setLookAt(final Vector lookAt) {
-        this.lookAt = lookAt;
-    }
-
-    public Vector getUpside() {
-        return this.upside;
-    }
- 
-    public void setUpside(final Vector upside) {
-        this.upside = upside;
     }
 }
 
