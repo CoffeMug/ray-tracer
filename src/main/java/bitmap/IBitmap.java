@@ -4,6 +4,7 @@
 package bitmap;
 
 import domain.Color;
+import exceptions.InvalidPixelException;
 
 import java.io.IOException;
 
@@ -31,5 +32,5 @@ public interface IBitmap {
 
     void convertPPMToJPG();
 
-    void writePixel(int xCord, int yCord, Color color);
+    void writePixel(int xCord, int yCord, Color color) throws InvalidPixelException;
 }

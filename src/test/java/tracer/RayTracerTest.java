@@ -171,11 +171,11 @@ public class RayTracerTest extends TestCase {
 		Color firstColor = new Color();
 		Color secondColor = new Color();
 
-		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false, "1", 1);
+		testTracer.rayTraceScene(testScene, viewport, 5, false, "1", 1);
 
 		Light light3 = new Light(new Vector(-20, 70, 50));
 		testScene.world.lights.add(light3);
-		testTracer.rayTraceScene("testResult.ppm", testScene, viewport1, 5, false, "1", 1);
+		testTracer.rayTraceScene(testScene, viewport1, 5, false, "1", 1);
 
 		try {
 
@@ -208,7 +208,7 @@ public class RayTracerTest extends TestCase {
 
 		RayTracer testTracer = new RayTracer();
 		final Bitmap viewport = new Bitmap(400,400);
-		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false,"1",1);
+		testTracer.rayTraceScene(testScene, viewport, 5, false,"1",1);
 
 		String bmpFileHash1 = "";
 		String bmpFileHash2 = "";
@@ -221,7 +221,7 @@ public class RayTracerTest extends TestCase {
 		}
 
 		testScene.camera.setLocation(new Vector(30, -50, -100));
-		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false ,"1" ,1);
+		testTracer.rayTraceScene(testScene, viewport, 5, false ,"1" ,1);
 		bmpFile = new File("testResult.ppm");
 		try {
 			bmpFileHash2 = MD5Sum.getFileMD5Sum(bmpFile);
@@ -233,7 +233,7 @@ public class RayTracerTest extends TestCase {
 		assertFalse(bmpFileHash1.equals(bmpFileHash2));
 
 		testScene.camera.setLocation(new Vector(-30, 50, 100));
-		testTracer.rayTraceScene("testResult.ppm", testScene, viewport, 5, false,"1",1);
+		testTracer.rayTraceScene(testScene, viewport, 5, false,"1",1);
 		bmpFile = new File("testResult.ppm");
 		try {
 			bmpFileHash2 = MD5Sum.getFileMD5Sum(bmpFile);

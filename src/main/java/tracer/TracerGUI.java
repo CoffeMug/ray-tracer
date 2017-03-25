@@ -1,5 +1,8 @@
 package tracer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Observable;
 import java.io.*;
 import java.awt.event.*;
@@ -9,6 +12,8 @@ import java.awt.Color;
 import java.awt.*;
 
 public class TracerGUI extends Observable implements ActionListener {
+
+    private final Logger logger = LoggerFactory.getLogger(TracerGUI.class);
 
     // Left config panel 
     static private JPanel configPanelLeft;
@@ -63,7 +68,7 @@ public class TracerGUI extends Observable implements ActionListener {
                 File file = fc.getSelectedFile();
                 tracerParam.setSceneFile(file.getAbsolutePath());
             } else {
-                System.out.println("Open command cancelled by user.");
+                logger.info("Open command cancelled by user.");
             }
 
         } else if (e.getSource() == trace) {
@@ -89,14 +94,14 @@ public class TracerGUI extends Observable implements ActionListener {
     }
 
     private void paintResults() {
-        System.out.println("Painting the result!");
+
+        logger.info("Painting the result!");
 
         if (resultImage.getImage() == null) {
-            resultImage = createImageIcon("output.jpeg"); 
-        }
-        else {
+            resultImage = new ImageIcon("output.jpeg");
+        } else {
             resultImage.getImage().flush();
-            resultImage = createImageIcon("output.jpeg"); 
+            resultImage = new ImageIcon("output.jpeg");
         }
         resultPic.setIcon(resultImage);
         drawPanel.add(resultPic);
@@ -104,15 +109,7 @@ public class TracerGUI extends Observable implements ActionListener {
         drawPanel.repaint();
     }
 
-    private ImageIcon createImageIcon(String path) {
-        if (path != null) {
-            return new ImageIcon(path);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
- 
+
     /**
      * Create the GUI and show it. For thread safety,
      * this method should be invoked from the

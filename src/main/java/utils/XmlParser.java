@@ -71,9 +71,12 @@ public class XmlParser {
     private Scene parseScene() {
         //get the root element
         final Element docElement = document.getDocumentElement();
+        Color backgroundColor = new Color();
 
         Camera camera = parseCamera((Element) docElement.getElementsByTagName("camera").item(0));
-        Color backgroundColor = parseBackground((Element) docElement.getElementsByTagName("background").item(0));
+        if (docElement.getElementsByTagName("background").item(0) != null) {
+            backgroundColor = parseBackground((Element) docElement.getElementsByTagName("background").item(0));
+        }
         World world = parseWorld((Element) docElement.getElementsByTagName("world").item(0));
         return new Scene(camera, backgroundColor, world);
     }

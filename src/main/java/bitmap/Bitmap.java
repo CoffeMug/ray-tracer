@@ -1,9 +1,11 @@
 package bitmap;
 
 import domain.Color;
+import exceptions.InvalidPixelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Scanner;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -22,11 +24,34 @@ import javax.imageio.IIOImage;
  * @see Color
  */
 public class Bitmap implements IBitmap {
+
+    private static final Logger logger = LoggerFactory.getLogger(Bitmap.class);
+
     private transient BitmapVariant variant;
     private transient int maximumColorComponentValue;
     private transient int width;
     private transient int height;
     private transient Color[][] pixels;
+
+
+    public Bitmap() {
+
+    }
+
+    public Bitmap withWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
+    public Bitmap withHeight(int height) {
+        this.height = height;
+        return this;
+    }
+
+    public Bitmap withPixels(Color[][] color) {
+        this.pixels = color;
+        return this;
+    }
 
     public Bitmap(final int width, final int height){
         this.width = width;
@@ -42,19 +67,26 @@ public class Bitmap implements IBitmap {
         return height;
     }
 
-    public Color readPixel(final int x, final int y) throws Exception {
+    public Color readPixel(final int x, final int y) throws InvalidPixelException {
         if ((x >= 0 && x < width) && (y >= 0 && y < height)){
             return pixels[x][y];
+        } else {
+            logger.error("Invalid pixel with the coordinates {} {}", x, y);
+            throw new InvalidPixelException("This is not a valid pixel!");
         }
-        throw new Exception("This is not a valid pixel!");
     }
 
-    public void writePixel(final int x, final int y, final Color color) {
-        this.pixels[x][y] = color;
+    public void writePixel(final int x, final int y, final Color color) throws InvalidPixelException {
+        if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
+            this.pixels[x][y] = color;
+        } else {
+            logger.error("Invalid pixel with the coordinates {} {}", x, y);
+            throw new InvalidPixelException("This is not a valid pixel!");
+        }
     }
 
     public void readBitmapPropertiesFromFile(final InputStream inputStream) throws IOException {
-        checkFormatFromHeader(readChar(inputStream));
+        checkFormatInHeader(readChar(inputStream));
         checkFileType(readChar(inputStream));
         width = readInt(inputStream);
         height = readInt(inputStream);
@@ -65,29 +97,29 @@ public class Bitmap implements IBitmap {
         BufferedImage image;
         File outfile;
         try {
-            image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-            for (int i=0; i < this.width; i++) {
-                for (int j=0; j < this.height; j++) {
-                    Color cl = this.readPixel(i, j);
-                    int rgb = this.makeRgb(cl.getRed(), cl.getGreen(), cl.getBlue());
+            image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            for (int i=0; i < width; i++) {
+                for (int j=0; j < height; j++) {
+                    Color color = readPixel(i, j);
+                    int rgb = makeRgb(color.getRed(), color.getGreen(), color.getBlue());
                     image.setRGB(i, j, rgb);
                 }
             }
             outfile = new File("output.jpeg");
 
-            ImageOutputStream ios = ImageIO.createImageOutputStream(outfile);
-            Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
-            ImageWriter writer = iter.next();
-            ImageWriteParam iwp = writer.getDefaultWriteParam();
-            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            iwp.setCompressionQuality(0.95f);
-            writer.setOutput(ios);
-            writer.write(null, new IIOImage(image,null,null), iwp);
+            ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(outfile);
+            Iterator<ImageWriter> iterator = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = iterator.next();
+            ImageWriteParam imageWriteParam = writer.getDefaultWriteParam();
+            imageWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            imageWriteParam.setCompressionQuality(0.95f);
+            writer.setOutput(imageOutputStream);
+            writer.write(null, new IIOImage(image,null,null), imageWriteParam);
             writer.dispose();
         }
 
         catch (Exception e) {
-            System.out.print(e.getMessage());
+            logger.error("Problem creating the jpeg image.");
         }
     }
 
@@ -115,7 +147,7 @@ public class Bitmap implements IBitmap {
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Error opening the file to wirte the bitmap");
+            logger.error("Error opening bitmap file {} for write.", filePath);
             throw new IOException();
         }
         finally {
@@ -123,15 +155,7 @@ public class Bitmap implements IBitmap {
         }
     }
 
-    /**
-     * this methods works in reverse to the writeBitmapToFile() method.It
-     * gets the name of the file to read information from and starts reading
-     * information from file and save it to an instance of our bitmap class.
-     * @param fileName name of bitmap file to read data from
-     * @throws IOException of variant IOException if can not find bitmap file.
-     */
    public void createBitmapFromFile(final String fileName) throws IOException {
-        //String word;
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(fileName);
@@ -139,7 +163,7 @@ public class Bitmap implements IBitmap {
             readPixels(inputStream);
         }
         catch (FileNotFoundException e) {
-            System.out.println("file not found" + fileName);
+            logger.error("Bitmap file {} not found!", fileName);
             throw new RuntimeException(e.getMessage());
         }
         finally {
@@ -148,46 +172,10 @@ public class Bitmap implements IBitmap {
 
     }
 
-
-
-
-    /**
-     * this is a method we use to compare two bitmap files.
-     * @param file1 path to first file.
-     * @param file2 path to second file.
-     * @return true if files are identical and false if they are not.
-     */
-    public boolean compareTwoFiles(final String file1, final String file2){
-        boolean flag = true ;
-        try
-        {
-            final Scanner file3 =  new Scanner(new FileInputStream(file1));
-            final Scanner file4 =  new Scanner(new FileInputStream(file2));
-
-            while( file3.hasNext() && file4.hasNext())
-            {
-                final String stringRead1 = file3.next();
-                final String stringRead2 = file4.next();
-                for (int i=0;i<=(stringRead1.length()>=stringRead2.length()
-                        ?stringRead2.length()-1:stringRead1.length()-1);i++){
-                    if (stringRead1.charAt(i) != stringRead2.charAt(i)){
-                        flag = false;
-                        break;
-                    }
-                }
-
-            }
-        }
-        catch(FileNotFoundException fnfe)
-        {
-            System.out.println( "Files were not found ");
-        }
-        return flag;
-    }
-
-    private void checkFormatFromHeader(char firstChar) throws IOException {
-    	if ( firstChar != 'P' ){
-            throw new IOException( "not a PPM file" );
+    private void checkFormatInHeader(char firstChar) throws IOException {
+    	if (firstChar != 'P'){
+    	    logger.error("Not a standard PPM file!");
+            throw new IOException();
         }
     }
     
@@ -200,15 +188,11 @@ public class Bitmap implements IBitmap {
             this.variant = BitmapVariant.PPM_BINARY;
             break;
         default:
-            throw new IOException( "not a standard PBM/PGM/PPM file" );
+            logger.error("Not a standard PBM/PGM/PPM file!");
+            throw new IOException( "Not a standard PBM/PGM/PPM file" );
         }
     }
-        
-    /**
-     * read pixel data into the filePixels array.
-     * @param inp file input stream.
-     * @throws IOException
-     */
+
     private void readPixels(final InputStream inp) throws IOException {
         int red, green, blue;
         Color filePixels[][] = new Color[this.width][this.height];        
@@ -243,13 +227,6 @@ public class Bitmap implements IBitmap {
         this.pixels = filePixels;
     }
 
-    /**
-     * routine to read a byte.  Instead of returning -1 on
-     * EOF, it throws an exception.
-     * @param inp file input stream.
-     * @return read byte.
-     * @throws IOException
-     */
     private static int readByte(final InputStream inp) throws IOException
     {
         final int binInp;
@@ -262,93 +239,59 @@ public class Bitmap implements IBitmap {
         return binInp;
     }
 
-    /**
-     * Utility routine to read a character, ignoring comments.
-     * @param inp file input stream.
-     * @return read character.
-     * @throws IOException
-     */
-    private static char readChar(final InputStream inp) throws IOException
-    {
+    private static char readChar(final InputStream inp) throws IOException {
         char chr = (char)readByte(inp);
         if (chr == '#')
+        {
+            do
             {
-                do
-                    {
-                        chr = (char) readByte(inp);
-                    }
-                while ( chr != '\n' && chr != '\r' );
+                chr = (char) readByte(inp);
             }
-
+            while ( chr != '\n' && chr != '\r' );
+        }
         return chr;
     }
 
-    /**
-     * Utility routine to read the first non-whitespace character.
-     * @param inp file input stream.
-     * @return read nonwhite char.
-     * @throws IOException
-     */
-    private static char readNonwhiteSpaceChar(final InputStream inp ) throws IOException
-    {
+    private static char readNonwhiteSpaceChar(final InputStream inp ) throws IOException {
         char char1;
 
         do
-            {
-                char1 = readChar( inp );
-            }
+        {
+            char1 = readChar( inp );
+        }
         while ( char1 == ' ' || char1 == '\t' || char1 == '\n' || char1 == '\r' );
 
         return char1;
     }
 
-    /**
-     * Utility routine to read an ASCII integer, ignoring comments.
-     * @param inputStream file input stream.
-     * @return read ASCII integer.
-     * @throws IOException
-     */
     private static int readInt(final InputStream inputStream) throws IOException
     {
         char chr;
-        int icont;
+        int number;
 
         chr = readNonwhiteSpaceChar(inputStream);
         if ( chr < '0' || chr > '9' ){
+            logger.error("Bad character in file; expecting integer.");
             throw new IOException( "junk in file where integer should be" );
         }
 
-        icont = 0;
+        number = 0;
         do
             {
-                icont = icont * 10 + chr - '0';
+                number = number * 10 + chr - '0';
                 chr = readChar( inputStream );
             }
         while ( chr >= '0' && chr <= '9' );
 
-        return icont;
+        return number;
     }
 
-
-    /**
-     * Utility routine to rescale a pixel value from a non-eight-bit maximumColorComponentValue
-     * @param tmp integer pixel value we want to rescale.
-     * @return
-     */
-    private int fixDepth( final int tmp )
+    private int fixDepth( final int rgb )
     {
-        return ( tmp * 255 + maximumColorComponentValue / 2 ) / maximumColorComponentValue;
+        return (rgb * 255 + maximumColorComponentValue/2)/maximumColorComponentValue;
     }
 
-    /**
-     * Utility routine make an RGBdefault pixel from three color values
-     * @param red red value of color.
-     * @param green green value of color.
-     * @param blue blue value of color.
-     * @return RGBdefault pixel.
-     */
-    @SuppressWarnings("unused")
-        private static int makeRgb( final int red, final int green, final int blue )
+    private static int makeRgb( final int red, final int green, final int blue )
     {
         return 0xff000000 | ( red << 16 ) | ( green << 8 ) | blue;
     }

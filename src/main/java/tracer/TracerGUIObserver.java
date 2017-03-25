@@ -1,7 +1,12 @@
 package tracer;
 
 import bitmap.Bitmap;
+import bitmap.BitmapVariant;
+import domain.Color;
 import domain.Scene;
+import exceptions.InvalidPixelException;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import utils.XmlParser;
 
 import java.io.IOException;
@@ -10,23 +15,35 @@ import java.util.Observer;
  
 public class TracerGUIObserver implements Observer {
 
-    TracerParam param; 
+    private final Logger logger = LoggerFactory.getLogger(TracerGUIObserver.class);
+
+    TracerParam param;
+
+    private final Bitmap viewport = new Bitmap();
 
     @Override
     public void update(Observable obj, Object arg) {
         if (arg instanceof TracerParam) {
+
             param = (TracerParam) arg;
 
-            System.out.println("The scene file is:" + param.getSceneFile());
+            logger.info("The scene file is {} ", param.getSceneFile());
 
             final XmlParser parser = new XmlParser();
 
             computeImage(param.getXpix(), param.getYpix(), param.getWidth(), param.getHeight(), param);
 
+            // Build the view port
+            viewport.withWidth(param.getWidth())
+                    .withHeight(param.getHeight())
+                    .withPixels(new Color[param.getWidth()][param.getHeight()]);
+
             final Scene scene = parser.parseXmlFile(param.getSceneFile());
-            final RayTracer rayt = new RayTracer(param.getRenderDiffuse(), param.getRenderShadows(), 
-                                                 param.getRenderReflection());
-            final Bitmap viewport = new Bitmap(param.getWidth(), param.getHeight());
+
+            final RayTracer rayTracer = new RayTracer(
+                    param.getRenderDiffuse(),
+                    param.getRenderShadows(),
+                    param.getRenderReflection());
 
             scene.camera.setHeight(param.getHeight());
             scene.camera.setWidth(param.getWidth());
@@ -34,24 +51,35 @@ public class TracerGUIObserver implements Observer {
             scene.camera.setXpix(param.getXpix());
             scene.camera.setYpix(param.getYpix());
 
-            // if no parallelization is intended.
+            // Single thread tracer
             if (param.getNoOfThreads() == 1){
                 try {
-                    rayt.rayTraceScene("output.ppm", scene, viewport, param.getDepth(),
-                                       param.getEnableTimer(),"1", param.getNoOfThreads());
+                    rayTracer.rayTraceScene(scene, viewport, param.getDepth(), param.getEnableTimer(),
+                            "1", param.getNoOfThreads());
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InvalidPixelException e) {
                     e.printStackTrace();
                 }
             }
-            // if we want to have parallelization we create as many threads as user
-            // entered as argument.
-            else if(param.getNoOfThreads() > 1){ //here we should bound number of threads && noOfThreads <)
-                for (int i=1; i<= param.getNoOfThreads(); i++){
-                    new TracerThread(i, rayt, scene, viewport, param.getDepth(), 
-                                     param.getEnableTimer(), param.getNoOfThreads());
+
+            // Multiple threads tracer
+            else {
+                for (int threadNumber=1; threadNumber <= param.getNoOfThreads(); threadNumber++){
+                    new TracerThread(threadNumber, rayTracer, scene, viewport,
+                            param.getDepth(),
+                            param.getEnableTimer(),
+                            param.getNoOfThreads());
                 }
             }
         }
+        try {
+            viewport.writeBitmapToFile(BitmapVariant.PPM_ASCII, param.getOutputFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        viewport.convertPPMToJPG();
+
     }
 
     /**

@@ -6,28 +6,29 @@ public class TracerParam {
     private static boolean renderReflection;
     private static boolean renderDiffuse;
     private static boolean enableTimer;
-    private static int depth;
-    private static int zoom;
+    private static int traceDepth;
+    private static int cameraZoom;
     private static int xpix;
     private static int ypix;
     private static int width;
     private static int height;
     private static int noOfThreads;
     private static String sceneFile;
+    private static String outputFile;
 
     public TracerParam() {
         this.renderShadows = true;
         this.renderReflection = true;
         this.renderDiffuse = false;
         this.enableTimer = false;
-        this.depth = 1;
-        this.zoom = 100;
+        this.traceDepth = 1;
+        this.cameraZoom = 100;
         this.xpix = 400;
         this.ypix = 400;
         this.width = 400;
         this.height = 400;
         this.noOfThreads = 1;
-        //        this.sceneFile = "";
+        this.outputFile = "output.ppm";
     }
 
     public void setRenderShadows(boolean renderShadows) {
@@ -63,19 +64,19 @@ public class TracerParam {
     }
 
     public void setDepth(int depth) {
-        this.depth = depth;
+        this.traceDepth = depth;
     }
 
     public int getDepth() {
-        return this.depth;
+        return this.traceDepth;
     }
 
     public void setZoom(int zoom) {
-        this.zoom = zoom;
+        this.cameraZoom = zoom;
     }
 
     public int getZoom() {
-        return this.zoom;
+        return this.cameraZoom;
     }
 
     public void setXpix(int xpix) {
@@ -126,4 +127,11 @@ public class TracerParam {
         return this.sceneFile;
     }
 
+    public static String getOutputFile() {
+        return outputFile;
+    }
+
+    public static void setOutputFile(String outputFile) {
+        TracerParam.outputFile = outputFile;
+    }
 }

@@ -2,6 +2,7 @@ package tracer;
 
 import bitmap.Bitmap;
 import domain.Scene;
+import exceptions.InvalidPixelException;
 
 import java.io.IOException;
 
@@ -45,8 +46,10 @@ public class TracerThread implements Runnable {
         
     public void run() {
         try {
-            rayt.rayTraceScene("PPM.PPM", scene, viewport, depth, timer, tName, noOfThreads);
+            rayt.rayTraceScene(scene, viewport, depth, timer, tName, noOfThreads);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidPixelException e) {
             e.printStackTrace();
         }
     }
