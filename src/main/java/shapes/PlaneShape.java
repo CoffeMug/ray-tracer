@@ -1,4 +1,5 @@
 package shapes;
+
 import domain.IntersectInfo;
 import domain.Ray;
 import domain.Vector;
@@ -7,7 +8,6 @@ import materials.BaseMaterial;
 /**
  * the plane class which will produce the plane shape based its position and normal vector  
  * @author amin
- * 
  */
 public class PlaneShape extends BaseShape {
     private double dist;
@@ -31,7 +31,6 @@ public class PlaneShape extends BaseShape {
      * and distance.
      * @param pos
      * @param dist
-
      */
     public PlaneShape(final Vector pos, final double dist){
         super();// for suppressing PMD warnings
@@ -67,13 +66,13 @@ public class PlaneShape extends BaseShape {
         }
                 
         final double v0 = dist - pNorm.dotProduct(ray.getOrigin());
-        final double tmp = (v0 / vD);
+        final double tmp = (v0/vD);
                 
         if (tmp < 0) return info;// the ray does not hit the plane
                 
         final Vector ri = ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tmp));
         final Vector rn = vD < 0 ? pNorm : pNorm.vectorMultiply(-1);
-        //
+
         info.setElement(this);
         info.setIsHit(true);
         info.setPosition(ri);

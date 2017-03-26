@@ -26,16 +26,16 @@ public class TracerThread implements Runnable {
      * @param threadName we use this argument to 
      * @param tracer instance of class we want to call its rayTrace() method. 
      * @param scene instance of class scene we want to raytrace.
-     * @param viewport bitmap plane to show tracing result on it.
+     * @param bitmap bitmap plane to show tracing result on it.
      * @param depth an integer that specified reflection depth
      * @param timer a boolean specifies whether to show render time or not.
      * @param noOfThreads number of threads specified by user.
      */
     public TracerThread (int threadName, RayTracer tracer, Scene scene,
-                         Bitmap viewport, int depth, boolean timer, int noOfThreads) throws InterruptedException {
+                         Bitmap bitmap, int depth, boolean timer, int noOfThreads) throws InterruptedException {
         rayTracer = tracer;
         this.scene = scene;
-        this.viewport = viewport;
+        this.viewport = bitmap;
         this.depth = depth;
         this.timer = timer;
         this.noOfThreads = noOfThreads;

@@ -29,34 +29,28 @@ public class SphereShape extends BaseShape {
         final double l2oc = oc.dotProduct(oc);
         final double tca = oc.dotProduct(ray.getDirection());
         final double t2hc = (this.radius * this.radius) - l2oc + (tca * tca);
-        //      final double t = Product(dst) - (this.rDbl * this.rDbl);
+        final double tOutside = tca - Math.sqrt(t2hc);
+        final double tInside = tca + Math.sqrt(t2hc);
         final double sr2 = (this.radius * this.radius);
 
-        if (sr2 > l2oc ){ // origin of the ray is inside the sphere.
+        // Origin of the ray is inside the sphere
+        if (sr2 > l2oc ){
             info.setIsHit(true);
-            info.setDistance(tca + (double)Math.sqrt(t2hc));
-            info.setPosition(ray.getOrigin().vectorAddition(
-                                                            ray.getDirection().vectorMultiply(info.getDistance())));
+            info.setDistance(tInside);
+            info.setPosition(ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tInside)));
             info.setNormal(info.getPosition().vectorReduction(position).vectorMultiply(-1/this.radius));
             info.setColor(calculateColor(info, this.material));
         }
-        else if (sr2 < l2oc && tca > 0 ){ // origin of the ray is outside the sphere and ray hits the sphere.
+        // Origin of ray is outside the sphere but ray hits the sphere
+        else if (sr2 <= l2oc && (tca > 0 || t2hc >=0)) {
             info.setIsHit(true);
-            info.setDistance(tca - (double)Math.sqrt(t2hc));
-            info.setPosition(ray.getOrigin().vectorAddition(
-                                                            ray.getDirection().vectorMultiply(info.getDistance())));
+            info.setDistance(tOutside);
+            info.setPosition(ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tOutside)));
             info.setNormal(info.getPosition().vectorReduction(position).vectorMultiply(1/this.radius));
             info.setColor(calculateColor(info, this.material));
         }
-        else if (t2hc >= 0){
-            info.setIsHit(true);
-            info.setDistance(tca - (double)Math.sqrt(t2hc));
-            info.setPosition(ray.getOrigin().vectorAddition(
-                                                            ray.getDirection().vectorMultiply(info.getDistance())));
-            info.setNormal(info.getPosition().vectorReduction(position).vectorMultiply(1/this.radius));
-            info.setColor(calculateColor(info, this.material));
-        }
-        else{ // no intersection!
+        // No intersection!
+        else{
             info.setIsHit(false);
         }
         return info;

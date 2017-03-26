@@ -1,6 +1,3 @@
-/**
- * 
- */
 package materials;
 
 import domain.Color;
@@ -44,6 +41,5 @@ public class TextureMaterial extends BaseMaterial {
         Color c1 = texture.getColorMap()[(int)uu][(int)vv];
         return c1;
     }
-
 }
 

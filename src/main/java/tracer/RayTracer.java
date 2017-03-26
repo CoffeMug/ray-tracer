@@ -36,16 +36,16 @@ public class RayTracer {
     }
 
     public void rayTraceScene(final Scene scene,
-                              final IBitmap viewport,
+                              final IBitmap bitmap,
                               final int depth,
                               final boolean showTime,
                               final String thread,
                               final int noOfThreads) throws IOException, InvalidPixelException {
 
-        final int width = viewport.getWidth();
-        final int height = viewport.getHeight();
+        final int width = bitmap.getWidth();
+        final int height = bitmap.getHeight();
         final int threadNumber = Integer.parseInt(thread);
-        final int wHeight = (int) Math.floor(viewport.getHeight()/noOfThreads);
+        final int wHeight = (int) Math.floor(bitmap.getHeight()/noOfThreads);
 
         // if number of threads does not fit all image plane we ask final
         // thread to process its own window plus all remaining pixels.
@@ -57,7 +57,7 @@ public class RayTracer {
         for (int y = lowerBoundY; y < upperBoundY; y++) {
             for (int x = 0; x < width; x++) {
                 Ray ray = scene.camera.getRay(x, y);
-                viewport.writePixel(x, y, calculateColor(ray, scene, depth));
+                bitmap.writePixel(x, y, calculateColor(ray, scene, depth));
             }
 
         }

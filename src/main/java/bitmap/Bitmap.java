@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import javax.imageio.stream.*;
 import javax.imageio.ImageWriter;
-import java.util.Iterator;;
+import java.util.Iterator;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.IIOImage;
 
@@ -227,8 +227,7 @@ public class Bitmap implements IBitmap {
         this.pixels = filePixels;
     }
 
-    private static int readByte(final InputStream inp) throws IOException
-    {
+    private static int readByte(final InputStream inp) throws IOException {
         final int binInp;
         try {
             binInp = inp.read();
@@ -247,7 +246,7 @@ public class Bitmap implements IBitmap {
             {
                 chr = (char) readByte(inp);
             }
-            while ( chr != '\n' && chr != '\r' );
+            while (chr != '\n' && chr != '\r');
         }
         return chr;
     }
@@ -257,20 +256,19 @@ public class Bitmap implements IBitmap {
 
         do
         {
-            char1 = readChar( inp );
+            char1 = readChar(inp);
         }
-        while ( char1 == ' ' || char1 == '\t' || char1 == '\n' || char1 == '\r' );
+        while (char1 == ' ' || char1 == '\t' || char1 == '\n' || char1 == '\r');
 
         return char1;
     }
 
-    private static int readInt(final InputStream inputStream) throws IOException
-    {
+    private static int readInt(final InputStream inputStream) throws IOException {
         char chr;
         int number;
 
         chr = readNonwhiteSpaceChar(inputStream);
-        if ( chr < '0' || chr > '9' ){
+        if (chr < '0' || chr > '9'){
             logger.error("Bad character in file; expecting integer.");
             throw new IOException( "junk in file where integer should be" );
         }
@@ -286,13 +284,11 @@ public class Bitmap implements IBitmap {
         return number;
     }
 
-    private int fixDepth( final int rgb )
-    {
+    private int fixDepth( final int rgb ) {
         return (rgb * 255 + maximumColorComponentValue/2)/maximumColorComponentValue;
     }
 
-    private static int makeRgb( final int red, final int green, final int blue )
-    {
+    private static int makeRgb( final int red, final int green, final int blue ) {
         return 0xff000000 | ( red << 16 ) | ( green << 8 ) | blue;
     }
 }

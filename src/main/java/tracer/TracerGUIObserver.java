@@ -74,7 +74,7 @@ public class TracerGUIObserver implements Observer {
                         e.printStackTrace();
                     }
                 });
-                }
+            }
         }
         try {
             bitmap.writeBitmapToFile(BitmapVariant.PPM_ASCII, param.getOutputFile());
