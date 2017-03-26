@@ -64,11 +64,16 @@ public class TracerGUIObserver implements Observer {
 
             // Multiple threads tracer
             else {
-                IntStream.rangeClosed(1, param.getNoOfThreads()).forEach(threadNumber ->
-                    new TracerThread(threadNumber, rayTracer, scene, bitmap,
-                            param.getDepth(),
-                            param.getEnableTimer(),
-                            param.getNoOfThreads()));
+                IntStream.rangeClosed(1, param.getNoOfThreads()).forEach(threadNumber -> {
+                    try {
+                        new TracerThread(threadNumber, rayTracer, scene, bitmap,
+                                param.getDepth(),
+                                param.getEnableTimer(),
+                                param.getNoOfThreads());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
                 }
         }
         try {

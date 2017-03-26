@@ -13,8 +13,8 @@ import java.io.IOException;
  */
 public class TracerThread implements Runnable {
     String threadName;
-    Thread t;
-    RayTracer rayt;
+    Thread thread;
+    RayTracer rayTracer;
     Scene scene;
     Bitmap viewport;
     int depth;
@@ -32,21 +32,22 @@ public class TracerThread implements Runnable {
      * @param noOfThreads number of threads specified by user.
      */
     public TracerThread (int threadName, RayTracer tracer, Scene scene,
-                         Bitmap viewport, int depth, boolean timer, int noOfThreads) {
-        rayt = tracer;
+                         Bitmap viewport, int depth, boolean timer, int noOfThreads) throws InterruptedException {
+        rayTracer = tracer;
         this.scene = scene;
         this.viewport = viewport;
         this.depth = depth;
         this.timer = timer;
         this.noOfThreads = noOfThreads;
         this.threadName = Integer.toString(threadName);
-        t = new Thread (this, "Thread " + threadName);
-        t.start();
+        thread = new Thread (this, "Thread " + threadName);
+        thread.start();
+        thread.join();
     }
         
     public void run() {
         try {
-            rayt.rayTraceScene(scene, viewport, depth, timer, threadName, noOfThreads);
+            rayTracer.rayTraceScene(scene, viewport, depth, timer, threadName, noOfThreads);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidPixelException e) {
