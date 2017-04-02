@@ -133,7 +133,7 @@ public class XmlParser {
     }
 
 
-    private PlaneShape parsePlane(final Element planeElement) throws Exception {
+    private Plane parsePlane(final Element planeElement) throws Exception {
         Vector normal;
         Vector point;
         double distance;
@@ -147,15 +147,15 @@ public class XmlParser {
 
         if (!planeElement.getAttribute("distance").isEmpty()) {
             distance = Double.parseDouble(planeElement.getAttribute("distance"));
-            return new PlaneShape(distance, normal, material);
+            return new Plane(distance, normal, material);
         } else {
             final Element pointElement = (Element) planeElement.getElementsByTagName("point").item(0);
             point = parseVector((Element)pointElement.getElementsByTagName("vector").item(0));
-            return new PlaneShape(point, normal, material);
+            return new Plane(point, normal, material);
         }
     }
 
-    private SphereShape parseSphere(final Element SphereElement) {
+    private Sphere parseSphere(final Element SphereElement) {
         double radius;
         Vector position;
         BaseMaterial material;
@@ -169,50 +169,31 @@ public class XmlParser {
         final Element materialElement =(Element)SphereElement.getElementsByTagName("surface").item(0);
         material = parseMaterial(materialElement);
 
-        return new SphereShape(position, radius, material);
+        return new Sphere(position, radius, material);
     }
 
-    private TriangleShape parseTriangle(final Element triangleElement) {
-        Vector c0Vect;
-        Vector c1Vect;
-        Vector c2Vect;
+    private Triangle parseTriangle(final Element triangleElement) {
+        Vector c0;
+        Vector c1;
+        Vector c2;
         BaseMaterial material;
-        boolean isCorner = true;
 
         final Element c0Element =(Element)triangleElement.getElementsByTagName("c0").item(0);
         Element elm = (Element)c0Element.getElementsByTagName("vector").item(0);
-        c0Vect = parseVector(elm);
+        c0 = parseVector(elm);
 
         final Element c1Element =(Element)triangleElement.getElementsByTagName("c1").item(0);
         elm = (Element)c1Element.getElementsByTagName("vector").item(0);
-        c1Vect = parseVector(elm);
+        c1 = parseVector(elm);
 
         final Element c2Element =(Element)triangleElement.getElementsByTagName("c2").item(0);
         elm = (Element)c2Element.getElementsByTagName("vector").item(0);
-        c2Vect = parseVector(elm);
-
-        final Element v1Element =(Element)triangleElement.getElementsByTagName("v1").item(0);
-        if (v1Element != null){
-            elm = (Element)v1Element.getElementsByTagName("vector").item(0);
-            isCorner = false;
-            c1Vect = parseVector(elm);
-        }
-
-        final Element v2Element =(Element)triangleElement.getElementsByTagName("v2").item(0);
-        if (v2Element != null){
-            elm = (Element)v2Element.getElementsByTagName("vector").item(0);
-            c2Vect = parseVector(elm);
-        }
+        c2 = parseVector(elm);
 
         final Element materialElement = (Element)triangleElement.getElementsByTagName("surface").item(0);
-                
-        if (isCorner == false) {
-            c1Vect = TriangleShape.triangleComputeCorner(c0Vect, c1Vect);
-            c2Vect = TriangleShape.triangleComputeCorner(c0Vect, c2Vect);
-        }
 
         material = parseMaterial(materialElement);
-        return new TriangleShape(c0Vect, c1Vect, c2Vect, material);
+        return new Triangle(c0, c1, c2, material);
     }
 
     private BaseMaterial parseMaterial(final Element materialElement) {

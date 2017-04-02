@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import materials.SolidMaterial;
 
-public class TriangleShapeTest extends TestCase  {
+public class TriangleTest extends TestCase  {
 
 	private transient Vector pVect;
 	//private transient Vector nVect;
@@ -22,8 +22,8 @@ public class TriangleShapeTest extends TestCase  {
 
 
 
-	//	private transient TriangleShape wrongTriangle;
-//	private transient PlaneShape testPlane;
+	//	private transient Triangle wrongTriangle;
+//	private transient Plane testPlane;
 	private transient SolidMaterial  solid;
 
 	public void setUp() throws Exception {
@@ -43,8 +43,8 @@ public class TriangleShapeTest extends TestCase  {
 	public void testIntersect() {
 
 		Ray testRay;
-		TriangleShape testTriangle;
-		testTriangle = new TriangleShape(pVect,llVect,rlVect,solid);
+		Triangle testTriangle;
+		testTriangle = new Triangle(pVect,llVect,rlVect,solid);
 		testRay = new Ray(roVect,rlVect.crossProduct(llVect));
 
 		//IntersectionPoint planeTestInfo = testPlane.Intersect(testRay);
@@ -55,9 +55,9 @@ public class TriangleShapeTest extends TestCase  {
 
 	}
 
-	@Test
+/*	@Test
 	public void testTriangleTest(){
-		assertFalse(TriangleShape.triangleTest(pVect,wllVect,wrlVect));
-	}
+		assertFalse(Triangle.triangleTest(pVect,wllVect,wrlVect));
+	}*/
 
 }

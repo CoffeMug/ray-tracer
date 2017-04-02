@@ -1,6 +1,5 @@
 package tracer;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -9,11 +8,9 @@ import domain.*;
 import exceptions.InvalidPixelException;
 import materials.SolidMaterial;
 import shapes.BaseShape;
-import shapes.PlaneShape;
-import shapes.SphereShape;
-import shapes.TriangleShape;
+import shapes.Plane;
+import shapes.Sphere;
 import scene.Camera;
-import utils.MD5Sum;
 
 
 import junit.framework.TestCase;
@@ -31,11 +28,11 @@ public class RayTracerTest extends TestCase {
 
 	Scene testScene;
 	ArrayList<BaseShape> testShapes;
-	SphereShape sphere1,sphere2,sphere3,sphere4;
+	Sphere sphere1,sphere2,sphere3,sphere4;
 	ArrayList<Light> testLights;
 	Light light1,light2;
 	Camera testCamera;
-	PlaneShape testPlane;
+	Plane testPlane;
 
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -45,19 +42,19 @@ public class RayTracerTest extends TestCase {
 
 		SolidMaterial sMat = new SolidMaterial(
 				new Color(150, 2, 20), 0.800, 1.000);
-		sphere1= new SphereShape(new Vector(-10, 7, 118), 8, sMat);
+		sphere1= new Sphere(new Vector(-10, 7, 118), 8, sMat);
 
 		sMat = new SolidMaterial(new Color(150, 50, 40), 0.800, 1.000);
-		sphere2= new SphereShape(new Vector(10, 7, 118), 8, sMat);
+		sphere2= new Sphere(new Vector(10, 7, 118), 8, sMat);
 
 		sMat = new SolidMaterial(new Color(100, 58, 58), 0.8, 1.000);
-		sphere3 = new SphereShape(new Vector(0, 14, 107), 4, sMat);
+		sphere3 = new Sphere(new Vector(0, 14, 107), 4, sMat);
 
 		sMat = new SolidMaterial(new Color(200, 0, 0), 0, 1.000);
-		sphere4 = new SphereShape(new Vector(0, 14, 124), 4, sMat);
+		sphere4 = new Sphere(new Vector(0, 14, 124), 4, sMat);
 
 		sMat = new SolidMaterial(new Color(210, 158, 20), 0, 1.000);
-		testPlane = new PlaneShape(150 ,new Vector(-1, 0, 2), sMat);
+		testPlane = new Plane(150 ,new Vector(-1, 0, 2), sMat);
 
 		light1 = new Light(new Vector(10, 0, 50));
 		light2 = new Light(new Vector(-20, 70, 50));

@@ -13,7 +13,7 @@ import domain.Ray;
 
 import static junit.framework.TestCase.assertTrue;
 
-public class PlaneShapeTest {
+public class PlaneTest {
 
 	private transient Vector pVect;
 	private transient Vector nVect;
@@ -33,7 +33,7 @@ public class PlaneShapeTest {
 	@Test
 	public void rayHitPlane() {
 		Ray ray = new Ray(roVect, rdVect);
-		PlaneShape plane = new PlaneShape(pVect, nVect, solid);
+		Plane plane = new Plane(pVect, nVect, solid);
 		final IntersectInfo planeTestInfo = plane.intersect(ray);
 
 		assertTrue(planeTestInfo.getIsHit());
@@ -41,7 +41,7 @@ public class PlaneShapeTest {
 
 	@Test
 	public void rayDoesNotHitPlane() {
-		PlaneShape plane = new PlaneShape(pVect, nVect, solid);
+		Plane plane = new Plane(pVect, nVect, solid);
 		assertTrue(plane.intersect(new Ray(rdVect, roVect)).getIsHit());
 	}
 }
