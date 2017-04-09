@@ -40,7 +40,7 @@ public class TriangleTest extends TestCase  {
 	}
 
 	@Test
-	public void testIntersect() {
+	public void testIntersect() throws Exception {
 
 		Ray testRay;
 		Triangle testTriangle;

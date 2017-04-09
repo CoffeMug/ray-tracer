@@ -13,7 +13,6 @@ import domain.*;
 import domain.Color;
 import materials.BaseMaterial;
 import materials.SolidMaterial;
-import materials.Texture;
 import materials.TextureMaterial;
 
 import org.w3c.dom.Document;
@@ -198,7 +197,6 @@ public class XmlParser {
 
     private BaseMaterial parseMaterial(final Element materialElement) {
         BaseMaterial material = null;
-        Texture texture;
         final Bitmap bmp = new Bitmap(0, 0);
         double diffuse = 1;
         double reflection = 0;
@@ -218,8 +216,7 @@ public class XmlParser {
             final String bitmapFile = elm.getAttribute("file").toString();
             try {
                 bmp.createBitmapFromFile(bitmapFile);
-                texture = Texture.fromBitmap(bmp);
-                material = new TextureMaterial(texture, reflection, diffuse);
+                material = new TextureMaterial(bmp, reflection, diffuse);
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());

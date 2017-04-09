@@ -28,15 +28,12 @@ public class MockBitmap implements IBitmap {
         return this.height;
     }
 
-    public Color readPixel(final int xCord, final int yCord) throws Exception{
+    public Color readPixel(final int xCord, final int yCord) {
                 
         if ((xCord>=0 && xCord<= width) && (yCord>=0 && yCord<= height)){
-            Color pixel = new Color();
-            pixel = colPixs[(yCord - 1) * this.width + xCord - 1];
-            return pixel;
+            return colPixs[(yCord - 1) * this.width + xCord - 1];
         }
         throw new RuntimeException("this is not a valid pixel");
-                
     }
         
     public void writeBitmapToFile(final BitmapVariant variant, final String filePath) {

@@ -26,7 +26,7 @@ public interface IBitmap {
      * @param yCord Y coordinate of the pixel in bitmap matrix.
      * @return color of the pixel in (x,y) coordinate.
      */
-    Color readPixel(int xCord, int yCord) throws Exception;
+    Color readPixel(int xCord, int yCord);
 
     void writeBitmapToFile(BitmapVariant variant, String filePath) throws IOException;
 

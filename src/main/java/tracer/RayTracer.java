@@ -40,7 +40,7 @@ public class RayTracer {
                               final int depth,
                               final boolean showTime,
                               final String thread,
-                              final int noOfThreads) throws IOException, InvalidPixelException {
+                              final int noOfThreads) {
 
         final int width = bitmap.getWidth();
         final int height = bitmap.getHeight();
@@ -74,7 +74,7 @@ public class RayTracer {
      * @param scene current scene we test ray intersection with.
      * @return color of intersection point.
      */
-    private Color calculateColor(final Ray ray, final Scene scene, final int depth){
+    private Color calculateColor(final Ray ray, final Scene scene, final int depth) {
         final IntersectInfo info = testIntersection(ray, scene);
         Color color;
         if (info.getIsHit()){

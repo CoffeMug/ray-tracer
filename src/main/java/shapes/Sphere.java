@@ -60,20 +60,20 @@ public class Sphere extends BaseShape {
         if (material.hasTexture())
             {
                 //TextureMaterial tmpMaterial = (TextureMaterial) this.material;
-                final Vector sp = new Vector(0, 1, 0).normalize(); // north pole / up
+                final Vector sPole = new Vector(1, 0, 0).normalize(); // north pole / up
                 // equator / sphere orientation
-                final Vector se = new Vector(0, 0, 1).normalize();
+                final Vector sEquator = new Vector(0, 0, 1).normalize();
                 //points from center of sphere to intersection 
                 final Vector rn = info.getNormal();
-                final double phi = Math.acos((rn.vectorMultiply(-1)).dotProduct(sp));
+                final double phi = Math.acos((rn.vectorMultiply(-1)).dotProduct(sPole));
                 final double vi = phi / Math.PI;
                 final double ui;
 
                 if (vi == 0 || vi == 1)
                     ui = 0;
                 else {
-                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi)))/(2*Math.PI);
-                    ui = (se.crossProduct(sp)).dotProduct(rn) > 0 ? theta : 1 - theta; 
+                    final double theta = (Math.acos(sEquator.dotProduct(rn) / Math.sin(phi)))/(2*Math.PI);
+                    ui = (sEquator.crossProduct(sPole)).dotProduct(rn) > 0 ? theta : 1 - theta;
                 }
                 return material.getColor(ui, vi);
             }
