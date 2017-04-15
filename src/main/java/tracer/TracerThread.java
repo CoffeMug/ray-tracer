@@ -47,6 +47,9 @@ public class TracerThread implements Runnable {
         
     public void run() {
         try {
+            rayTracer.rayTraceScene(scene, viewport, depth, timer, threadName, noOfThreads);
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (InvalidPixelException e) {
             e.printStackTrace();
         }

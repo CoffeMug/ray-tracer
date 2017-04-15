@@ -31,7 +31,7 @@ public class PlaneTest {
 	}
 
 	@Test
-	public void rayHitPlane() throws Exception {
+	public void rayHitPlane() {
 		Ray ray = new Ray(roVect, rdVect);
 		Plane plane = new Plane(pVect, nVect, solid);
 		final IntersectInfo planeTestInfo = plane.intersect(ray);
@@ -40,7 +40,7 @@ public class PlaneTest {
 	}
 
 	@Test
-	public void rayDoesNotHitPlane() throws Exception {
+	public void rayDoesNotHitPlane() {
 		Plane plane = new Plane(pVect, nVect, solid);
 		assertTrue(plane.intersect(new Ray(rdVect, roVect)).getIsHit());
 	}

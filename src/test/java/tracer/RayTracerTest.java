@@ -91,7 +91,7 @@ public class RayTracerTest extends TestCase {
 	 * brighter we pass the bitmap. it shows that lights are correctly rendered
 	 * in our project.
 	 */
-	public void testWithDifferentLights() throws Exception {
+	public void testWithDifferentLights() throws IOException, InvalidPixelException {
 
 		RayTracer testTracer = new RayTracer();
 		final Bitmap viewport = new Bitmap(400,400);

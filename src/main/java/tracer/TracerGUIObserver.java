@@ -55,10 +55,11 @@ public class TracerGUIObserver implements Observer {
                 try {
                     rayTracer.rayTraceScene(scene, bitmap, param.getDepth(), param.getEnableTimer(),
                             "1", param.getNoOfThreads());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 } catch (InvalidPixelException e) {
                     e.printStackTrace();
                 }
-
             }
 
             // Multiple threads tracer

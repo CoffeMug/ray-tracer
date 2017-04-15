@@ -30,7 +30,7 @@ public class Plane extends BaseShape {
     }
 
     @Override
-    public IntersectInfo intersect(final Ray ray) {
+    public IntersectInfo intersect(final Ray ray){
         final IntersectInfo info = new IntersectInfo();
         final double vD = normal.dotProduct(ray.getDirection());
 
