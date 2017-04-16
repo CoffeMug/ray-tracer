@@ -1,6 +1,8 @@
 package materials;
 
+import bitmap.IBitmap;
 import domain.Color;
+import exceptions.InvalidPixelException;
 
 
 /** this class extends base material class and is used when we want to 
@@ -10,7 +12,7 @@ import domain.Color;
  */
 public class TextureMaterial extends BaseMaterial {
 
-    public transient Texture texture;
+    private IBitmap texture;
      
     /**
      * this constructor gets texture object a texture material should 
@@ -18,7 +20,7 @@ public class TextureMaterial extends BaseMaterial {
      * @param text texture object.
      * @param reflection amount of reflection the texture should implement.
      */
-    public TextureMaterial(final Texture text, final double reflection, final double diffuse)
+    public TextureMaterial(final IBitmap text, final double reflection, final double diffuse)
     {
         super(diffuse, reflection); // used for suppressing PMD warning
         this.texture = text;
@@ -35,11 +37,10 @@ public class TextureMaterial extends BaseMaterial {
      * on a texture object in X,Y coordinates.
      */
     @Override 
-    public Color getColor(final double ui, final double vi){
+    public Color getColor(final double ui, final double vi) throws InvalidPixelException {
         double uu = (ui) * this.texture.getWidth();
         double vv = (vi) * this.texture.getHeight();
-        Color c1 = texture.getColorMap()[(int)uu][(int)vv];
-        return c1;
+        return texture.readPixel((int)uu,(int)vv);
     }
 }
 

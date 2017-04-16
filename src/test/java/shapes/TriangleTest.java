@@ -2,6 +2,7 @@ package shapes;
 
 import domain.IntersectInfo;
 import domain.Vector;
+import exceptions.InvalidPixelException;
 import junit.framework.TestCase;
 import domain.Ray;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class TriangleTest extends TestCase  {
 	}
 
 	@Test
-	public void testIntersect() {
+	public void testIntersect() throws InvalidPixelException {
 
 		Ray testRay;
 		Triangle testTriangle;

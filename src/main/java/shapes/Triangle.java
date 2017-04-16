@@ -4,6 +4,7 @@ import domain.Color;
 import domain.IntersectInfo;
 import domain.Ray;
 import domain.Vector;
+import exceptions.InvalidPixelException;
 import materials.BaseMaterial;
 
 /**
@@ -26,7 +27,7 @@ public class Triangle extends BaseShape {
         this.material = material;
     }
 
-    public IntersectInfo intersect(final Ray ray) {
+    public IntersectInfo intersect(final Ray ray) throws InvalidPixelException {
         final IntersectInfo info = new IntersectInfo();
         final Vector aVec = corner1.vectorReduction(corner0);
         final Vector bVec = corner2.vectorReduction(corner0);

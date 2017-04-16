@@ -4,13 +4,14 @@
 package materials;
 
 import domain.Color;
+import exceptions.InvalidPixelException;
 
 /** material is what covers shape surface.
  * 
  * @author majid
  *
  */
-public abstract class BaseMaterial implements IMaterial{
+public abstract class BaseMaterial {
     private double reflection;
     private transient double diffuse;
 
@@ -36,7 +37,7 @@ public abstract class BaseMaterial implements IMaterial{
         this.diffuse = diffuse;
     }
 
-    public abstract Color getColor(double uDbl, double vDbl);
+    public abstract Color getColor(double uDbl, double vDbl) throws InvalidPixelException;
     public abstract boolean hasTexture();
 
 }

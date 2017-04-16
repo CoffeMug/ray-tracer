@@ -4,7 +4,6 @@ import domain.IntersectInfo;
 import domain.Ray;
 import domain.Vector;
 import materials.BaseMaterial;
-import materials.IMaterial;
 
 /**
  * The sphere class which makes the sphere shape based on a position vector and the sphere radius

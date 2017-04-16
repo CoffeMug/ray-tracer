@@ -91,7 +91,7 @@ public class RayTracerTest extends TestCase {
 	 * brighter we pass the bitmap. it shows that lights are correctly rendered
 	 * in our project.
 	 */
-	public void testWithDifferentLights() throws IOException, InvalidPixelException {
+	public void testWithDifferentLights() throws Exception {
 
 		RayTracer testTracer = new RayTracer();
 		final Bitmap viewport = new Bitmap(400,400);
@@ -99,11 +99,11 @@ public class RayTracerTest extends TestCase {
 		Color firstColor = new Color();
 		Color secondColor = new Color();
 
-		testTracer.rayTraceScene(testScene, viewport, 5, false, "1", 1);
+		testTracer.rayTraceScene(testScene, viewport, 5, false, 0, 1);
 
 		Light light3 = new Light(new Vector(-20, 70, 50));
 		testScene.world.lights.add(light3);
-		testTracer.rayTraceScene(testScene, viewport1, 5, false, "1", 1);
+		testTracer.rayTraceScene(testScene, viewport1, 5, false, 0, 1);
 
 		try {
 

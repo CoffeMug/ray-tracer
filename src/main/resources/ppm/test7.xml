@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE scene SYSTEM "http://www.it.uu.se/edu/course/homepage/pm2/VT08/pm2gl.dtd">
 <scene>
 <!--  test7.pov -->
 <!--  -->
@@ -42,7 +41,7 @@
         <finish diffuse="1.000" reflect="0.000"/>
         <pigment>
           <image>
-            <ppm file="/stud/csd/datalogi/pm2/ht99/pov/french-flag.ppm"/>
+            <ppm file="src/main/resources/ppm/french-flag.ppm"/>
           </image>
         </pigment>
       </surface>

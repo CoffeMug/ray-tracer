@@ -19,26 +19,19 @@ public class TracerThread implements Runnable {
     Bitmap viewport;
     int depth;
     Boolean timer;
-    int noOfThreads;
-        
-    /**
-     * this is default constructor for TracerThread class.
-     * @param threadName we use this argument to 
-     * @param tracer instance of class we want to call its rayTrace() method. 
-     * @param scene instance of class scene we want to raytrace.
-     * @param bitmap bitmap plane to show tracing result on it.
-     * @param depth an integer that specified reflection depth
-     * @param timer a boolean specifies whether to show render time or not.
-     * @param noOfThreads number of threads specified by user.
-     */
+    int lowerBound;
+    int upperBound;
+
     public TracerThread (int threadName, RayTracer tracer, Scene scene,
-                         Bitmap bitmap, int depth, boolean timer, int noOfThreads) throws InterruptedException {
+                         Bitmap bitmap, int depth, boolean timer, int lowerBound,
+                         int upperBound) throws InterruptedException {
         rayTracer = tracer;
         this.scene = scene;
         this.viewport = bitmap;
         this.depth = depth;
         this.timer = timer;
-        this.noOfThreads = noOfThreads;
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
         this.threadName = Integer.toString(threadName);
         thread = new Thread (this, "Thread " + threadName);
         thread.start();
@@ -47,9 +40,7 @@ public class TracerThread implements Runnable {
         
     public void run() {
         try {
-            rayTracer.rayTraceScene(scene, viewport, depth, timer, threadName, noOfThreads);
-        } catch (IOException e) {
-            e.printStackTrace();
+            rayTracer.rayTraceScene(scene, viewport, depth, timer, lowerBound, upperBound);
         } catch (InvalidPixelException e) {
             e.printStackTrace();
         }

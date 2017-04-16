@@ -21,11 +21,8 @@ public class BitmapTest {
 		final Scanner keyboard = new Scanner(System.in);
 		System.out.println("enter path to a ppm file:\n");
 		ppmFile = keyboard.next();
-		try {
-			bmp.createBitmapFromFile(ppmFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		bmp.createBitmapFromFile(ppmFile);
+
 		int i =1;
 	}
 

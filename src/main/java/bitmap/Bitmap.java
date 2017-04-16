@@ -1,19 +1,15 @@
 package bitmap;
 
 import domain.Color;
+import exceptions.BitmapNotFoundException;
+import exceptions.BitmapReadErrorException;
 import exceptions.InvalidPixelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.io.IOException;
-import javax.imageio.stream.*;
-import javax.imageio.ImageWriter;
-import java.util.Iterator;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.IIOImage;
 
 /**
  * this is an abstract data variant for holding a bitmap information. bitmap class
@@ -93,37 +89,9 @@ public class Bitmap implements IBitmap {
         maximumColorComponentValue = readInt(inputStream);
     }
 
-    public void convertPPMToJPG() {
-        BufferedImage image;
-        File outfile;
-        try {
-            image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            for (int i=0; i < width; i++) {
-                for (int j=0; j < height; j++) {
-                    Color color = readPixel(i, j);
-                    int rgb = makeRgb(color.getRed(), color.getGreen(), color.getBlue());
-                    image.setRGB(i, j, rgb);
-                }
-            }
-            outfile = new File("output.jpeg");
 
-            ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(outfile);
-            Iterator<ImageWriter> iterator = ImageIO.getImageWritersByFormatName("jpeg");
-            ImageWriter writer = iterator.next();
-            ImageWriteParam imageWriteParam = writer.getDefaultWriteParam();
-            imageWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            imageWriteParam.setCompressionQuality(0.95f);
-            writer.setOutput(imageOutputStream);
-            writer.write(null, new IIOImage(image,null,null), imageWriteParam);
-            writer.dispose();
-        }
 
-        catch (Exception e) {
-            logger.error("Problem creating the jpeg image.");
-        }
-    }
-
-    public void writeBitmapToFile(final BitmapVariant variant, final String filePath) throws IOException {
+    public void writeBitmapToFile(final BitmapVariant variant, final String filePath) {
         final String magic = variant == BitmapVariant.PPM_ASCII ? "P3" : "P6";
         PrintWriter outputStream = null;
         try
@@ -148,28 +116,29 @@ public class Bitmap implements IBitmap {
         catch(FileNotFoundException e)
         {
             logger.error("Error opening bitmap file {} for write.", filePath);
-            throw new IOException();
+            throw new BitmapNotFoundException(e.getMessage());
         }
         finally {
             outputStream.close();
         }
     }
 
-   public void createBitmapFromFile(final String fileName) throws IOException {
+   public IBitmap createBitmapFromFile(final String fileName) throws BitmapNotFoundException {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(fileName);
             readBitmapPropertiesFromFile(inputStream);
             readPixels(inputStream);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             logger.error("Bitmap file {} not found!", fileName);
-            throw new RuntimeException(e.getMessage());
+            throw new BitmapNotFoundException(e.getMessage());
+        } catch (IOException e) {
+            logger.error("Error reading from the bitmap file {}", fileName);
+            throw new BitmapReadErrorException(e.getMessage());
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
-        finally {
-            inputStream.close();
-        }
-
+        return this;
     }
 
     private void checkFormatInHeader(char firstChar) throws IOException {
@@ -227,7 +196,7 @@ public class Bitmap implements IBitmap {
         this.pixels = filePixels;
     }
 
-    private static int readByte(final InputStream inp) throws IOException {
+    private static int readByte(final InputStream inp) throws EOFException {
         final int binInp;
         try {
             binInp = inp.read();
@@ -238,7 +207,7 @@ public class Bitmap implements IBitmap {
         return binInp;
     }
 
-    private static char readChar(final InputStream inp) throws IOException {
+    private static char readChar(final InputStream inp) throws EOFException {
         char chr = (char)readByte(inp);
         if (chr == '#')
         {
@@ -251,7 +220,7 @@ public class Bitmap implements IBitmap {
         return chr;
     }
 
-    private static char readNonwhiteSpaceChar(final InputStream inp ) throws IOException {
+    private static char readNonwhiteSpaceChar(final InputStream inp ) throws EOFException {
         char char1;
 
         do
@@ -286,9 +255,5 @@ public class Bitmap implements IBitmap {
 
     private int fixDepth( final int rgb ) {
         return (rgb * 255 + maximumColorComponentValue/2)/maximumColorComponentValue;
-    }
-
-    private static int makeRgb( final int red, final int green, final int blue ) {
-        return 0xff000000 | ( red << 16 ) | ( green << 8 ) | blue;
     }
 }

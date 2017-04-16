@@ -4,6 +4,7 @@ import domain.Color;
 
 import domain.IntersectInfo;
 import domain.Vector;
+import exceptions.InvalidPixelException;
 import materials.SolidMaterial;
 
 import org.junit.Before;
@@ -31,7 +32,7 @@ public class PlaneTest {
 	}
 
 	@Test
-	public void rayHitPlane() {
+	public void rayHitPlane() throws InvalidPixelException {
 		Ray ray = new Ray(roVect, rdVect);
 		Plane plane = new Plane(pVect, nVect, solid);
 		final IntersectInfo planeTestInfo = plane.intersect(ray);
@@ -40,7 +41,7 @@ public class PlaneTest {
 	}
 
 	@Test
-	public void rayDoesNotHitPlane() {
+	public void rayDoesNotHitPlane() throws InvalidPixelException {
 		Plane plane = new Plane(pVect, nVect, solid);
 		assertTrue(plane.intersect(new Ray(rdVect, roVect)).getIsHit());
 	}

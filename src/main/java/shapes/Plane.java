@@ -3,6 +3,7 @@ package shapes;
 import domain.IntersectInfo;
 import domain.Ray;
 import domain.Vector;
+import exceptions.InvalidPixelException;
 import materials.BaseMaterial;
 
 /**
@@ -30,7 +31,7 @@ public class Plane extends BaseShape {
     }
 
     @Override
-    public IntersectInfo intersect(final Ray ray){
+    public IntersectInfo intersect(final Ray ray) throws InvalidPixelException {
         final IntersectInfo info = new IntersectInfo();
         final double vD = normal.dotProduct(ray.getDirection());
 

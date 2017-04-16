@@ -1,9 +1,7 @@
 package tracer;
 
-import java.io.IOException;
 import domain.*;
 import bitmap.IBitmap;
-import exceptions.InvalidPixelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import shapes.IShape;
@@ -39,23 +37,14 @@ public class RayTracer {
                               final IBitmap bitmap,
                               final int depth,
                               final boolean showTime,
-                              final String thread,
-                              final int noOfThreads) throws IOException, InvalidPixelException {
+                              final int lowerBound,
+                              final int upperBound) {
 
-        final int width = bitmap.getWidth();
-        final int height = bitmap.getHeight();
-        final int threadNumber = Integer.parseInt(thread);
-        final int wHeight = (int) Math.floor(bitmap.getHeight()/noOfThreads);
-
-        // if number of threads does not fit all image plane we ask final
-        // thread to process its own window plus all remaining pixels.
-        final int upperBoundY = (threadNumber == noOfThreads && threadNumber * wHeight < height) ? height : threadNumber * wHeight ;
-        final int lowerBoundY = (threadNumber - 1) * wHeight;
 
         double startTime = System.currentTimeMillis();
 
-        for (int y = lowerBoundY; y < upperBoundY; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = lowerBound; y < upperBound; y++) {
+            for (int x = 0; x < bitmap.getWidth(); x++) {
                 Ray ray = scene.camera.getRay(x, y);
                 bitmap.writePixel(x, y, calculateColor(ray, scene, depth));
             }
@@ -74,7 +63,7 @@ public class RayTracer {
      * @param scene current scene we test ray intersection with.
      * @return color of intersection point.
      */
-    private Color calculateColor(final Ray ray, final Scene scene, final int depth){
+    private Color calculateColor(final Ray ray, final Scene scene, final int depth) {
         final IntersectInfo info = testIntersection(ray, scene);
         Color color;
         if (info.getIsHit()){
