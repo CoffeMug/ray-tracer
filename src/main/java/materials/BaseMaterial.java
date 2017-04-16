@@ -30,7 +30,6 @@ public abstract class BaseMaterial {
 
     public double getDiffuse() {
         return diffuse;
-
     }
 
     public void setDiffuse(double diffuse) {

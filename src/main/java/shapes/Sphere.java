@@ -77,11 +77,10 @@ public class Sphere extends BaseShape {
                 }
                 return material.getColor(ui, vi);
             }
-        else
-            {
+        else {
                 // skip uv calculation, just get the color
                 return material.getColor(0, 0);
-            }
+        }
     }
 
     @Override

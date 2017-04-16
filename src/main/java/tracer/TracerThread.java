@@ -2,7 +2,6 @@ package tracer;
 
 import bitmap.Bitmap;
 import domain.Scene;
-import exceptions.InvalidPixelException;
 
 /**
  * this class is implementing runnable interface to enable multi-threading.
@@ -37,11 +36,7 @@ public class TracerThread implements Runnable {
     }
         
     public void run() {
-        try {
-            rayTracer.rayTraceScene(scene, viewport, depth, timer, lowerBound, upperBound);
-        } catch (InvalidPixelException e) {
-            e.printStackTrace();
-        }
+         rayTracer.rayTraceScene(scene, viewport, depth, timer, lowerBound, upperBound);
     }
         
 }

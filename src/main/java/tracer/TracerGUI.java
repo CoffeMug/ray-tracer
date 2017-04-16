@@ -17,7 +17,7 @@ public class TracerGUI extends Observable implements ActionListener {
     static private JPanel configPanelLeft;
     static private JButton openXMLButton; 
     static private JButton trace;
-    static private JFileChooser fc;  
+    static private JFileChooser fileChooser;
     static private JComboBox zoomList;
     static private JLabel zoomLabel;
     static private JComboBox reflectionList;
@@ -34,7 +34,7 @@ public class TracerGUI extends Observable implements ActionListener {
     static private JComboBox diffuseList;
     static private JLabel diffuseLabel;
     static private JComboBox threadList;
-    static private JLabel threadLable;
+    static private JLabel threadLabel;
 
     // Rest
     static private JFrame frame;
@@ -63,10 +63,10 @@ public class TracerGUI extends Observable implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == openXMLButton) {
-            int returnVal = fc.showOpenDialog(frame);
+            int returnVal = fileChooser.showOpenDialog(frame);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
+                File file = fileChooser.getSelectedFile();
                 tracerParam.setSceneFile(file.getAbsolutePath());
             } else {
                 logger.info("Open command cancelled by user.");
@@ -187,7 +187,7 @@ public class TracerGUI extends Observable implements ActionListener {
             diffuseList = createList(diffuseList, diffuseValues);
             shadowLabel = createLabel("Render shadow", shadowLabel);
             shadowList = createList(shadowList, shadowValues);
-            threadLable = createLabel("Number of threads", threadLable);
+            threadLabel = createLabel("Number of threads", threadLabel);
             threadList = createList(threadList, threadValues);
             panel.add(diffuseLabel);
             panel.add(diffuseList);
@@ -195,7 +195,7 @@ public class TracerGUI extends Observable implements ActionListener {
             panel.add(shadowLabel);
             panel.add(shadowList);
             panel.add(Box.createRigidArea(new Dimension(0,10)));
-            panel.add(threadLable);
+            panel.add(threadLabel);
             panel.add(threadList);
             panel.add(Box.createRigidArea(new Dimension(0,10)));
             break;
@@ -218,8 +218,8 @@ public class TracerGUI extends Observable implements ActionListener {
      }
 
     private void createFileOpen() {
-        fc = new JFileChooser();
-        fc.setCurrentDirectory(new File("./src/main/resources/ppm"));
+        fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("./src/main/resources/ppm"));
         java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);

@@ -11,8 +11,7 @@ public class SolidMaterial extends BaseMaterial {
 
     private final Color color;
 
-    public SolidMaterial(final Color color, final double reflection, final double diffuse)
-    {
+    public SolidMaterial(final Color color, final double reflection, final double diffuse) {
         super(diffuse, reflection); // for solving PMD error
         this.color = color;
     }

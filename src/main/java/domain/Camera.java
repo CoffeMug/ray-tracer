@@ -6,7 +6,6 @@ package domain;
  * from the camera perspective
  * @author amin
  */
-
 public class Camera {
     private Vector location;
     private Vector lookAt;
@@ -62,7 +61,6 @@ public class Camera {
                                                    ((height/ypix)*(vecty+0.5)));
 
         final Vector dir = Pxy.vectorReduction(location);
-        //Ray newRay = new Ray(location, dir.normalize());
         return new Ray(location, dir.normalize());
     }
 }

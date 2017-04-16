@@ -12,12 +12,7 @@ public final class RayTracerApplication {
     final static TracerGUIObserver guiObserver = new TracerGUIObserver();
 
     public static void main (final String args[]){
-        try {
-            SwingUtilities.invokeLater(() -> TracerGUI.createAndShowGUI());
-            gui.addObserver(guiObserver);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        SwingUtilities.invokeLater(() -> TracerGUI.createAndShowGUI());
+        gui.addObserver(guiObserver);
     }
 }

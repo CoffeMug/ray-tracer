@@ -50,8 +50,6 @@ public class Color{
         }
     }
 
-
-
     public Color addColor(final Color colorToBeAdded){
         final Color finalColor = new Color();
         finalColor.red = this.red + colorToBeAdded.red > 255 ? 255 : this.red + colorToBeAdded.red;

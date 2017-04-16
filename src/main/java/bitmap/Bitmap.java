@@ -206,10 +206,8 @@ public class Bitmap implements IBitmap {
 
     private static char readChar(final InputStream inp) throws EOFException {
         char chr = (char)readByte(inp);
-        if (chr == '#')
-        {
-            do
-            {
+        if (chr == '#') {
+            do {
                 chr = (char) readByte(inp);
             }
             while (chr != '\n' && chr != '\r');
@@ -220,8 +218,7 @@ public class Bitmap implements IBitmap {
     private static char readNonwhiteSpaceChar(final InputStream inp ) throws EOFException {
         char char1;
 
-        do
-        {
+        do {
             char1 = readChar(inp);
         }
         while (char1 == ' ' || char1 == '\t' || char1 == '\n' || char1 == '\r');
@@ -240,11 +237,10 @@ public class Bitmap implements IBitmap {
         }
 
         number = 0;
-        do
-            {
-                number = number * 10 + chr - '0';
-                chr = readChar( inputStream );
-            }
+        do {
+            number = number * 10 + chr - '0';
+            chr = readChar( inputStream );
+        }
         while ( chr >= '0' && chr <= '9' );
 
         return number;
