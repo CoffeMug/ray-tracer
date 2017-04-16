@@ -35,6 +35,19 @@
         </dependency>
     </dependencies>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.7</version>
+                <configuration>
+                    <skipEmptyReport>false</skipEmptyReport>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <build>
         <plugins>
             <plugin>
@@ -44,11 +57,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.7</version>
             </plugin>
             <plugin>
                 <!--  Build an executable JAR  -->

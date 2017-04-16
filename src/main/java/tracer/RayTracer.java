@@ -15,7 +15,6 @@ public class RayTracer {
 
     private final Logger logger = LoggerFactory.getLogger(RayTracer.class);
 
-    private Boolean renderDiffuse;
     private Boolean renderShadow;
     private Boolean renderReflection;
     private int traceDepth = 0;
@@ -25,10 +24,8 @@ public class RayTracer {
 
     } 
 
-    public RayTracer(final Boolean renderDiffuse,
-                     final Boolean renderShadow,
+    public RayTracer(final Boolean renderShadow,
                      final Boolean renderReflection){
-        this.renderDiffuse = renderDiffuse;
         this.renderShadow = renderShadow;
         this.renderReflection = renderReflection;
     }
@@ -97,7 +94,7 @@ public class RayTracer {
         // calculate reflection ray
         if (renderShadow){
             for (Light light : scene.world.lights) {
-                final Vector sd = (light.position.vectorReduction(so)).normalize();
+                final Vector sd = light.position.vectorReduction(so).normalize();
                 final Double cosPhi = Math.abs(rn.dotProduct(sd));
                 final Ray shadowRay = new Ray(so, sd);
                 IntersectInfo shadow = testIntersection(shadowRay, scene);
@@ -106,20 +103,19 @@ public class RayTracer {
         }
 
         if (renderReflection){
-            if (info.getElement().getMaterial().getReflection() > 0 && traceDepth < reflectionDepth){
-                final Ray reflectionRay = getReflectionRay(info.getPosition(), info.getNormal(), ray.getDirection());
-                final IntersectInfo intersectInfo = testIntersection(reflectionRay, scene);
-
-                if (intersectInfo.getIsHit() && intersectInfo.getDistance() > 0){
-                    traceDepth++ ;
-                    intersectInfo.setColor(rayTrace(intersectInfo, reflectionRay, scene, reflectionDepth));
-                }
-                else {
-                    intersectInfo.setColor(info.getColor());
-                }
-                color = color.addColor(intersectInfo.getColor()
-                        .multiplyColorByValue(info.getElement().getMaterial().getReflection()));
+            final Ray reflectionRay = getReflectionRay(info.getPosition(), info.getNormal(), ray.getDirection());
+            final IntersectInfo intersectInfo = testIntersection(reflectionRay, scene);
+            if (info.getElement().getMaterial().getReflection() > 0 &&
+                    traceDepth < reflectionDepth &&
+                    intersectInfo.getIsHit() && intersectInfo.getDistance() > 0) {
+                traceDepth++;
+                intersectInfo.setColor(rayTrace(intersectInfo, reflectionRay, scene, reflectionDepth));
             }
+            else {
+                intersectInfo.setColor(info.getColor());
+            }
+            color = color.addColor(intersectInfo.getColor()
+                    .multiplyColorByValue(info.getElement().getMaterial().getReflection()));
         }
         return color;
     }

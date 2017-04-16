@@ -7,8 +7,6 @@ import java.util.Observable;
 import java.io.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.BorderFactory;
-import java.awt.Color;
 import java.awt.*;
 
 public class TracerGUI extends Observable implements ActionListener {

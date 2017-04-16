@@ -54,23 +54,17 @@ public class Color{
 
     public Color addColor(final Color colorToBeAdded){
         final Color finalColor = new Color();
-        finalColor.red =((this.red)+(colorToBeAdded.red))>255?255:
-            ((this.red)+(colorToBeAdded.red));
-        finalColor.green=((this.green)+(colorToBeAdded.green))>255?255:
-            ((this.green)+(colorToBeAdded.green));
-        finalColor.blue=((this.blue)+(colorToBeAdded.blue))>255?255:
-            ((this.blue)+(colorToBeAdded.blue));
+        finalColor.red = this.red + colorToBeAdded.red > 255 ? 255 : this.red + colorToBeAdded.red;
+        finalColor.green = this.green + colorToBeAdded.green > 255 ? 255 : this.green + colorToBeAdded.green;
+        finalColor.blue = this.blue + colorToBeAdded.blue > 255 ? 255: this.blue + colorToBeAdded.blue;
         return finalColor;
     }
 
     public Color multiplyColorByValue(final double intensity){
         final Color finalColor = new Color();
-        finalColor.blue = (int)((this.blue*intensity)>255 ? 255 :
-                             (this.blue*intensity));
-        finalColor.green = (int)((this.green*intensity)>255 ? 255 :
-                              (this.green*intensity));
-        finalColor.red = (int)((this.red*intensity)>255 ? 255 :
-                            (this.red*intensity));
+        finalColor.blue = (int)(this.blue * intensity > 255 ? 255 : this.blue*intensity);
+        finalColor.green = (int)(this.green * intensity > 255 ? 255 : this.green*intensity);
+        finalColor.red = (int)(this.red*intensity > 255 ? 255 : this.red*intensity);
         return finalColor;
     }
 
@@ -83,7 +77,7 @@ public class Color{
             return false;
         }
         final Color color = (Color) colorToBeCompared;
-        return (this.green == color.green && this.red == color.red && this.blue == color.blue);
+        return this.green == color.green && this.red == color.red && this.blue == color.blue;
     }
         
     @Override

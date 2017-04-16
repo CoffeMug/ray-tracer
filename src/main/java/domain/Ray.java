@@ -1,6 +1,5 @@
 package domain;
 
-
 /**
  * Implementation of Ray
  * @author Behzad
@@ -19,13 +18,6 @@ public class Ray {
         }
     }
 
-    /**
-     * computes the point is on the line or not
-     * @param tmp distance from ray origin to intersection point.
-     * @return a Vector returned by method 
-     * {@link #vectorAddition(Vector, Vector) vectorAddition
-     * @throws Exception 
-     */
     public Vector intersectionPoint(final double tmp) {
         if(tmp <= 0 || ! this.direction.isNormal()){
             System.out.print("v is not normalized, or t is not greater than 0");
@@ -49,12 +41,6 @@ public class Ray {
         this.origin = origin;
     }
 
-
-    /**
-     * we override method equals() in class ray to be able to compare two rays.
-     * here it is not necessary to implement method hashCode() because, ray
-     * uses class vector3D equals method which has hashCode() method.
-     */
     @Override  
     public boolean equals(final Object ray) {
 
@@ -67,4 +53,10 @@ public class Ray {
         }
         return false;           
     }
+
+    @Override
+    public int hashCode(){
+        return Vector.class.hashCode();
+    }
+
 }

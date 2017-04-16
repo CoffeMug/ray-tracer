@@ -2,7 +2,6 @@ package domain;
 
 import org.junit.Before;
 import org.junit.Test;
-import scene.Camera;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;

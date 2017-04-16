@@ -1,6 +1,3 @@
-/**
- * 
- */
 package materials;
 
 
@@ -12,7 +9,7 @@ import domain.Color;
  */
 public class SolidMaterial extends BaseMaterial {
 
-    private transient final Color color;
+    private final Color color;
 
     public SolidMaterial(final Color color, final double reflection, final double diffuse)
     {

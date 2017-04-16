@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.io.IOException;
 
 /**
  * this is an abstract data variant for holding a bitmap information. bitmap class
@@ -64,7 +63,7 @@ public class Bitmap implements IBitmap {
     }
 
     public Color readPixel(final int x, final int y) throws InvalidPixelException {
-        if ((x >= 0 && x < width) && (y >= 0 && y < height)){
+        if (x >= 0 && x < width && y >= 0 && y < height){
             return pixels[x][y];
         } else {
             logger.error("Invalid pixel with the coordinates {} {}", x, y);
@@ -73,7 +72,7 @@ public class Bitmap implements IBitmap {
     }
 
     public void writePixel(final int x, final int y, final Color color) throws InvalidPixelException {
-        if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
+        if (x >= 0 && x < width && y >= 0 && y < height) {
             this.pixels[x][y] = color;
         } else {
             logger.error("Invalid pixel with the coordinates {} {}", x, y);
@@ -88,8 +87,6 @@ public class Bitmap implements IBitmap {
         height = readInt(inputStream);
         maximumColorComponentValue = readInt(inputStream);
     }
-
-
 
     public void writeBitmapToFile(final BitmapVariant variant, final String filePath) {
         final String magic = variant == BitmapVariant.PPM_ASCII ? "P3" : "P6";

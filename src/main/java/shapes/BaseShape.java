@@ -1,4 +1,5 @@
 package shapes;
+
 import domain.IntersectInfo;
 import domain.Ray;
 import domain.Vector;
@@ -9,7 +10,6 @@ import materials.BaseMaterial;
  * @author amin
  *the basic shape class which is a base for all shapes in the scene
  */
-
 public abstract class BaseShape implements IShape {
     protected Vector position;
     protected BaseMaterial material;

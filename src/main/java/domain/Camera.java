@@ -1,7 +1,4 @@
-package scene;
-
-import domain.Ray;
-import domain.Vector;
+package domain;
 
 /**
  * The camera class which has three Vectors and five integer variables 
@@ -51,17 +48,10 @@ public class Camera {
         return this;
     }
 
-    /**
-     * this method returns the ray as it passes through the view-port 
-     * form the camera perspective 
-     * @param vectx
-     * @param vecty
-     * @return
-     */
     public Ray getRay(final float vectx, final float vecty){
-        final Vector cVect = (lookAt.vectorReduction(location)).normalize();
-        final Vector crVect = (up.crossProduct(cVect)).normalize();
-        final Vector cdVect = (crVect.crossProduct(cVect)).normalize();
+        final Vector cVect = lookAt.vectorReduction(location).normalize();
+        final Vector crVect = up.crossProduct(cVect).normalize();
+        final Vector cdVect = crVect.crossProduct(cVect).normalize();
 
         final Vector ccVect = location.vectorAddition(cVect.vectorMultiply(zoom)).
             vectorReduction(crVect.vectorMultiply(width/2)).

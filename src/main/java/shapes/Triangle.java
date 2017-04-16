@@ -31,7 +31,7 @@ public class Triangle extends BaseShape {
         final IntersectInfo info = new IntersectInfo();
         final Vector aVec = corner1.vectorReduction(corner0);
         final Vector bVec = corner2.vectorReduction(corner0);
-        final Vector Pn = (aVec.crossProduct(bVec)).normalize();//normal vector of triangle plane
+        final Vector Pn = aVec.crossProduct(bVec).normalize();//normal vector of triangle plane
         final double dist = corner0.dotProduct(Pn);//distance from origin of of coordinate system to the plane
         final double vd = Pn.dotProduct(ray.getDirection());
         final double v0 = dist - (Pn.dotProduct(ray.getOrigin()));
@@ -54,8 +54,8 @@ public class Triangle extends BaseShape {
             final double qb = qVec.dotProduct(bVec);
             final double aa = aVec.dotProduct(aVec);
                         
-            uTmp = ((bb * qa) - (ab * qb)) / ((aa * bb)- (ab * ab));
-                        
+            uTmp = (bb * qa - ab * qb) / (aa * bb - ab * ab);
+
             if (uTmp > 0 && uTmp < 1) {
                 vTmp = (qb - uTmp*ab)/bb;
                                 

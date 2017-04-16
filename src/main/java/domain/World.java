@@ -1,6 +1,5 @@
-package scene;
+package domain;
 
-import domain.Light;
 import shapes.BaseShape;
 
 import java.util.ArrayList;

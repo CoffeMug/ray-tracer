@@ -63,9 +63,7 @@ public class Vector {
     }
         
     public double vectorLength(){
-        return Math.sqrt((this.x * this.x) +
-                         (this.y * this.y) +
-                         (this.z * this.z));
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
     public Vector normalize(){
@@ -73,29 +71,31 @@ public class Vector {
     }
         
     public boolean isNormal(){
-        return (Double.compare(this.dotProduct(this), 1.0) == 0);
+        return Double.compare(this.dotProduct(this), 1.0) == 0;
     }
 
     @Override 
-    public boolean equals(final Object vect) {
-        if(this == vect){return true;}
-        if(!(vect instanceof Vector)) {return false;}
-        final Vector newv = (Vector)vect;
+    public boolean equals(final Object vector) {
+        if(this == vector){return true;}
+        if(!(vector instanceof Vector)) {return false;}
+        final Vector newVector = (Vector)vector;
                 
-        if((newv.x - this.x <= 0.00001 ) &&
-           (newv.y - this.y <= 0.00001 ) &&
-           (newv.z - this.z <= 0.00001)){
+        if(newVector.x - this.x <= 0.00001  &&
+           newVector.y - this.y <= 0.00001  &&
+           newVector.z - this.z <= 0.00001){
             return true;
         }
         return false;           
     }
         
-    @Override public int hashCode(){
+    @Override
+    public int hashCode(){
         final long value = Double.doubleToLongBits(x + y + z);
         return (int) (value ^ (value >> 32));
     }
         
-    @Override public String toString(){
+    @Override
+    public String toString(){
         return String.format("{0},{1},{2}", x, y, z);
     }
 }

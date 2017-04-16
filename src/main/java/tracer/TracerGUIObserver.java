@@ -57,7 +57,7 @@ public class TracerGUIObserver implements Observer {
                     .withXpix(param.getXpix())
                     .withYpix(param.getYpix());
 
-            final RayTracer rayTracer = new RayTracer(param.getRenderDiffuse(), param.getRenderShadows(), param.getRenderReflection());
+            final RayTracer rayTracer = new RayTracer(param.getRenderDiffuse(), param.getRenderShadows());
 
             // Single thread tracer
             if (param.getNoOfThreads() == 1){
@@ -74,7 +74,7 @@ public class TracerGUIObserver implements Observer {
                 final int wHeight = (int) Math.floor(bitmap.getHeight()/param.getNoOfThreads());
                 IntStream.rangeClosed(1, param.getNoOfThreads()).forEach(threadNumber -> {
                     try {
-                        final int upperBound = (threadNumber == param.getNoOfThreads() && threadNumber * wHeight < bitmap.getHeight()) ?
+                        final int upperBound = threadNumber == param.getNoOfThreads() && threadNumber * wHeight < bitmap.getHeight() ?
                                 bitmap.getHeight() : threadNumber * wHeight ;
                         final int lowerBound = (threadNumber - 1) * wHeight;
                         new TracerThread(threadNumber, rayTracer, scene, bitmap,

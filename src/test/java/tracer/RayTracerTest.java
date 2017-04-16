@@ -1,16 +1,14 @@
 package tracer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import bitmap.Bitmap;
 import domain.*;
-import exceptions.InvalidPixelException;
 import materials.SolidMaterial;
 import shapes.BaseShape;
 import shapes.Plane;
 import shapes.Sphere;
-import scene.Camera;
+import domain.Camera;
 
 
 import junit.framework.TestCase;

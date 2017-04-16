@@ -7,21 +7,21 @@ import materials.BaseMaterial;
 public interface IShape {
     /**
      * setter method for setting position property of current shape.
-     * @param pos postion vector.
+     * @param pos position vector.
      */
-    public void setPosition(Vector pos);
+    void setPosition(Vector pos);
     
     /**
      * getter method which returns position property of current shape.
      * @return
      */
-    public Vector getPosition();
+    Vector getPosition();
     
     /**
      * getter method which returns material of current shape.
      * @return material of current shape
      */
-    public BaseMaterial getMaterial();
+    BaseMaterial getMaterial();
     
     /**
      * this method test intersection of a given ray with current shape and

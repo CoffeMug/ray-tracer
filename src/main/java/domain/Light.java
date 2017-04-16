@@ -5,7 +5,6 @@ package domain;
  * @author amin
  * the Light class responsible for creating light sources
  */
-
 public class Light {
     public transient Vector position;
 
@@ -23,15 +22,14 @@ public class Light {
                            Double cosPhi){
         Color color;
         Color tmpColor = new Color();
-                
-        if (!intersection.getIsHit() || (intersection.getIsHit()   &&  
-                                         (intersection.getPosition().vectorReduction(info.getPosition()).vectorLength()>=
-                                          (this.position.vectorReduction(info.getPosition())).vectorLength()))) {
+
+        if (!intersection.getIsHit() || intersection.getIsHit()  &&
+                intersection.getPosition().vectorReduction(info.getPosition()).vectorLength() >=
+                        this.position.vectorReduction(info.getPosition()).vectorLength()) {
                         
             color = info.getColor().multiplyColorByValue(cosPhi).
                     multiplyColorByValue(info.getElement().getMaterial().getDiffuse());
             tmpColor = tmpColor.addColor(color);
-                        
         }
         color = tmpColor;
         return color;
@@ -41,5 +39,4 @@ public class Light {
     public String toString() {
         return String.format("Light ({1})" + position.toString()) ;
     }
-
 }

@@ -40,7 +40,7 @@ public class Plane extends BaseShape {
         }
 
         final double v0 = distance - normal.dotProduct(ray.getOrigin());
-        final double t = (v0/vD);
+        final double t = v0/vD;
 
         if (t < 0) return info; // the ray does not hit the plane
 

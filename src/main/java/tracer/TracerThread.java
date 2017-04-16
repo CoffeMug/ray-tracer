@@ -4,8 +4,6 @@ import bitmap.Bitmap;
 import domain.Scene;
 import exceptions.InvalidPixelException;
 
-import java.io.IOException;
-
 /**
  * this class is implementing runnable interface to enable multi-threading.
  * @author majid

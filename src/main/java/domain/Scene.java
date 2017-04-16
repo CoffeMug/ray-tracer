@@ -1,8 +1,5 @@
 package domain;
 
-import scene.Camera;
-import scene.World;
-
 /**
  * abstract data type for scene. a scene contains camera, background,
  * shapes and lights

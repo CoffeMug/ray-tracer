@@ -1,4 +1,5 @@
 package shapes;
+
 import domain.Color;
 import domain.IntersectInfo;
 import domain.Ray;
@@ -27,10 +28,10 @@ public class Sphere extends BaseShape {
         final Vector oc = this.position.vectorReduction(ray.getOrigin());
         final double l2oc = oc.dotProduct(oc);
         final double tca = oc.dotProduct(ray.getDirection());
-        final double t2hc = (this.radius * this.radius) - l2oc + (tca * tca);
+        final double t2hc = this.radius * this.radius - l2oc + tca * tca;
         final double tOutside = tca - Math.sqrt(t2hc);
         final double tInside = tca + Math.sqrt(t2hc);
-        final double sr2 = (this.radius * this.radius);
+        final double sr2 = this.radius * this.radius;
 
         // Origin of the ray is inside the sphere
         if (sr2 > l2oc ){
@@ -64,7 +65,7 @@ public class Sphere extends BaseShape {
                 final Vector se = new Vector(0, 0, 1).normalize();
                 //points from center of sphere to intersection 
                 final Vector rn = info.getNormal();
-                final double phi = Math.acos((rn.vectorMultiply(-1)).dotProduct(sp));
+                final double phi = Math.acos(rn.vectorMultiply(-1).dotProduct(sp));
                 final double vi = phi / Math.PI;
                 final double ui;
 

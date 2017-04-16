@@ -10,7 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import bitmap.Bitmap;
 import domain.*;
-import domain.Color;
 import materials.BaseMaterial;
 import materials.SolidMaterial;
 import materials.TextureMaterial;
@@ -20,9 +19,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import scene.Camera;
-import scene.World;
-import shapes.*;
+import shapes.BaseShape;
+import shapes.Plane;
+import shapes.Sphere;
+import shapes.Triangle;
 
 public class XmlParser {
     private transient Document document;
@@ -37,23 +37,18 @@ public class XmlParser {
         //get the factory
         final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         Scene scene;
-
         try {
-
             //Using factory get an instance of document builder
             final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
             //parse using builder to get DOM representation of the XML file
             document = documentBuilder.parse(filePath);
-
             scene = parseScene();
 
-
-        }catch(ParserConfigurationException pce) {
+        } catch(ParserConfigurationException pce) {
             throw new RuntimeException(pce.getMessage());
-        }catch(SAXException se) {
+        } catch(SAXException se) {
             throw new RuntimeException(se.getMessage());
-        }catch(IOException ioe) {
+        } catch(IOException ioe) {
             throw new RuntimeException(ioe.getMessage());
         }
         return scene;
@@ -115,11 +110,8 @@ public class XmlParser {
         // Parse shapes
         ArrayList<BaseShape> shapes = new ArrayList<>();
         IntStream.range(0, planes.getLength()).forEach(i -> {
-            try {
                 shapes.add(parsePlane((Element) planes.item(i)));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         });
 
         IntStream.range(0, spheres.getLength()).forEach(i -> shapes.add(parseSphere((Element) spheres.item(i))));
@@ -129,7 +121,7 @@ public class XmlParser {
     }
 
 
-    private Plane parsePlane(final Element planeElement) throws Exception {
+    private Plane parsePlane(final Element planeElement) {
         Vector normal;
         Vector point;
         double distance;
@@ -193,7 +185,7 @@ public class XmlParser {
     }
 
     private BaseMaterial parseMaterial(final Element materialElement) {
-        BaseMaterial material = null;
+        BaseMaterial material;
         final Bitmap bmp = new Bitmap(0, 0);
         double diffuse = 1;
         double reflection = 0;
@@ -201,8 +193,8 @@ public class XmlParser {
         // Parse diffuse and reflection
         if (materialElement.getElementsByTagName("finish").getLength()> 0){
             final Element elm= (Element) materialElement.getElementsByTagName("finish").item(0);
-            reflection = (elm.getAttribute("reflect").toString().isEmpty()) ? reflection : Double.parseDouble(elm.getAttribute("reflect"));
-            diffuse = (elm.getAttribute("diffuse").toString().isEmpty()) ? diffuse : Double.parseDouble(elm.getAttribute("diffuse"));
+            reflection = elm.getAttribute("reflect").toString().isEmpty() ? reflection : Double.parseDouble(elm.getAttribute("reflect"));
+            diffuse = elm.getAttribute("diffuse").toString().isEmpty() ? diffuse : Double.parseDouble(elm.getAttribute("diffuse"));
         }
 
         if (materialElement.getElementsByTagName("color").getLength()> 0){
