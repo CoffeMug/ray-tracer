@@ -186,7 +186,6 @@ public class Bitmap implements IBitmap {
                     break;
                 default: break;
                 }
-
                 filePixels[i][j] = pixelColour;
             }
         }

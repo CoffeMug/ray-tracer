@@ -28,17 +28,17 @@ public class Sphere extends BaseShape {
         final Vector oc = this.position.vectorReduction(ray.getOrigin());
         final double l2oc = oc.dotProduct(oc);
         final double tca = oc.dotProduct(ray.getDirection());
-        final double t2hc = this.radius * this.radius - l2oc + tca * tca;
+        final double sr2 = this.radius * this.radius;
+        final double t2hc = sr2 - l2oc + tca * tca;
         final double tOutside = tca - Math.sqrt(t2hc);
         final double tInside = tca + Math.sqrt(t2hc);
-        final double sr2 = this.radius * this.radius;
 
         // Origin of the ray is inside the sphere
-        if (sr2 > l2oc ){
+        if (l2oc < sr2){
             info.setIsHit(true);
             info.setDistance(tInside);
             info.setPosition(ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tInside)));
-            info.setNormal(info.getPosition().vectorReduction(position).vectorMultiply(-1/this.radius));
+            info.setNormal(info.getPosition().vectorReduction(this.position).vectorMultiply(-1/this.radius));
             info.setColor(calculateColor(info, this.material));
         }
         // Origin of ray is outside the sphere but ray hits the sphere
@@ -46,11 +46,11 @@ public class Sphere extends BaseShape {
             info.setIsHit(true);
             info.setDistance(tOutside);
             info.setPosition(ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tOutside)));
-            info.setNormal(info.getPosition().vectorReduction(position).vectorMultiply(1/this.radius));
+            info.setNormal(info.getPosition().vectorReduction(this.position).vectorMultiply(1/this.radius));
             info.setColor(calculateColor(info, this.material));
         }
         // No intersection!
-        else{
+        else {
             info.setIsHit(false);
         }
         return info;
@@ -60,19 +60,20 @@ public class Sphere extends BaseShape {
         if (material.hasTexture())
             {
                 //TextureMaterial tmpMaterial = (TextureMaterial) this.material;
-                final Vector sp = new Vector(0, 1, 0).normalize(); // north pole / up
+                final Vector sp = new Vector(1, 0, 0).normalize(); // north pole / up
                 // equator / sphere orientation
                 final Vector se = new Vector(0, 0, 1).normalize();
                 //points from center of sphere to intersection 
                 final Vector rn = info.getNormal();
-                final double phi = Math.acos(rn.vectorMultiply(-1).dotProduct(sp));
+                final double phi = Math.acos(rn.vectorMultiply(-1).dotProduct(sp) > 1 ? 1 : rn.vectorMultiply(-1).dotProduct(sp));
                 final double vi = phi / Math.PI;
                 final double ui;
 
                 if (vi == 0 || vi == 1)
                     ui = 0;
                 else {
-                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi)))/(2*Math.PI);
+                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi) > 1 ? 1 :
+                            Math.acos(se.dotProduct(rn) / Math.sin(phi))))/(2*Math.PI);
                     ui = (se.crossProduct(sp)).dotProduct(rn) > 0 ? theta : 1 - theta; 
                 }
                 return material.getColor(ui, vi);

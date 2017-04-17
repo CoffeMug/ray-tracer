@@ -109,11 +109,7 @@ public class XmlParser {
 
         // Parse shapes
         ArrayList<BaseShape> shapes = new ArrayList<>();
-        IntStream.range(0, planes.getLength()).forEach(i -> {
-                shapes.add(parsePlane((Element) planes.item(i)));
-
-        });
-
+        IntStream.range(0, planes.getLength()).forEach(i -> shapes.add(parsePlane((Element) planes.item(i))));
         IntStream.range(0, spheres.getLength()).forEach(i -> shapes.add(parseSphere((Element) spheres.item(i))));
         IntStream.range(0, triangles.getLength()).forEach(i -> shapes.add(parseTriangle((Element) triangles.item(i))));
 
@@ -186,7 +182,7 @@ public class XmlParser {
 
     private BaseMaterial parseMaterial(final Element materialElement) {
         BaseMaterial material;
-        final Bitmap bmp = new Bitmap(0, 0);
+        final Bitmap bitmap = new Bitmap(0, 0);
         double diffuse = 1;
         double reflection = 0;
 
@@ -203,7 +199,7 @@ public class XmlParser {
         } else {
             final Element elm = (Element) materialElement.getElementsByTagName("ppm").item(0) ;
             final String bitmapFile = elm.getAttribute("file").toString();
-            material = new TextureMaterial(bmp.createBitmapFromFile(bitmapFile), reflection, diffuse);
+            material = new TextureMaterial(bitmap.createBitmapFromFile(bitmapFile), reflection, diffuse);
         }
         return material;
     }

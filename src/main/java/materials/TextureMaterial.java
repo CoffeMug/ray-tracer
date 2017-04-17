@@ -27,9 +27,9 @@ public class TextureMaterial extends BaseMaterial {
 
     @Override 
     public Color getColor(final double ui, final double vi) throws InvalidPixelException {
-        double uu = (ui) * this.texture.getWidth();
-        double vv = (vi) * this.texture.getHeight();
-        return texture.readPixel((int)uu,(int)vv);
+        double uu = Math.floor(ui * this.texture.getWidth());
+        double vv = Math.floor(vi * this.texture.getHeight());
+        return texture.readPixel((int)uu, (int)vv);
     }
 }
 
