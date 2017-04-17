@@ -42,7 +42,7 @@ public class Sphere extends BaseShape {
             info.setColor(calculateColor(info, this.material));
         }
         // Origin of ray is outside the sphere but ray hits the sphere
-        else if (sr2 <= l2oc && (tca > 0 || t2hc >=0)) {
+        else if (tca >= 0 && t2hc >=0) {
             info.setIsHit(true);
             info.setDistance(tOutside);
             info.setPosition(ray.getOrigin().vectorAddition(ray.getDirection().vectorMultiply(tOutside)));
@@ -72,8 +72,7 @@ public class Sphere extends BaseShape {
                 if (vi == 0 || vi == 1)
                     ui = 0;
                 else {
-                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi) > 1 ? 1 :
-                            Math.acos(se.dotProduct(rn) / Math.sin(phi))))/(2*Math.PI);
+                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi) > 1 ? 1 : se.dotProduct(rn) / Math.sin(phi))/(2*Math.PI));
                     ui = (se.crossProduct(sp)).dotProduct(rn) > 0 ? theta : 1 - theta; 
                 }
                 return material.getColor(ui, vi);
