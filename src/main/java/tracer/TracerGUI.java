@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.io.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 
 public class TracerGUI extends Observable implements ActionListener {
@@ -220,6 +221,8 @@ public class TracerGUI extends Observable implements ActionListener {
     private void createFileOpen() {
         fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File("./src/main/resources/ppm"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("*.xml", "xml"));
+        fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
         java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);
