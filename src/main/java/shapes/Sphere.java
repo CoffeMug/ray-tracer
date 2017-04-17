@@ -72,7 +72,7 @@ public class Sphere extends BaseShape {
                 if (vi == 0 || vi == 1)
                     ui = 0;
                 else {
-                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi) > 1 ? 1 : se.dotProduct(rn) / Math.sin(phi))/(2*Math.PI));
+                    final double theta = (Math.acos(se.dotProduct(rn) / Math.sin(phi) > 1 ? 1 : se.dotProduct(rn) / Math.sin(phi)))/(2*Math.PI);
                     ui = (se.crossProduct(sp)).dotProduct(rn) > 0 ? theta : 1 - theta; 
                 }
                 return material.getColor(ui, vi);
