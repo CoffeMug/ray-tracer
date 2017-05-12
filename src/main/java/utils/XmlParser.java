@@ -73,23 +73,20 @@ public class XmlParser {
     }
 
     private Camera parseCamera(final Element camElement) {
-        Vector location;
-        Vector lookAt;
-        Vector upside;
 
         // here we extract location vector for camera.
         Element locationElement =(Element) camElement.getElementsByTagName("location").item(0);
-        location = parseVector((Element) locationElement.getElementsByTagName("vector").item(0));
+        Vector location = parseVector((Element) locationElement.getElementsByTagName("vector").item(0));
 
-        //then extract sky vector.
+        // then extract sky vector.
         Element skyElement =(Element) camElement.getElementsByTagName("sky").item(0);
-        upside = parseVector((Element) skyElement.getElementsByTagName("vector").item(0));
+        Vector upside = parseVector((Element) skyElement.getElementsByTagName("vector").item(0));
 
-        //then extract lookAt vector.
+        // then extract lookAt vector.
         Element lookAtElement =(Element) camElement.getElementsByTagName("look_at").item(0);
-        lookAt = parseVector((Element) lookAtElement.getElementsByTagName("vector").item(0));
+        Vector lookAt = parseVector((Element) lookAtElement.getElementsByTagName("vector").item(0));
 
-        //build camera object
+        // and finally build camera object
         return new Camera(location, lookAt, upside);
     }
 
@@ -118,16 +115,14 @@ public class XmlParser {
 
 
     private Plane parsePlane(final Element planeElement) {
-        Vector normal;
         Vector point;
         double distance;
-        BaseMaterial material;
 
         final Element materialElement =(Element)planeElement.getElementsByTagName("surface").item(0);
-        material = parseMaterial(materialElement);
+        BaseMaterial material = parseMaterial(materialElement);
 
         final Element normalElement =(Element)planeElement.getElementsByTagName("normal").item(0);
-        normal = parseVector((Element)normalElement.getElementsByTagName("vector").item(0));
+        Vector normal = parseVector((Element)normalElement.getElementsByTagName("vector").item(0));
 
         if (!planeElement.getAttribute("distance").isEmpty()) {
             distance = Double.parseDouble(planeElement.getAttribute("distance"));
@@ -140,43 +135,36 @@ public class XmlParser {
     }
 
     private Sphere parseSphere(final Element SphereElement) {
-        double radius;
-        Vector position;
-        BaseMaterial material;
 
-        radius = Double.parseDouble(SphereElement.getAttribute("radius"));
+        double radius = Double.parseDouble(SphereElement.getAttribute("radius"));
 
         final Element locElement =(Element)SphereElement.getElementsByTagName("location").item(0);
         final Element elm = (Element)locElement.getElementsByTagName("vector").item(0);
-        position = parseVector(elm);
+        Vector position = parseVector(elm);
 
         final Element materialElement =(Element)SphereElement.getElementsByTagName("surface").item(0);
-        material = parseMaterial(materialElement);
+        BaseMaterial material = parseMaterial(materialElement);
 
         return new Sphere(position, radius, material);
     }
 
     private Triangle parseTriangle(final Element triangleElement) {
-        Vector c0;
-        Vector c1;
-        Vector c2;
-        BaseMaterial material;
 
         final Element c0Element =(Element)triangleElement.getElementsByTagName("c0").item(0);
         Element elm = (Element)c0Element.getElementsByTagName("vector").item(0);
-        c0 = parseVector(elm);
+        Vector c0 = parseVector(elm);
 
         final Element c1Element =(Element)triangleElement.getElementsByTagName("c1").item(0);
         elm = (Element)c1Element.getElementsByTagName("vector").item(0);
-        c1 = parseVector(elm);
+        Vector c1 = parseVector(elm);
 
         final Element c2Element =(Element)triangleElement.getElementsByTagName("c2").item(0);
         elm = (Element)c2Element.getElementsByTagName("vector").item(0);
-        c2 = parseVector(elm);
+        Vector c2 = parseVector(elm);
 
         final Element materialElement = (Element)triangleElement.getElementsByTagName("surface").item(0);
 
-        material = parseMaterial(materialElement);
+        BaseMaterial material = parseMaterial(materialElement);
         return new Triangle(c0, c1, c2, material);
     }
 
@@ -205,19 +193,17 @@ public class XmlParser {
     }
 
     private Color parseColor(final Element colorElement) {
-        int red =(int) (Double.parseDouble(colorElement.getAttribute("red")) * 255);
-        int green =(int) (Double.parseDouble(colorElement.getAttribute("green")) * 255);
+        int red = (int) (Double.parseDouble(colorElement.getAttribute("red")) * 255);
+        int green = (int) (Double.parseDouble(colorElement.getAttribute("green")) * 255);
         int blue = (int) (Double.parseDouble(colorElement.getAttribute("blue")) * 255);
 
         return new Color(red, green, blue);
     }
 
     private Light parseLight(final Element lightElement) {
-        Light light;
         final Element posElement =(Element) lightElement.getElementsByTagName("position").item(0);
         final Element elm = (Element)posElement.getElementsByTagName("vector").item(0);
-        light = new Light(parseVector(elm));
-        return light;
+        return new Light(parseVector(elm));
     }
 
     private Vector parseVector(final Element vectorElement) {

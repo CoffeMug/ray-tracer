@@ -96,13 +96,14 @@ public class TracerGUIObserver implements Observer {
         File outfile;
         try {
             image = new BufferedImage(bitmap.getWidth(), bitmap.getHeight(), BufferedImage.TYPE_INT_RGB);
-            for (int i=0; i < bitmap.getWidth(); i++) {
-                for (int j=0; j < bitmap.getHeight(); j++) {
-                    Color color = bitmap.readPixel(i, j);
-                    int rgb = makeRgb(color.getRed(), color.getGreen(), color.getBlue());
-                    image.setRGB(i, j, rgb);
-                }
-            }
+
+            IntStream.range(0, bitmap.getWidth()).forEach(i ->
+                    IntStream.range(0, bitmap.getHeight()).forEach(j -> {
+                        Color color = bitmap.readPixel(i, j);
+                        int rgb = makeRgb(color.getRed(), color.getGreen(), color.getBlue());
+                        image.setRGB(i, j, rgb);
+                    }));
+
             outfile = new File("output.jpeg");
 
             ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(outfile);
@@ -119,6 +120,7 @@ public class TracerGUIObserver implements Observer {
             throw new PpmToJpgConversionException(e.getMessage());
         }
     }
+
     private static int makeRgb( final int red, final int green, final int blue ) {
         return 0xff000000 | ( red << 16 ) | ( green << 8 ) | blue;
     }

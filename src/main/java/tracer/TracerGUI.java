@@ -3,6 +3,7 @@ package tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URL;
 import java.util.Observable;
 import java.io.*;
 import java.awt.event.*;
@@ -12,7 +13,12 @@ import java.awt.*;
 
 public class TracerGUI extends Observable implements ActionListener {
 
-    private final Logger logger = LoggerFactory.getLogger(TracerGUI.class);
+    private static final Logger logger = LoggerFactory.getLogger(TracerGUI.class);
+
+    private static final String FILE_CHOOSER_CURRENT_DIRECTORY = "./src/main/resources/ppm";
+    private static final String FILE_CHOOSER_FILE_NAME_DESCRIPTION = "*.xml";
+    private static final String FILE_CHOOSER_FILE_NAME_EXTENTION = "xml";
+
 
     // Left config panel 
     static private JPanel configPanelLeft;
@@ -220,10 +226,12 @@ public class TracerGUI extends Observable implements ActionListener {
 
     private void createFileOpen() {
         fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File("./src/main/resources/ppm"));
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("*.xml", "xml"));
+        fileChooser.setCurrentDirectory(new File(FILE_CHOOSER_CURRENT_DIRECTORY));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(FILE_CHOOSER_FILE_NAME_DESCRIPTION,
+                FILE_CHOOSER_FILE_NAME_EXTENTION));
         fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
-        java.net.URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
+        URL imageURL = this.getClass().getClassLoader().getResource("images/open.gif");
+
         if (imageURL != null) {
             ImageIcon icon = new ImageIcon(imageURL);
             openXMLButton = new JButton("Open a scene xml file...", icon);
