@@ -160,9 +160,8 @@ public class Bitmap implements IBitmap {
     }
 
     private void readPixels(final InputStream inp) throws IOException {
-        int red, green, blue;
+        int red = 0, green = 0, blue = 0;
         Color filePixels[][] = new Color[this.width][this.height];        
-        Color pixelColour= null;
 
         for (int i = 0; i < this.width; i++ ){
             for (int j = 0; j < this.height; j++) {
@@ -171,7 +170,6 @@ public class Bitmap implements IBitmap {
                     red = readInt(inp);
                     green = readInt(inp);
                     blue = readInt(inp);
-                    pixelColour = new Color(red, green, blue);
                     break;
                 case PPM_BINARY:
                     red = readByte(inp);
@@ -182,11 +180,10 @@ public class Bitmap implements IBitmap {
                         green = fixDepth(green);
                         blue = fixDepth(blue);
                     }
-                    pixelColour = new Color(red, green, blue);
                     break;
                 default: break;
                 }
-                filePixels[i][j] = pixelColour;
+                filePixels[i][j] = new Color(red, green, blue);
             }
         }
         this.pixels = filePixels;
