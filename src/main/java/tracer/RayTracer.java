@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import shapes.IShape;
 
 /**
- * The RayTracer class which is the main class responsible for tracing 
+ * The RayTracer class which is the main class responsible for tracing
  * the scene and produces the rendered picture
  * @author Amin Khorsandi
  */
@@ -22,7 +22,7 @@ public class RayTracer {
 
     public RayTracer() {
 
-    } 
+    }
 
     public RayTracer(final Boolean renderShadow,
                      final Boolean renderReflection){
@@ -42,7 +42,7 @@ public class RayTracer {
 
         for (int y = lowerBound; y < upperBound; y++) {
             for (int x = 0; x < bitmap.getWidth(); x++) {
-                Ray ray = scene.camera.getRay(x, y);
+                Ray ray = scene.getCamera().getRay(x, y);
                 bitmap.writePixel(x, y, calculateColor(ray, scene, depth));
             }
 
@@ -68,12 +68,12 @@ public class RayTracer {
             color = rayTrace(info, ray, scene, depth);
         }
         else{
-            color = scene.background;
+            color = scene.getBackground();
         }
         return color;
     }
 
-    /** This is the main RayTrace controller algorithm, the core of 
+    /** This is the main RayTrace controller algorithm, the core of
      * the RayTracer recursive method setup this does the actual tracing
      * of the ray and determines the color of each pixel
      * @param info
@@ -93,8 +93,8 @@ public class RayTracer {
 
         // calculate reflection ray
         if (renderShadow){
-            for (Light light : scene.world.lights) {
-                final Vector sd = light.position.vectorReduction(so).normalize();
+            for (Light light : scene.getWorld().getLights()) {
+                final Vector sd = light.getPosition().vectorReduction(so).normalize();
                 final Double cosPhi = Math.abs(rn.dotProduct(sd));
                 final Ray shadowRay = new Ray(so, sd);
                 IntersectInfo shadow = testIntersection(shadowRay, scene);
@@ -133,7 +133,7 @@ public class RayTracer {
         int hitCount = 0;
         IntersectInfo best = new IntersectInfo(Double.MAX_VALUE);
 
-        for (IShape elt : scene.world.shapes) {
+        for (IShape elt : scene.getWorld().getShapes()) {
             final IntersectInfo info = elt.intersect(ray);
             if (info.getIsHit() && info.getDistance() < best.getDistance()
                 && info.getDistance() > 0 ) {
@@ -141,6 +141,7 @@ public class RayTracer {
                 hitCount++;
             }
         }
+
         best.setHitCount(hitCount);
         return best;
     }

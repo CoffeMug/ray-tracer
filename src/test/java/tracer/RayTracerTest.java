@@ -100,7 +100,7 @@ public class RayTracerTest extends TestCase {
 		testTracer.rayTraceScene(testScene, viewport, 5, false, 0, 1);
 
 		Light light3 = new Light(new Vector(-20, 70, 50));
-		testScene.world.lights.add(light3);
+		testScene.getWorld().getLights().add(light3);
 		testTracer.rayTraceScene(testScene, viewport1, 5, false, 0, 1);
 
 		try {

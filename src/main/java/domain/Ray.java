@@ -5,8 +5,8 @@ package domain;
  * @author Behzad
  */
 public class Ray {
-    private Vector origin;
-    private Vector direction;
+    private final Vector origin;
+    private final Vector direction;
 
     public Ray(final Vector origin, final Vector direction) {
         this.origin = origin;
@@ -29,16 +29,8 @@ public class Ray {
         return this.direction;
     }
 
-    public void setDirection(final Vector direction) {
-        this.direction = direction;
-    }
-
     public Vector getOrigin() {
         return this.origin;
-    }
-
-    public void setOrigin(final Vector origin) {
-        this.origin = origin;
     }
 
     @Override  

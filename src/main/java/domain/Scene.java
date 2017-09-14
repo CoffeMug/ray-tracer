@@ -7,9 +7,21 @@ package domain;
  *
  */
 public class Scene {
-    public transient Color background;
-    public transient Camera camera;
-    public transient World world;
+    private final transient Color background;
+    private final transient Camera camera;
+    private final transient World world;
+
+    public Color getBackground() {
+        return background;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public World getWorld() {
+        return world;
+    }
 
     public Scene(final Camera camera, final Color background, final World world){
         this.camera = camera;

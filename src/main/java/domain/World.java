@@ -9,8 +9,16 @@ import java.util.ArrayList;
  */
 public class World {
 
-    public transient ArrayList<BaseShape> shapes;
-    public transient ArrayList<Light> lights;
+    private final transient ArrayList<BaseShape> shapes;
+    private final transient ArrayList<Light> lights;
+
+    public ArrayList<BaseShape> getShapes() {
+        return shapes;
+    }
+
+    public ArrayList<Light> getLights() {
+        return lights;
+    }
 
     public World(final ArrayList<BaseShape> shapes, final ArrayList<Light> lights) {
         this.shapes = shapes;

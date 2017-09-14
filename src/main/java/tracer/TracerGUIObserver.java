@@ -50,7 +50,7 @@ public class TracerGUIObserver implements Observer {
             final Scene scene = parser.parseXmlFile(param.getSceneFile());
 
             // Build rest of the camera
-            scene.camera
+            scene.getCamera()
                     .withHeight(param.getHeight())
                     .withWidth(param.getWidth())
                     .withZoom(param.getZoom())

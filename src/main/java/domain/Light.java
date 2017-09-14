@@ -6,10 +6,15 @@ package domain;
  * the Light class responsible for creating light sources
  */
 public class Light {
-    public transient Vector position;
 
-    public Light(final Vector pos){
-        position = pos;
+    private final transient Vector position;
+
+    public Light(final Vector position){
+        this.position = position;
+    }
+
+    public Vector getPosition() {
+        return position;
     }
 
     /**
