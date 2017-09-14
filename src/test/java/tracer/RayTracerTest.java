@@ -77,9 +77,6 @@ public class RayTracerTest extends TestCase {
 				null);
 	}
 
-
-
-
 	/**
 	 * in this bitmap case first we render a scene with 2 light sources. Then we
 	 * add a new light source at the same position of an already existed light
@@ -91,7 +88,7 @@ public class RayTracerTest extends TestCase {
 	 */
 	public void testWithDifferentLights() throws Exception {
 
-		RayTracer testTracer = new RayTracer();
+		RayTracer testTracer = new RayTracer(false, false);
 		final Bitmap viewport = new Bitmap(400,400);
 		final Bitmap viewport1 = new Bitmap(400,400);
 		Color firstColor = new Color();

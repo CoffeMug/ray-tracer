@@ -15,14 +15,11 @@ public class RayTracer {
 
     private final Logger logger = LoggerFactory.getLogger(RayTracer.class);
 
-    private Boolean renderShadow;
-    private Boolean renderReflection;
+    private final Boolean renderShadow;
+    private final Boolean renderReflection;
     private int traceDepth = 0;
-    private final double eps = 0.0001;
+    private static final double eps = 0.0001;
 
-    public RayTracer() {
-
-    }
 
     public RayTracer(final Boolean renderShadow,
                      final Boolean renderReflection){
